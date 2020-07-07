@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate {
 
@@ -17,10 +18,9 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     let cellId = "cellId"
-//  NOT SURE IF NEEDED
-    var arrayOfResponses = [TranslationResult]()
-    var textToTranslate: String?
-    var translatorURL: URL?
+    var arrayOfResponses = [Result]()
+//    var textToTranslate: String?
+//    var translatorURL: URL?
     var selectedTranslator: Translator? = nil
 //    var delegate: RequestProtocolDelegate?
 //  MARK: - View lifecycle
@@ -29,7 +29,7 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                                             Translator(name: "Yoda translator", url: URL(string: "https://api.funtranslations.com/translate/yoda.json")),
                                             Translator(name: "Klingon translator", url: URL(string: "https://api.funtranslations.com/translate/klingon.json")),
                                             Translator(name: "Shakespeare translator", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json")),
-                                            Translator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"))
+                                            Translator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e", "lang": "en-ru"])
     ]
     
     override func viewDidLoad() {
@@ -91,7 +91,7 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         horizontalStackView.addArrangedSubview(sendButton)
         
         sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
-        sendButton.setImage(UIImage(named: "sendButton3"), for: .normal)
+        sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
     }
     
     func setStackViewConstraints() {
@@ -165,25 +165,31 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
     @objc func didTapSendButton() {
         if let translator = self.selectedTranslator {
-            translatorURL = translator.url
+            guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
-            print(textToTranslate)
-            //        sendToTranslate(to: translatorURL, text: textToTranslate)
-            //        sendToTranslateFunTranslator(to: translatorURL, text: textToTranslate)
-            postRequest(to: translatorURL!, with: textToTranslate)
-            //        postRequest()
+//            print(textToTranslate)
+
+            sendToTranslate(to: translatorURL, with: textToTranslate)
+
         }
     }
     
     
-    func postRequest(to url: URL, with text: String) {
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    func sendToTranslate(to address: URL, with text: String) {
         
-        let requestData = ["text": text]
-        let jsonData = try? JSONSerialization.data(withJSONObject: requestData, options: [])
-        request.httpBody = jsonData
+        var url = address
+        
+        if let queryArray = selectedTranslator?.queryDict {
+            for (key, value) in queryArray {
+                url = url.append(key, value: value)
+            }
+        }
+        
+        url = url.append("text", value: text)
+        print(url)
+        
+        let request = URLRequest(url: url)
+                
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             if error != nil || data == nil {
@@ -200,19 +206,35 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 print("Wrong MIME type!")
                 return
             }
-        
-            do {
-                let json = try? JSONSerialization.jsonObject(with: data!, options: [])
-                print(json as Any)
-            } catch {
-                print("JSON error: \(error.localizedDescription)")
+            
+            DispatchQueue.main.async {
+                guard let responseData = data else {  return  }
+                let decoder = JSONDecoder()
+                do {
+                    let decodedData = try! decoder.decode(DecodedResponse.self, from: responseData)
+                    if decodedData.text != nil {
+                        print(decodedData.text)
+                    } else {
+                        print(decodedData.translated)
+                    }
+//                    print(decodedData)
+                } catch let parseError {
+                    print("JSON parsing error", parseError)
+                }
             }
+        
+//            do {
+//                let json = try? JSONSerialization.jsonObject(with: data!, options: [])
+//                print(json as Any)
+//            } catch {
+//                print("JSON error: \(error.localizedDescription)")
+//            }
         }
         task.resume()
-        
     }
-        
 }
+        
+
 
 // MARK: - Extension
 
@@ -229,7 +251,7 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let translation = arrayOfResponses[indexPath.row]
-        cell.textLabel?.text = translation.responseData as! String?
+//        cell.textLabel?.text = translation.responseData as! String?
 //        cell.textLabel?.text = self.arrayOfRequests[indexPath.row]
         return cell
     }
