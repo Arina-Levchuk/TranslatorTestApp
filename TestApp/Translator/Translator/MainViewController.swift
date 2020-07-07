@@ -17,7 +17,6 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
-    let cellId = "cellId"
     var arrayOfResponses = [Result]()
 //    var textToTranslate: String?
 //    var translatorURL: URL?
@@ -42,7 +41,7 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         configureHorizontalStackView()
         setUpTableView()
         
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CustomCell")
         self.tableView.dataSource = self
         
         self.inputField.delegate = self
@@ -66,11 +65,11 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     func setUpTableView() {
         view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints                                         = false
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive        = true
-        tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive      = true
-        tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive    = true
-        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive          = true
+        tableView.translatesAutoresizingMaskIntoConstraints                                             = false
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
+        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
+        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
+        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive              = true
     }
     
     func configureHorizontalStackView() {
@@ -172,7 +171,7 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error in
                 if let result = result {
                     self.arrayOfResponses.append(result)
-                    print(self.arrayOfResponses)
+//                    print(self.arrayOfResponses)
                 }
             })
             
@@ -191,7 +190,7 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 url = url.append(key, value: value)
             }
         }
-        
+       
         url = url.append("text", value: text)
         print(url)
         
@@ -244,19 +243,20 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch tableView {
-        case self.tableView:
-            return self.arrayOfResponses.count
-        default:
-            return 0
-        }
+        return self.arrayOfResponses.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomCell
         let translation = arrayOfResponses[indexPath.row]
-//        cell.textLabel?.text = translation.responseData as! String?
-//        cell.textLabel?.text = self.arrayOfRequests[indexPath.row]
+        if let yandexResult = translation.resultFromYandex {
+            cell.textLabel?.text = yandexResult.joined(separator: "")
+        } else if let funResult = translation.resultFromFunTranslator {
+            cell.textLabel?.text = funResult
+        } else {
+            cell.textLabel?.text = "Error"
+            cell.textLabel?.textColor = .red
+        }
         return cell
     }
 }
