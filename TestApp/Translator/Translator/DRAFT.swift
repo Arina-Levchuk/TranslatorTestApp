@@ -162,13 +162,16 @@ import Foundation
 
 
 
-//   VALID POST REQUEST!!!
-//    func postRequest(to url: URL, with text: String) {
-//        var request = URLRequest(url: url)
+// РАБОТАЕТ, НО С ХАРДКОДОМ, НО РАБОТАЕТ
+
+//    func postRequest() {
+
+//        let url = URL(string: "https://api.funtranslations.com/translate/yoda.json")
+//        var request = URLRequest(url: url!)
 //        request.httpMethod = "POST"
 //        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 //
-//        let requestData = ["text": text]
+//        let requestData = ["text": "Master Obiwan has lost a planet."]
 //        let jsonData = try? JSONSerialization.data(withJSONObject: requestData, options: [])
 //        request.httpBody = jsonData
 //        let session = URLSession.shared
@@ -187,7 +190,7 @@ import Foundation
 //                print("Wrong MIME type!")
 //                return
 //            }
-// TODO: USE JSONDecoder to parse JSON
+//
 //            do {
 //                let json = try? JSONSerialization.jsonObject(with: data!, options: [])
 //                print(json as Any)
@@ -196,5 +199,5 @@ import Foundation
 //            }
 //        }
 //        task.resume()
+//
 //    }
-

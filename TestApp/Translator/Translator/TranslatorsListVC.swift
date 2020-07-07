@@ -8,9 +8,9 @@
 
 import UIKit
 
-//protocol RequestProtocolDelegate: class {
-//    func passURLOfTranslator(selectedItem: String) -> URL
-//}
+protocol RequestProtocolDelegate: class {
+    func passURLOfTranslator(selectedItem: String) -> URL
+}
 
 protocol TranslatorsListVCDelegate: class {
     func newTranslatorSelected(translator: Translator)
@@ -90,3 +90,4 @@ class TranslatorsListVC: UIViewController, UITableViewDelegate, UITableViewDataS
         self.delegate?.newTranslatorSelected(translator: self.selectedTranslator)
     }
 }
+

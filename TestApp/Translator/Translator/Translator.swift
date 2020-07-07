@@ -11,6 +11,13 @@ import UIKit
 
 struct Translator {
     let name: String
+//    let logo: UIImage?
     var url: URL? = nil
-    var queryDict: [String: String]?
+}
+
+struct TranslationResult: Decodable {
+    let response: String?
+    let responseData: String?
+    let error: String?
+    
 }

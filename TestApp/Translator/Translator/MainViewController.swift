@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, UITextFieldDelegate {
+class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate {
 
 //  MARK: - Properties
 
@@ -17,9 +17,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     let cellId = "cellId"
-    var arrayOfResponses: [Result] = []
-//    var textToTranslate: String?
-//    var translatorURL: URL?
+//  NOT SURE IF NEEDED
+    var arrayOfResponses = [TranslationResult]()
+    var textToTranslate: String?
+    var translatorURL: URL?
     var selectedTranslator: Translator? = nil
 //    var delegate: RequestProtocolDelegate?
 //  MARK: - View lifecycle
@@ -28,9 +29,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                                             Translator(name: "Yoda translator", url: URL(string: "https://api.funtranslations.com/translate/yoda.json")),
                                             Translator(name: "Klingon translator", url: URL(string: "https://api.funtranslations.com/translate/klingon.json")),
                                             Translator(name: "Shakespeare translator", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json")),
-                                            Translator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e", "lang": "en-ru"])
+                                            Translator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"))
     ]
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +44,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
         self.tableView.dataSource = self
-//      ??
-        tableView.rowHeight = UITableView.automaticDimension
         
         self.inputField.delegate = self
         
@@ -68,11 +66,11 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     func setUpTableView() {
         view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
-        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
-        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
-        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive              = true
+        tableView.translatesAutoresizingMaskIntoConstraints                                         = false
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive        = true
+        tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive      = true
+        tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive    = true
+        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive          = true
     }
     
     func configureHorizontalStackView() {
@@ -93,7 +91,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         horizontalStackView.addArrangedSubview(sendButton)
         
         sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
-        sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
+        sendButton.setImage(UIImage(named: "sendButton3"), for: .normal)
     }
     
     func setStackViewConstraints() {
@@ -167,113 +165,72 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 
     @objc func didTapSendButton() {
         if let translator = self.selectedTranslator {
-            guard let translatorURL = translator.url else { return }
+            translatorURL = translator.url
             guard let textToTranslate = self.inputField.text else { return }
-//            dismissKeyboard()
-//            sendToTranslate(address: translatorURL!, text: textToTranslate)
-            let result = sendToTranslate(address: translatorURL, text: textToTranslate)
-//            print(result)
-            
-            self.arrayOfResponses.append(result)
-            print(arrayOfResponses)
-
+            print(textToTranslate)
+            //        sendToTranslate(to: translatorURL, text: textToTranslate)
+            //        sendToTranslateFunTranslator(to: translatorURL, text: textToTranslate)
+            postRequest(to: translatorURL!, with: textToTranslate)
+            //        postRequest()
         }
     }
     
-    func sendToTranslate(address: URL, text: String) -> Result {
-        var requestResult = Result(textToTranslate: text)
-        var url = address
+    
+    func postRequest(to url: URL, with text: String) {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        if let queryArray = selectedTranslator?.queryDict {
-            for (item, value) in queryArray {
-                url = url.append(item, value: value)
-            }
-        }
-        
-        url = url.append("text", value: text)
-        print(url)
-        
-        let request = URLRequest(url: url)
-        
+        let requestData = ["text": text]
+        let jsonData = try? JSONSerialization.data(withJSONObject: requestData, options: [])
+        request.httpBody = jsonData
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             if error != nil || data == nil {
-                print("Client Error")
+                print("Client error!")
                 return
             }
             
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                print("Server error: \(error!.localizedDescription)")
+                print("Server error")
                 return
             }
             
             guard let mime = response.mimeType, mime == "application/json" else {
-                print("Wrong MIME type")
+                print("Wrong MIME type!")
                 return
             }
-//  TODO: DispatchQueue??
-            DispatchQueue.main.async {
-                guard let responseData = data else {
-                    print("Error: no response data.")
-                    return
-                }
-                let decoder = JSONDecoder()
-                do {
-                    let decodedData = try! decoder.decode(DecodedResponse.self, from: responseData)
-                    if decodedData.text != nil {
-                        requestResult.yandexTranslatorResult = decodedData.text
-//                        print(decodedData.text)
-                    } else {
-                        requestResult.funTranslatorResult = decodedData.translated
-//                        print(decodedData.translated)
-                    }
-                    
-                    print(requestResult)
-//                    self.arrayOfResponses.append(Result(text: decodedData.text ?? nil, translated: decodedData.translated ?? nil)!)
-//                    print(self.arrayOfResponses)
-                    
-                } catch {
-                    print("JSON error: \(error.localizedDescription)")
-                }
+        
+            do {
+                let json = try? JSONSerialization.jsonObject(with: data!, options: [])
+                print(json as Any)
+            } catch {
+                print("JSON error: \(error.localizedDescription)")
             }
-
         }
         task.resume()
-        return requestResult
+        
     }
-    
-    
         
 }
 
 // MARK: - Extension
 
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.arrayOfResponses.count
+        switch tableView {
+        case self.tableView:
+            return self.arrayOfResponses.count
+        default:
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CustomCell
-        let translationResult = arrayOfResponses[indexPath.row]
-        cell.translation = translationResult
-        
-//        cell.textFromInputFieldView.text = "\(translationResult.textToTranslate)"
-//        if translationResult.translationFromFunTranslator != nil || translationResult.translationFromYandex != nil {
-//            cell.translationTextView.text = "\(translationResult.translationFromFunTranslator ?? translationResult.translationFromYandex?.joined(separator: ""))"
-//        } else {
-//            cell.translationTextView.text = "Error. Please retry"
-//            cell.translationTextView.textColor = .red
-//        }
-
-        
-//        ???
-//        if translation.text != nil {
-//            cell.textLabel?.text = translation.text?.joined(separator: "")
-//        } else if translation.translated != nil {
-//            cell.textLabel?.text = translation.translated
-//        }
-
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        let translation = arrayOfResponses[indexPath.row]
+        cell.textLabel?.text = translation.responseData as! String?
+//        cell.textLabel?.text = self.arrayOfRequests[indexPath.row]
         return cell
     }
 }
