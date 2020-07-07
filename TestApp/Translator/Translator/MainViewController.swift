@@ -169,14 +169,21 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             guard let textToTranslate = self.inputField.text else { return }
 //            print(textToTranslate)
 
-            sendToTranslate(to: translatorURL, with: textToTranslate)
+            sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error in
+                if let result = result {
+                    self.arrayOfResponses.append(result)
+                    print(self.arrayOfResponses)
+                }
+            })
+            
+//            print(self.arrayOfResponses)
 
         }
     }
     
     
-    func sendToTranslate(to address: URL, with text: String) {
-        
+    func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (Result?, Error?) -> Void) {
+        var result = Result(textToTranslate: text)
         var url = address
         
         if let queryArray = selectedTranslator?.queryDict {
@@ -212,23 +219,20 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
                 let decoder = JSONDecoder()
                 do {
                     let decodedData = try! decoder.decode(DecodedResponse.self, from: responseData)
+                    
                     if decodedData.text != nil {
-                        print(decodedData.text)
+                        result.resultFromYandex = decodedData.text
                     } else {
-                        print(decodedData.translated)
+                        result.resultFromFunTranslator = decodedData.translated
                     }
-//                    print(decodedData)
+                    print(result)
+                    completionHandler(result, nil)
+
                 } catch let parseError {
+                    completionHandler(nil, parseError)
                     print("JSON parsing error", parseError)
                 }
             }
-        
-//            do {
-//                let json = try? JSONSerialization.jsonObject(with: data!, options: [])
-//                print(json as Any)
-//            } catch {
-//                print("JSON error: \(error.localizedDescription)")
-//            }
         }
         task.resume()
     }
