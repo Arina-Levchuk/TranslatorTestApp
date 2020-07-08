@@ -18,6 +18,7 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     var arrayOfResponses = [Result]()
+    
 //    var textToTranslate: String?
 //    var translatorURL: URL?
     var selectedTranslator: Translator? = nil
@@ -41,7 +42,7 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         configureHorizontalStackView()
         setUpTableView()
         
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CustomCell")
+        self.tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
         self.tableView.dataSource = self
         
         self.inputField.delegate = self
@@ -182,7 +183,7 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     
     func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (Result?, Error?) -> Void) {
-        var result = Result(textToTranslate: text)
+        var result = Result(textToTranslate: text, resultFromYandex: nil, resultFromFunTranslator: nil)
         var url = address
         
         if let queryArray = selectedTranslator?.queryDict {
@@ -248,15 +249,17 @@ extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomCell
-        let translation = arrayOfResponses[indexPath.row]
-        if let yandexResult = translation.resultFromYandex {
-            cell.textLabel?.text = yandexResult.joined(separator: "")
-        } else if let funResult = translation.resultFromFunTranslator {
-            cell.textLabel?.text = funResult
-        } else {
-            cell.textLabel?.text = "Error"
-            cell.textLabel?.textColor = .red
-        }
+        let translationResult = arrayOfResponses[indexPath.row]
+        cell.translation = translationResult
+        
+//        if let yandexResult = translation.resultFromYandex {
+//            cell.textLabel?.text = yandexResult.joined(separator: "")
+//        } else if let funResult = translation.resultFromFunTranslator {
+//            cell.textLabel?.text = funResult
+//        } else {
+//            cell.textLabel?.text = "Error"
+//            cell.textLabel?.textColor = .red
+//        }
         return cell
     }
 }

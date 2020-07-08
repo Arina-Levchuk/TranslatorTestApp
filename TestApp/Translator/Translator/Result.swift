@@ -10,10 +10,12 @@ import Foundation
 
 struct Result {
     let textToTranslate: String
-    var resultFromYandex: [String]? = nil
-    var resultFromFunTranslator: String? = nil
+    var resultFromYandex: [String]?
+    var resultFromFunTranslator: String?
     
-    init(textToTranslate: String) {
+    init(textToTranslate: String, resultFromYandex: [String]?, resultFromFunTranslator: String?) {
         self.textToTranslate = textToTranslate
+        self.resultFromYandex = resultFromYandex
+        self.resultFromFunTranslator = resultFromFunTranslator
     }
 }

@@ -9,11 +9,54 @@
 import UIKit
 
 class CustomCell: UITableViewCell {
-
-    let textToTranslateView = UILabel()
-    let translationResultView = UILabel()
     
+    var translation: Result? {
+        didSet {
+            guard let textToTranslate = translation?.textToTranslate else { return }
+            textToTranslateLabel.text = textToTranslate
+            if let resultFromYandex = translation?.resultFromYandex?.joined(separator: "") {
+                translationResultLabel.text = resultFromYandex
+            } else if let resultFromFunTranslator = translation?.resultFromFunTranslator {
+                translationResultLabel.text = resultFromFunTranslator
+            } else {
+//               How to display error message label??
+                errorMessage
+            }
+            
+//            if translation?.resultFromYandex?.joined(separator: "") != nil || ((translation?.resultFromFunTranslator) != nil) {
+//
+//            }
+//            translationResultLabel.text = translation?.resultFromYandex?.joined(separator: "") ?? translation?.resultFromFunTranslator ?? errorMessage.text
+        }
+    }
     
+    private let textToTranslateLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.textColor = .black
+        lbl.font = UIFont.boldSystemFont(ofSize: 16)
+        lbl.textAlignment = .left
+        return lbl
+    }()
+    
+    private let translationResultLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.textColor = .black
+        lbl.font = UIFont.systemFont(ofSize: 16)
+        lbl.textAlignment = .left
+        return lbl
+    }()
+    
+    private let errorMessage: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.text = "Error. Please retry"
+        lbl.textColor = .red
+        lbl.font = UIFont.systemFont(ofSize: 16)
+        lbl.textAlignment = .left
+        return lbl
+    }()
     
 //    var activityIndicator = UIActivityIndicatorView()
     
@@ -23,26 +66,31 @@ class CustomCell: UITableViewCell {
 //        self.view.addSubview(activityView)
 //        activityView.startAnimating()
 //    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        textToTranslateView.translatesAutoresizingMaskIntoConstraints = false
-        translationResultView.translatesAutoresizingMaskIntoConstraints = false
+//        textToTranslateLabel.translatesAutoresizingMaskIntoConstraints = false
+//        translationResultLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.addSubview(textToTranslateView)
-        contentView.addSubview(translationResultView)
+        contentView.addSubview(textToTranslateLabel)
+        contentView.addSubview(translationResultLabel)
+        contentView.addSubview(errorMessage)
         
-        textToTranslateView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
-        textToTranslateView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
-        textToTranslateView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor).isActive = true
-        textToTranslateView.bottomAnchor.constraint(equalTo: translationResultView.topAnchor).isActive = true
+        textToTranslateLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: 20).isActive = true
+        textToTranslateLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -20).isActive = true
+        textToTranslateLabel.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor).isActive = true
+        textToTranslateLabel.bottomAnchor.constraint(equalTo: translationResultLabel.topAnchor).isActive = true
         
-        translationResultView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
-        translationResultView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
-        translationResultView.topAnchor.constraint(equalTo: textToTranslateView.bottomAnchor).isActive = true
-        translationResultView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor).isActive = true
+        translationResultLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: 20).isActive = true
+        translationResultLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -20).isActive = true
+        translationResultLabel.topAnchor.constraint(equalTo: textToTranslateLabel.bottomAnchor).isActive = true
+        translationResultLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor).isActive = true
         
-//        textToTranslateView.font = UIFont.boldSystemFont(ofSize: 18) 
+        errorMessage.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: 20).isActive = true
+        errorMessage.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -20).isActive = true
+        errorMessage.topAnchor.constraint(equalTo: textToTranslateLabel.bottomAnchor).isActive = true
+        errorMessage.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor).isActive = true
         
     }
     
