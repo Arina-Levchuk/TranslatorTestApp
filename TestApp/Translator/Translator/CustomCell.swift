@@ -9,18 +9,19 @@
 import UIKit
 
 class CustomCell: UITableViewCell {
+    static let reuseIdentifier = "CustomCell"
     
     var translation: Result? {
         didSet {
-            guard let textToTranslate = translation?.textToTranslate else { return }
-            textToTranslateLabel.text = textToTranslate
-            if let resultFromYandex = translation?.resultFromYandex?.joined(separator: "") {
+            guard let translationResult = translation else { return }
+            textToTranslateLabel.text = translationResult.textToTranslate
+            if let resultFromYandex = translationResult.resultFromYandex?.joined(separator: "") {
                 translationResultLabel.text = resultFromYandex
-            } else if let resultFromFunTranslator = translation?.resultFromFunTranslator {
+            } else if let resultFromFunTranslator = translationResult.resultFromFunTranslator {
                 translationResultLabel.text = resultFromFunTranslator
             } else {
 //               How to display error message label??
-                errorMessage
+                translationResultLabel.text = errorMessage.text
             }
             
 //            if translation?.resultFromYandex?.joined(separator: "") != nil || ((translation?.resultFromFunTranslator) != nil) {
@@ -72,25 +73,28 @@ class CustomCell: UITableViewCell {
         
 //        textToTranslateLabel.translatesAutoresizingMaskIntoConstraints = false
 //        translationResultLabel.translatesAutoresizingMaskIntoConstraints = false
+//        errorMessage.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(textToTranslateLabel)
         contentView.addSubview(translationResultLabel)
-        contentView.addSubview(errorMessage)
+//        ??
+//        contentView.addSubview(errorMessage)
+
+//        Horizontal position for each label
+        textToTranslateLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
+        textToTranslateLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
         
-        textToTranslateLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: 20).isActive = true
-        textToTranslateLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -20).isActive = true
-        textToTranslateLabel.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor).isActive = true
-        textToTranslateLabel.bottomAnchor.constraint(equalTo: translationResultLabel.topAnchor).isActive = true
+        translationResultLabel.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
+        translationResultLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
         
-        translationResultLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: 20).isActive = true
-        translationResultLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -20).isActive = true
-        translationResultLabel.topAnchor.constraint(equalTo: textToTranslateLabel.bottomAnchor).isActive = true
-        translationResultLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor).isActive = true
-        
-        errorMessage.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: 20).isActive = true
-        errorMessage.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -20).isActive = true
-        errorMessage.topAnchor.constraint(equalTo: textToTranslateLabel.bottomAnchor).isActive = true
-        errorMessage.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor).isActive = true
+        errorMessage.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
+        errorMessage.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+    
+//        Vertical position for each label
+        textToTranslateLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
+        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: translationResultLabel.lastBaselineAnchor, multiplier: 1).isActive = true
+        translationResultLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: textToTranslateLabel.lastBaselineAnchor, multiplier: 1).isActive = true
+//        errorMessage.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: textToTranslateLabel.lastBaselineAnchor, multiplier: 1).isActive = true
         
     }
     
@@ -102,13 +106,4 @@ class CustomCell: UITableViewCell {
 
 
 
-//override func tableView(_ tableView: UITableView,
-//           heightForRowAt indexPath: IndexPath) -> CGFloat {
-//   // Make the first row larger to accommodate a custom cell.
-//  if indexPath.row == 0 {
-//      return 80
-//   }
-//
-//   // Use the default size for all other rows.
-//   return UITableView.automaticDimension
-//}
+

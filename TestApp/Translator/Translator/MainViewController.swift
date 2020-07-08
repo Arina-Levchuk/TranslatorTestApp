@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate {
+class MainViewController: UIViewController, UITextFieldDelegate {
 
 //  MARK: - Properties
 
@@ -42,8 +42,9 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         configureHorizontalStackView()
         setUpTableView()
         
-        self.tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
+        self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.reuseIdentifier)
         self.tableView.dataSource = self
+        self.tableView.delegate = self
         
         self.inputField.delegate = self
         
@@ -242,13 +243,13 @@ class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDele
 
 // MARK: - Extension
 
-extension MainViewController: UITableViewDataSource {
+extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.arrayOfResponses.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
         let translationResult = arrayOfResponses[indexPath.row]
         cell.translation = translationResult
         
@@ -260,8 +261,24 @@ extension MainViewController: UITableViewDataSource {
 //            cell.textLabel?.text = "Error"
 //            cell.textLabel?.textColor = .red
 //        }
+  
+//  ???
+//  Return the appearance of your cell's views to their original state
+        cell.prepareForReuse()
         return cell
     }
+
+//    TODO: Dynamic row height
+//       func tableView(_ tableView: UITableView,heightForRowAt indexPath: IndexPath) -> CGFloat {
+//// Make the first row larger to accommodate a custom cell.
+//        if indexPath.row == 0 {
+//            return 80
+//        }
+//
+//// Use the default size for all other rows.
+//        return UITableView.automaticDimension
+//    }
+    
 }
     
     
