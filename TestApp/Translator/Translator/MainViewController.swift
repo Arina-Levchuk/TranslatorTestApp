@@ -19,8 +19,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     let tableView = UITableView.init(frame: .zero)
     var arrayOfResponses = [Result]()
     
-//    var textToTranslate: String?
-//    var translatorURL: URL?
+    var textToTranslate: String?
+    var translatorURL: URL?
     var selectedTranslator: Translator? = nil
 //    var delegate: RequestProtocolDelegate?
 //  MARK: - View lifecycle
@@ -44,8 +44,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         
         self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.reuseIdentifier)
         self.tableView.dataSource = self
-        self.tableView.delegate = self
-        
+//        self.tableView.delegate = self
+
         self.inputField.delegate = self
         
         setUpKeyboard()
@@ -168,7 +168,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
-//            print(textToTranslate)
 
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error in
                 if let result = result {
@@ -178,7 +177,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             })
             
 //            print(self.arrayOfResponses)
-
         }
     }
     
@@ -264,7 +262,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
   
 //  ???
 //  Return the appearance of your cell's views to their original state
-        cell.prepareForReuse()
+//        cell.prepareForReuse()
         return cell
     }
 

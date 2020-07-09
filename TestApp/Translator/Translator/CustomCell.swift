@@ -15,6 +15,12 @@ class CustomCell: UITableViewCell {
         didSet {
             guard let translationResult = translation else { return }
             textToTranslateLabel.text = translationResult.textToTranslate
+            
+            while (translationResult.resultFromYandex == nil) && (translationResult.resultFromFunTranslator != nil) {
+//                  ??
+                showActivityIndicator()
+            }
+
             if let resultFromYandex = translationResult.resultFromYandex?.joined(separator: "") {
                 translationResultLabel.text = resultFromYandex
             } else if let resultFromFunTranslator = translationResult.resultFromFunTranslator {
@@ -23,11 +29,7 @@ class CustomCell: UITableViewCell {
 //               How to display error message label??
                 translationResultLabel.text = errorMessage.text
             }
-            
-//            if translation?.resultFromYandex?.joined(separator: "") != nil || ((translation?.resultFromFunTranslator) != nil) {
-//
-//            }
-//            translationResultLabel.text = translation?.resultFromYandex?.joined(separator: "") ?? translation?.resultFromFunTranslator ?? errorMessage.text
+
         }
     }
     
@@ -59,18 +61,19 @@ class CustomCell: UITableViewCell {
         return lbl
     }()
     
-//    var activityIndicator = UIActivityIndicatorView()
-    
-//    func showActivityIndicator() {
-//        var activityView = UIActivityIndicatorView(style: .white)
-//        activityView.center = self.view.center
-//        self.view.addSubview(activityView)
-//        activityView.startAnimating()
-//    }
+    let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+    func showActivityIndicator() {
+        contentView.addSubview(activityIndicator)
+        activityIndicator.center = translationResultLabel.center
+//    OR    activityView.center = self.view.center
+        activityIndicator.frame = translationResultLabel.frame
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+//        ??
 //        textToTranslateLabel.translatesAutoresizingMaskIntoConstraints = false
 //        translationResultLabel.translatesAutoresizingMaskIntoConstraints = false
 //        errorMessage.translatesAutoresizingMaskIntoConstraints = false
@@ -86,14 +89,15 @@ class CustomCell: UITableViewCell {
         
         translationResultLabel.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
         translationResultLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
-        
-        errorMessage.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
-        errorMessage.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+//      ??
+//        errorMessage.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
+//        errorMessage.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
     
 //        Vertical position for each label
         textToTranslateLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
-        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: translationResultLabel.lastBaselineAnchor, multiplier: 1).isActive = true
         translationResultLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: textToTranslateLabel.lastBaselineAnchor, multiplier: 1).isActive = true
+        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: translationResultLabel.lastBaselineAnchor, multiplier: 1).isActive = true
+//        ??
 //        errorMessage.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: textToTranslateLabel.lastBaselineAnchor, multiplier: 1).isActive = true
         
     }
