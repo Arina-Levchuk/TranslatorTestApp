@@ -64,11 +64,11 @@ class CustomCell: UITableViewCell {
     let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     func showActivityIndicator(animate: Bool) {
         if animate == true {
-        contentView.addSubview(activityIndicator)
-        activityIndicator.center = translationResultLabel.center
+            contentView.addSubview(activityIndicator)
+            activityIndicator.center = translationResultLabel.center
 //    OR    activityView.center = self.view.center
-        activityIndicator.frame = translationResultLabel.frame
-        activityIndicator.startAnimating()
+            activityIndicator.frame = translationResultLabel.frame
+            activityIndicator.startAnimating()
         }  else  {
             activityIndicator.stopAnimating()
             activityIndicator.hidesWhenStopped = true
