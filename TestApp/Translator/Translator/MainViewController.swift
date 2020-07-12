@@ -16,11 +16,11 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
-    let tableView = UITableView.init(frame: .zero)
+    let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
     var arrayOfResponses = [Result]()
     
-    var textToTranslate: String?
-    var translatorURL: URL?
+//    var textToTranslate: String?
+//    var translatorURL: URL?
     var selectedTranslator: Translator? = nil
 //    var delegate: RequestProtocolDelegate?
 //  MARK: - View lifecycle
@@ -44,7 +44,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         
         self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.reuseIdentifier)
         self.tableView.dataSource = self
-//        self.tableView.delegate = self
+        self.tableView.delegate = self
 
         self.inputField.delegate = self
         
@@ -71,7 +71,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
-        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive              = true
+//        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor, constant: -2).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive = true
     }
     
     func configureHorizontalStackView() {
@@ -79,6 +80,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         horizontalStackView.axis = .horizontal
         horizontalStackView.distribution = .fillProportionally
         horizontalStackView.spacing = 10
+//      TODO: To make configurable horizontal stack height (to fit the inputField's height)
         horizontalStackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
 
         addElementsToHorizontalStack()
@@ -87,12 +89,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     func addElementsToHorizontalStack() {
         setUpInputField()
+        setUpSendButton()
         
         horizontalStackView.addArrangedSubview(inputField)
         horizontalStackView.addArrangedSubview(sendButton)
-        
-        sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
-        sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
     }
     
     func setStackViewConstraints() {
@@ -136,6 +136,14 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         inputField.leftViewMode = .always
         inputField.leftView = spacer
+
+//      TODO: To make autoresizable inputField
+        
+    }
+    
+    func setUpSendButton() {
+        sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
+        sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
     }
     
 // MARK: - Selectors
@@ -165,6 +173,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc func didTapSendButton() {
+//  TODO: To close the keybord after tap on the Send Button
+        dismissKeyboard()
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
@@ -175,8 +185,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 //                    print(self.arrayOfResponses)
                 }
             })
-            
-//            print(self.arrayOfResponses)
         }
     }
     
@@ -247,7 +255,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
         let translationResult = arrayOfResponses[indexPath.row]
         cell.translation = translationResult
         

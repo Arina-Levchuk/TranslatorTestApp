@@ -16,7 +16,7 @@ class CustomCell: UITableViewCell {
             guard let translationResult = translation else { return }
             textToTranslateLabel.text = translationResult.textToTranslate
             
-            while (translationResult.resultFromYandex == nil) && (translationResult.resultFromFunTranslator != nil) {
+            while (translationResult.resultFromYandex == nil) && (translationResult.resultFromFunTranslator == nil) {
 //                  ??
                 showActivityIndicator(animate: true)
             }
@@ -77,7 +77,8 @@ class CustomCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        ??
+        
+//            ??
 //        textToTranslateLabel.translatesAutoresizingMaskIntoConstraints = false
 //        translationResultLabel.translatesAutoresizingMaskIntoConstraints = false
 //        errorMessage.translatesAutoresizingMaskIntoConstraints = false
@@ -109,9 +110,6 @@ class CustomCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+
 }
-
-
-
-
