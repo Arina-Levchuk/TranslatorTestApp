@@ -51,6 +51,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         setUpKeyboard()
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
+        sendButton.addTarget(self, action: #selector(dismissKeyboard), for: .touchUpInside)
     }
     
 
@@ -173,7 +174,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc func didTapSendButton() {
-//  TODO: To close the keybord after tap on the Send Button
+//      TODO: To close the keybord after tap on the Send Button
         dismissKeyboard()
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
@@ -192,6 +193,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (Result?, Error?) -> Void) {
         var result = Result(textToTranslate: text, resultFromYandex: nil, resultFromFunTranslator: nil)
+
         var url = address
         
         if let queryArray = selectedTranslator?.queryDict {
@@ -259,7 +261,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
         let translationResult = arrayOfResponses[indexPath.row]
         cell.translation = translationResult
-    
+
         return cell
     }
 

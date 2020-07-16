@@ -39,6 +39,8 @@ class CustomCell: UITableViewCell {
         lbl.textColor = .black
         lbl.font = UIFont.boldSystemFont(ofSize: 16)
         lbl.textAlignment = .left
+        lbl.numberOfLines = 0
+        lbl.lineBreakMode = .byWordWrapping
         return lbl
     }()
     
@@ -48,6 +50,8 @@ class CustomCell: UITableViewCell {
         lbl.textColor = .black
         lbl.font = UIFont.systemFont(ofSize: 16)
         lbl.textAlignment = .left
+        lbl.numberOfLines = 0   // to remove any maximum limit, and use as many lines as needed, set the value of this property to 0
+        lbl.lineBreakMode = .byWordWrapping
         return lbl
     }()
     
@@ -62,6 +66,7 @@ class CustomCell: UITableViewCell {
     }()
     
     let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+    
     func showActivityIndicator(animate: Bool) {
         if animate == true {
             contentView.addSubview(activityIndicator)
