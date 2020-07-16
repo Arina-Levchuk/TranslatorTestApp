@@ -182,6 +182,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error in
                 if let result = result {
                     self.arrayOfResponses.append(result)
+                    self.tableView.reloadData()
 //                    print(self.arrayOfResponses)
                 }
             })
@@ -258,19 +259,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
         let translationResult = arrayOfResponses[indexPath.row]
         cell.translation = translationResult
-        
-//        if let yandexResult = translation.resultFromYandex {
-//            cell.textLabel?.text = yandexResult.joined(separator: "")
-//        } else if let funResult = translation.resultFromFunTranslator {
-//            cell.textLabel?.text = funResult
-//        } else {
-//            cell.textLabel?.text = "Error"
-//            cell.textLabel?.textColor = .red
-//        }
-  
-//  ???
-//  Return the appearance of your cell's views to their original state
-//        cell.prepareForReuse()
+    
         return cell
     }
 
