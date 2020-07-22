@@ -21,12 +21,12 @@ class CustomCell: UITableViewCell {
                 showActivityIndicator(animate: true)
             }
             showActivityIndicator(animate: false)
-            if let resultFromYandex = translationResult.resultFromYandex?.joined(separator: "") {
+            if let resultFromYandex = translationResult.resultFromYandex {
                 translationResultLabel.text = resultFromYandex
             } else if let resultFromFunTranslator = translationResult.resultFromFunTranslator {
                 translationResultLabel.text = resultFromFunTranslator
             } else {
-//               How to display error message label??
+//               How to display error message??
                 translationResultLabel.text = errorMessage.text
             }
 
@@ -82,21 +82,19 @@ class CustomCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-//            ??
-//        textToTranslateLabel.translatesAutoresizingMaskIntoConstraints = false
-//        translationResultLabel.translatesAutoresizingMaskIntoConstraints = false
-//        errorMessage.translatesAutoresizingMaskIntoConstraints = false
-        
+//        ??
+
         contentView.addSubview(textToTranslateLabel)
         contentView.addSubview(translationResultLabel)
+
 //        ??
 //        contentView.addSubview(errorMessage)
 
 //        Horizontal position for each label
+
         textToTranslateLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
         textToTranslateLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
-        
+
         translationResultLabel.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
         translationResultLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
 //      ??

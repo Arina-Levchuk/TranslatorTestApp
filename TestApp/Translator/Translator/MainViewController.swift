@@ -174,26 +174,34 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc func didTapSendButton() {
-//      TODO: To close the keybord after tap on the Send Button
-        dismissKeyboard()
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
-
-            sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error in
+//            var result = Result(textToTranslate: textToTranslate, resultFromYandex: nil, resultFromFunTranslator: nil)
+//            self.arrayOfResponses.append(result)
+//            self.tableView.reloadData()
+//            sendToTranslate(to: translatorURL, with: result, completionHandler: {   result, error in
+//                if let result = result {
+//                    self.arrayOfResponses.append(result)
+//                    self.tableView.reloadData()
+//                }
+//            })
+            sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error  in
                 if let result = result {
                     self.arrayOfResponses.append(result)
-                    self.tableView.reloadData()
-//                    print(self.arrayOfResponses)
+                } else {
+                    return
                 }
+                self.tableView.reloadData()
             })
         }
     }
     
-    
+//    func sendToTranslate(to address: URL, with text: Result, completionHandler: @escaping (Result?, Error?) -> Void) {
     func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (Result?, Error?) -> Void) {
-        var result = Result(textToTranslate: text, resultFromYandex: nil, resultFromFunTranslator: nil)
-
+//        var result = Result(textToTranslate: text, resultFromYandex: nil, resultFromFunTranslator: nil)
+        let result = Result(textToTranslate: text)
+        
         var url = address
         
         if let queryArray = selectedTranslator?.queryDict {
@@ -201,7 +209,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 url = url.append(key, value: value)
             }
         }
-       
+//        var result = text
         url = url.append("text", value: text)
         print(url)
         
@@ -231,7 +239,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                     let decodedData = try! decoder.decode(DecodedResponse.self, from: responseData)
                     
                     if decodedData.text != nil {
-                        result.resultFromYandex = decodedData.text
+                        result.resultFromYandex = decodedData.text?.joined(separator: "")
                     } else {
                         result.resultFromFunTranslator = decodedData.translated
                     }
@@ -259,7 +267,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
-        let translationResult = arrayOfResponses[indexPath.row]
+        let translationResult = self.arrayOfResponses[indexPath.row]
         cell.translation = translationResult
 
         return cell

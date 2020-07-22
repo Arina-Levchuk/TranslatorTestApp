@@ -8,14 +8,17 @@
 
 import Foundation
 
-struct Result {
+class Result {
     let textToTranslate: String
-    var resultFromYandex: [String]?
+    var resultFromYandex: String?
     var resultFromFunTranslator: String?
+
     
-    init(textToTranslate: String, resultFromYandex: [String]?, resultFromFunTranslator: String?) {
+//    init(textToTranslate: String, resultFromYandex: [String]?, resultFromFunTranslator: String?) {
+    init(textToTranslate: String) {
         self.textToTranslate = textToTranslate
-        self.resultFromYandex = resultFromYandex
-        self.resultFromFunTranslator = resultFromFunTranslator
+//        self.resultFromYandex = resultFromYandex
+//        self.resultFromFunTranslator = resultFromFunTranslator
     }
+    
 }
