@@ -17,7 +17,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
-    var arrayOfResponses = [Result]()
+    var arrayOfResults = [Result]()
     
 //    var textToTranslate: String?
 //    var translatorURL: URL?
@@ -177,28 +177,27 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
-            var resultResult = Result(textToTranslate: textToTranslate)
-            self.arrayOfResponses.append(resultResult)
-//            self.tableView.reloadData()
-//            sendToTranslate(to: translatorURL, with: result, completionHandler: {   result, error in
-//                if let result = result {
-//                    self.arrayOfResponses.append(result)
-//                    self.tableView.reloadData()
-//                }
-//            })
+            
+            var requestToTranslate = Result(textToTranslate: textToTranslate)
+            self.arrayOfResults.append(requestToTranslate)
+
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error  in
                 if let result = result {
-                    resultResult = result
+//     TO DO: to update last resultResult value from array with the new result
+                    self.arrayOfResults[self.arrayOfResults.count-1] = result
+                } else {
+                    requestToTranslate.error = error?.localizedDescription
+                    self.arrayOfResults[self.arrayOfResults.count-1] = requestToTranslate
                 }
                 self.tableView.reloadData()
             })
         }
     }
     
-//    func sendToTranslate(to address: URL, with text: Result, completionHandler: @escaping (Result?, Error?) -> Void) {
+
     func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (Result?, Error?) -> Void) {
-//        var result = Result(textToTranslate: text, resultFromYandex: nil, resultFromFunTranslator: nil)
-        let result = Result(textToTranslate: text)
+
+        var result = Result(textToTranslate: text)
         
         var url = address
         
@@ -207,7 +206,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 url = url.append(key, value: value)
             }
         }
-//        var result = text
+
         url = url.append("text", value: text)
         print(url)
         
@@ -216,16 +215,19 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             if error != nil || data == nil {
+                completionHandler(nil, error)
                 print("Client error!")
                 return
             }
             
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                completionHandler(nil, error)
                 print("Server error")
                 return
             }
             
             guard let mime = response.mimeType, mime == "application/json" else {
+                completionHandler(nil, error)
                 print("Wrong MIME type!")
                 return
             }
@@ -260,38 +262,30 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.arrayOfResponses.count
+        return self.arrayOfResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
-        let translationResult = self.arrayOfResponses[indexPath.row]
+        let translationResult = self.arrayOfResults[indexPath.row]
         
         cell.cellTitle.text = translationResult.textToTranslate
         cell.showSpinner(animate: true)
-//        while translationResult.resultFromYandex == nil && translationResult.resultFromFunTranslator == nil {
-//            cell.showActivityIndicator(animate: true)
-//        }
-//        cell.showActivityIndicator(animate: false)
+
         if translationResult.resultFromYandex != nil {
+            cell.showSpinner(animate: false)
             cell.cellSubtitle.text = translationResult.resultFromYandex
         } else if translationResult.resultFromFunTranslator != nil {
+            cell.showSpinner(animate: false)
             cell.cellSubtitle.text = translationResult.resultFromFunTranslator
+        } else if translationResult.error != nil {
+            cell.errorMessage.isHidden = false
         }
-//        self.tableView.reloadData()
+        
         return cell
     }
 
-//    TODO: Dynamic row height
-//       func tableView(_ tableView: UITableView,heightForRowAt indexPath: IndexPath) -> CGFloat {
-//// Make the first row larger to accommodate a custom cell.
-//        if indexPath.row == 0 {
-//            return 80
-//        }
-//
-//// Use the default size for all other rows.
-//        return UITableView.automaticDimension
-//    }
+
     
 }
     

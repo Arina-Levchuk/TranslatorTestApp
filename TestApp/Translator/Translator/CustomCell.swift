@@ -53,9 +53,8 @@ class CustomCell: UITableViewCell {
         return lbl
     }()
     
-    private let errorMessage: UILabel = {
+    let errorMessage: UILabel = {
         let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.text = "Error. Please retry"
         lbl.textColor = .red
         lbl.font = UIFont.systemFont(ofSize: 16)
@@ -68,13 +67,11 @@ class CustomCell: UITableViewCell {
     func showSpinner(animate: Bool) {
         if animate == true {
             spinner.isHidden = false
-            spinner.center = cellSubtitle.center
-//    OR    activityView.center = self.view.center
             spinner.frame = cellSubtitle.frame
             spinner.startAnimating()
         }  else  {
             spinner.stopAnimating()
-            spinner.isHidden = true
+            spinner.hidesWhenStopped = true
         }
     }
     
@@ -83,17 +80,16 @@ class CustomCell: UITableViewCell {
 
         contentView.addSubview(cellTitle)
         contentView.addSubview(cellSubtitle)
+        contentView.addSubview(errorMessage)
+        errorMessage.isHidden = true
         contentView.addSubview(spinner)
         spinner.isHidden = true
         
         cellTitle.translatesAutoresizingMaskIntoConstraints = false
         cellSubtitle.translatesAutoresizingMaskIntoConstraints = false
+        errorMessage.translatesAutoresizingMaskIntoConstraints = false
         spinner.translatesAutoresizingMaskIntoConstraints = false
         
-
-//        ??
-//        contentView.addSubview(errorMessage)
-
 //        Horizontal position for each label
         cellTitle.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
         cellTitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
@@ -105,17 +101,19 @@ class CustomCell: UITableViewCell {
         spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
 
 //      ??
-//        errorMessage.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
-//        errorMessage.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+        errorMessage.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
+        errorMessage.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
     
 //        Vertical position for each label
         cellTitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
-        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
+//        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
+//        spinner.bottomAnchor.constraint(equalTo: spinner.topAnchor, constant: -20).isActive = true
+//  OR
 //        spinner.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor).isActive = true
 //        ??
-//        errorMessage.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: textToTranslateLabel.lastBaselineAnchor, multiplier: 1).isActive = true
+        errorMessage.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         
     }
     

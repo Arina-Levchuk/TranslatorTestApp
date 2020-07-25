@@ -8,10 +8,11 @@
 
 import Foundation
 
-class Result {
+struct Result {
     let textToTranslate: String
     var resultFromYandex: String?
     var resultFromFunTranslator: String?
+    var error: String?
 
     
 //    init(textToTranslate: String, resultFromYandex: [String]?, resultFromFunTranslator: String?) {
