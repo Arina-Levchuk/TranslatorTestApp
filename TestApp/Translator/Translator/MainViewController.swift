@@ -177,8 +177,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
-//            var result = Result(textToTranslate: textToTranslate, resultFromYandex: nil, resultFromFunTranslator: nil)
-//            self.arrayOfResponses.append(result)
+            var resultResult = Result(textToTranslate: textToTranslate)
+            self.arrayOfResponses.append(resultResult)
 //            self.tableView.reloadData()
 //            sendToTranslate(to: translatorURL, with: result, completionHandler: {   result, error in
 //                if let result = result {
@@ -188,9 +188,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 //            })
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error  in
                 if let result = result {
-                    self.arrayOfResponses.append(result)
-                } else {
-                    return
+                    resultResult = result
                 }
                 self.tableView.reloadData()
             })
@@ -268,8 +266,19 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
         let translationResult = self.arrayOfResponses[indexPath.row]
-        cell.translation = translationResult
-
+        
+        cell.cellTitle.text = translationResult.textToTranslate
+        cell.showSpinner(animate: true)
+//        while translationResult.resultFromYandex == nil && translationResult.resultFromFunTranslator == nil {
+//            cell.showActivityIndicator(animate: true)
+//        }
+//        cell.showActivityIndicator(animate: false)
+        if translationResult.resultFromYandex != nil {
+            cell.cellSubtitle.text = translationResult.resultFromYandex
+        } else if translationResult.resultFromFunTranslator != nil {
+            cell.cellSubtitle.text = translationResult.resultFromFunTranslator
+        }
+//        self.tableView.reloadData()
         return cell
     }
 

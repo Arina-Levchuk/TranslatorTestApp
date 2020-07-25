@@ -11,31 +11,30 @@ import UIKit
 class CustomCell: UITableViewCell {
     static let reuseIdentifier = "CustomCell"
     
-    var translation: Result? {
-        didSet {
-            guard let translationResult = translation else { return }
-            textToTranslateLabel.text = translationResult.textToTranslate
-            
-            while (translationResult.resultFromYandex == nil) && (translationResult.resultFromFunTranslator == nil) {
-//                  ??
-                showActivityIndicator(animate: true)
-            }
-            showActivityIndicator(animate: false)
-            if let resultFromYandex = translationResult.resultFromYandex {
-                translationResultLabel.text = resultFromYandex
-            } else if let resultFromFunTranslator = translationResult.resultFromFunTranslator {
-                translationResultLabel.text = resultFromFunTranslator
-            } else {
-//               How to display error message??
-                translationResultLabel.text = errorMessage.text
-            }
-
-        }
-    }
+//    var translation: Result? {
+//        didSet {
+//            guard let translationResult = translation else { return }
+//            textToTranslateLabel.text = translationResult.textToTranslate
+//            
+//            while (translationResult.resultFromYandex == nil) && (translationResult.resultFromFunTranslator == nil) {
+////                  ??
+//                showActivityIndicator(animate: true)
+//            }
+//            showActivityIndicator(animate: false)
+//            if let resultFromYandex = translationResult.resultFromYandex {
+//                translationResultLabel.text = resultFromYandex
+//            } else if let resultFromFunTranslator = translationResult.resultFromFunTranslator {
+//                translationResultLabel.text = resultFromFunTranslator
+//            } else {
+////               How to display error message??
+//                translationResultLabel.text = errorMessage.text
+//            }
+//
+//        }
+//    }
     
-    private let textToTranslateLabel: UILabel = {
+    var cellTitle: UILabel = {
         let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .black
         lbl.font = UIFont.boldSystemFont(ofSize: 16)
         lbl.textAlignment = .left
@@ -44,9 +43,8 @@ class CustomCell: UITableViewCell {
         return lbl
     }()
     
-    private let translationResultLabel: UILabel = {
+    var cellSubtitle: UILabel = {
         let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .black
         lbl.font = UIFont.systemFont(ofSize: 16)
         lbl.textAlignment = .left
@@ -65,46 +63,57 @@ class CustomCell: UITableViewCell {
         return lbl
     }()
     
-    let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+    let spinner: UIActivityIndicatorView! = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
-    func showActivityIndicator(animate: Bool) {
+    func showSpinner(animate: Bool) {
         if animate == true {
-            contentView.addSubview(activityIndicator)
-            activityIndicator.center = translationResultLabel.center
+            spinner.isHidden = false
+            spinner.center = cellSubtitle.center
 //    OR    activityView.center = self.view.center
-            activityIndicator.frame = translationResultLabel.frame
-            activityIndicator.startAnimating()
+            spinner.frame = cellSubtitle.frame
+            spinner.startAnimating()
         }  else  {
-            activityIndicator.stopAnimating()
-            activityIndicator.hidesWhenStopped = true
+            spinner.stopAnimating()
+            spinner.isHidden = true
         }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        ??
 
-        contentView.addSubview(textToTranslateLabel)
-        contentView.addSubview(translationResultLabel)
+        contentView.addSubview(cellTitle)
+        contentView.addSubview(cellSubtitle)
+        contentView.addSubview(spinner)
+        spinner.isHidden = true
+        
+        cellTitle.translatesAutoresizingMaskIntoConstraints = false
+        cellSubtitle.translatesAutoresizingMaskIntoConstraints = false
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        
 
 //        ??
 //        contentView.addSubview(errorMessage)
 
 //        Horizontal position for each label
+        cellTitle.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
+        cellTitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
 
-        textToTranslateLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
-        textToTranslateLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+        cellSubtitle.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
+        cellSubtitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+        
+        spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
 
-        translationResultLabel.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
-        translationResultLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
 //      ??
 //        errorMessage.leadingAnchor.constraint(equalTo: textToTranslateLabel.leadingAnchor).isActive = true
 //        errorMessage.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
     
 //        Vertical position for each label
-        textToTranslateLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
-        translationResultLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: textToTranslateLabel.lastBaselineAnchor, multiplier: 1).isActive = true
-        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: translationResultLabel.lastBaselineAnchor, multiplier: 1).isActive = true
+        cellTitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
+        cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
+        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
+        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
+//        spinner.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor).isActive = true
 //        ??
 //        errorMessage.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: textToTranslateLabel.lastBaselineAnchor, multiplier: 1).isActive = true
         
