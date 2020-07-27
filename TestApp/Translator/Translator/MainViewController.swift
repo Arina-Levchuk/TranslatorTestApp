@@ -222,7 +222,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
                 completionHandler(nil, error)
-                print("Server error")
+                print("Server error!")
                 return
             }
             
@@ -239,16 +239,16 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                     let decodedData = try! decoder.decode(DecodedResponse.self, from: responseData)
                     
                     if decodedData.text != nil {
-                        result.resultFromYandex = decodedData.text?.joined(separator: "")
+                        result.translation = decodedData.text?.joined(separator: "")
                     } else {
-                        result.resultFromFunTranslator = decodedData.translated
+                        result.translation = decodedData.translated
                     }
-                    print(result)
+//                    print(result)
                     completionHandler(result, nil)
 
-                } catch let parseError {
-                    completionHandler(nil, parseError)
-                    print("JSON parsing error", parseError)
+                } catch {
+                    completionHandler(nil, error)
+                    print("JSON parsing error")
                 }
             }
         }
@@ -271,15 +271,16 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.cellTitle.text = translationResult.textToTranslate
         cell.showSpinner(animate: true)
-
-        if translationResult.resultFromYandex != nil {
+        
+        if translationResult.translation != nil {
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = translationResult.resultFromYandex
-        } else if translationResult.resultFromFunTranslator != nil {
-            cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = translationResult.resultFromFunTranslator
+//            cell.errorMessage.isHidden = true
+            cell.cellSubtitle.isHidden = false
+            cell.cellSubtitle.text = translationResult.translation
         } else if translationResult.error != nil {
+//      TO DO: error message does NOT work
             cell.errorMessage.isHidden = false
+//            cell.errorMessage.isHidden = false
         }
         
         return cell

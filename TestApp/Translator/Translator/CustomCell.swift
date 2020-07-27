@@ -33,7 +33,7 @@ class CustomCell: UITableViewCell {
 //        }
 //    }
     
-    var cellTitle: UILabel = {
+    let cellTitle: UILabel = {
         let lbl = UILabel()
         lbl.textColor = .black
         lbl.font = UIFont.boldSystemFont(ofSize: 16)
@@ -43,7 +43,7 @@ class CustomCell: UITableViewCell {
         return lbl
     }()
     
-    var cellSubtitle: UILabel = {
+    var cellSubtitle: UILabel! = {
         let lbl = UILabel()
         lbl.textColor = .black
         lbl.font = UIFont.systemFont(ofSize: 16)
@@ -67,7 +67,6 @@ class CustomCell: UITableViewCell {
     func showSpinner(animate: Bool) {
         if animate == true {
             spinner.isHidden = false
-            spinner.frame = cellSubtitle.frame
             spinner.startAnimating()
         }  else  {
             spinner.stopAnimating()
@@ -78,8 +77,10 @@ class CustomCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        
         contentView.addSubview(cellTitle)
         contentView.addSubview(cellSubtitle)
+        cellSubtitle.isHidden = true
         contentView.addSubview(errorMessage)
         errorMessage.isHidden = true
         contentView.addSubview(spinner)
