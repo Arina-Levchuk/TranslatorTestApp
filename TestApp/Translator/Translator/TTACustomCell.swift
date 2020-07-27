@@ -1,15 +1,15 @@
 //
-//  CustomCell.swift
+//  TTACustomCell.swift
 //  Translator
 //
-//  Created by admin on 7/7/20.
+//  Created by admin on 7/27/20.
 //  Copyright © 2020 admin. All rights reserved.
 //
 
 import UIKit
 
-class CustomCell: UITableViewCell {
-    static let reuseIdentifier = "CustomCell"
+class TTACustomCell: UITableViewCell {
+    static let reuseIdentifier = "TTACustomCell"
     
     let cellTitle: UILabel = {
         let lbl = UILabel()
@@ -99,6 +99,5 @@ class CustomCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 
 }

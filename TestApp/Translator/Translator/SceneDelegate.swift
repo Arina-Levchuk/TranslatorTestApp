@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        let navigationBar = UINavigationController(rootViewController: MainViewController())
+        let navigationBar = UINavigationController(rootViewController: TTATranslationResultTableVC())
         window?.rootViewController = navigationBar
         window?.makeKeyAndVisible()
 

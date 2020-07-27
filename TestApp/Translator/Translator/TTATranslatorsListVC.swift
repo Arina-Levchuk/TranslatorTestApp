@@ -1,5 +1,5 @@
 //
-//  TranslatorsListVC.swift
+//  TTATranslatorsListVC.swift
 //  Translator
 //
 //  Created by admin on 3/28/20.
@@ -13,16 +13,16 @@ protocol RequestProtocolDelegate: class {
 }
 
 protocol TranslatorsListVCDelegate: class {
-    func newTranslatorSelected(translator: Translator)
+    func newTranslatorSelected(translator: TTATranslator)
 }
 
-class TranslatorsListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TTATranslatorsListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var selectedTranslator: Translator!
-    var allTranslators: [Translator] = [Translator]()
+    var selectedTranslator: TTATranslator!
+    var allTranslators: [TTATranslator] = [TTATranslator]()
     weak var delegate: TranslatorsListVCDelegate? = nil
 
-    init(selectedTranslator: Translator, allTranslators: [Translator], delegate: TranslatorsListVCDelegate?) {
+    init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], delegate: TranslatorsListVCDelegate?) {
         
         self.selectedTranslator = selectedTranslator
         self.delegate = delegate

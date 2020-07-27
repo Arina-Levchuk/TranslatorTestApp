@@ -1,5 +1,5 @@
 //
-//  Result.swift
+//  TTATranslationResult.swift
 //  Translator
 //
 //  Created by admin on 7/7/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Result {
+struct TTATranslationResult {
     let textToTranslate: String
     var translation: String?
 //    var resultFromYandex: String?

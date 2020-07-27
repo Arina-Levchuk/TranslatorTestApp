@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DecodedResponse: Decodable {
+class TTADecodedResponse: Decodable {
 // Yandex JSON
     var text: [String]?
 // Fun Translator JSON

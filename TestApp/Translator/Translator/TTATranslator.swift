@@ -1,5 +1,5 @@
 //
-//  TranslationService.swift
+//  TTATranslator.swift
 //  Translator
 //
 //  Created by admin on 3/14/20.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct Translator {
+struct TTATranslator {
     let name: String
     var url: URL? = nil
     var queryDict: [String: String]?

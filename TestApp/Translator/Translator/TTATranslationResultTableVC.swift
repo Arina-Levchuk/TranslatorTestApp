@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  TTATranslationResultTableVC.swift
 //  Translator
 //
 //  Created by admin on 2/23/20.
@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class MainViewController: UIViewController, UITextFieldDelegate {
+class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
 //  MARK: - Properties
 
@@ -17,19 +17,19 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
-    var arrayOfResults = [Result]()
+    var arrayOfResults = [TTATranslationResult]()
     
 //    var textToTranslate: String?
 //    var translatorURL: URL?
-    var selectedTranslator: Translator? = nil
+    var selectedTranslator: TTATranslator? = nil
 //    var delegate: RequestProtocolDelegate?
 //  MARK: - View lifecycle
     
-    var translators: [Translator] = [
-                                            Translator(name: "Yoda translator", url: URL(string: "https://api.funtranslations.com/translate/yoda.json")),
-                                            Translator(name: "Klingon translator", url: URL(string: "https://api.funtranslations.com/translate/klingon.json")),
-                                            Translator(name: "Shakespeare translator", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json")),
-                                            Translator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e", "lang": "en-ru"])
+    var translators: [TTATranslator] = [
+                                            TTATranslator(name: "Yoda translator", url: URL(string: "https://api.funtranslations.com/translate/yoda.json")),
+                                            TTATranslator(name: "Klingon translator", url: URL(string: "https://api.funtranslations.com/translate/klingon.json")),
+                                            TTATranslator(name: "Shakespeare translator", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json")),
+                                            TTATranslator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e", "lang": "en-ru"])
     ]
     
     override func viewDidLoad() {
@@ -42,7 +42,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         configureHorizontalStackView()
         setUpTableView()
         
-        self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.reuseIdentifier)
+        self.tableView.register(TTACustomCell.self, forCellReuseIdentifier: TTACustomCell.reuseIdentifier)
         self.tableView.dataSource = self
         self.tableView.delegate = self
 
@@ -105,10 +105,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     func setUpKeyboard() {
 //      The View Controller receives notification when the keyboard is going to be shown
-        NotificationCenter.default.addObserver(self, selector: #selector(MainViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 
 //      The View Controller receives notification when the keyboard is going to be hidden
-        NotificationCenter.default.addObserver(self, selector: #selector(MainViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapRecognizer)
@@ -169,7 +169,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     @objc func moveToList() {
         if let translator = self.selectedTranslator {
-            self.navigationController?.pushViewController(TranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
+            self.navigationController?.pushViewController(TTATranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
         }
     }
 
@@ -178,7 +178,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
             
-            var requestToTranslate = Result(textToTranslate: textToTranslate)
+            var requestToTranslate = TTATranslationResult(textToTranslate: textToTranslate)
             self.arrayOfResults.append(requestToTranslate)
 
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error  in
@@ -195,9 +195,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
     
 
-    func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (Result?, Error?) -> Void) {
+    func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (TTATranslationResult?, Error?) -> Void) {
 
-        var result = Result(textToTranslate: text)
+        var result = TTATranslationResult(textToTranslate: text)
         
         var url = address
         
@@ -236,7 +236,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 guard let responseData = data else {  return  }
                 let decoder = JSONDecoder()
                 do {
-                    let decodedData = try! decoder.decode(DecodedResponse.self, from: responseData)
+                    let decodedData = try! decoder.decode(TTADecodedResponse.self, from: responseData)
                     
                     if decodedData.text != nil {
                         result.translation = decodedData.text?.joined(separator: "")
@@ -260,13 +260,13 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 
 // MARK: - Extension
 
-extension MainViewController: UITableViewDataSource, UITableViewDelegate {
+extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.arrayOfResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as! CustomCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
         let translationResult = self.arrayOfResults[indexPath.row]
         
         cell.cellTitle.text = translationResult.textToTranslate
@@ -291,8 +291,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 }
     
     
-extension MainViewController: TranslatorsListVCDelegate {
-    func newTranslatorSelected(translator: Translator) {
+extension TTATranslationResultTableVC: TranslatorsListVCDelegate {
+    func newTranslatorSelected(translator: TTATranslator) {
         self.selectedTranslator = translator
     }
 }
