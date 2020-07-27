@@ -11,28 +11,6 @@ import UIKit
 class CustomCell: UITableViewCell {
     static let reuseIdentifier = "CustomCell"
     
-//    var translation: Result? {
-//        didSet {
-//            guard let translationResult = translation else { return }
-//            textToTranslateLabel.text = translationResult.textToTranslate
-//            
-//            while (translationResult.resultFromYandex == nil) && (translationResult.resultFromFunTranslator == nil) {
-////                  ??
-//                showActivityIndicator(animate: true)
-//            }
-//            showActivityIndicator(animate: false)
-//            if let resultFromYandex = translationResult.resultFromYandex {
-//                translationResultLabel.text = resultFromYandex
-//            } else if let resultFromFunTranslator = translationResult.resultFromFunTranslator {
-//                translationResultLabel.text = resultFromFunTranslator
-//            } else {
-////               How to display error message??
-//                translationResultLabel.text = errorMessage.text
-//            }
-//
-//        }
-//    }
-    
     let cellTitle: UILabel = {
         let lbl = UILabel()
         lbl.textColor = .black
@@ -43,7 +21,7 @@ class CustomCell: UITableViewCell {
         return lbl
     }()
     
-    var cellSubtitle: UILabel! = {
+    var cellSubtitle: UILabel = {
         let lbl = UILabel()
         lbl.textColor = .black
         lbl.font = UIFont.systemFont(ofSize: 16)
