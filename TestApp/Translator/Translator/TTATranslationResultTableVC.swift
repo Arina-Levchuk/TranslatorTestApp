@@ -267,20 +267,19 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
+
         let translationResult = self.arrayOfResults[indexPath.row]
         
         cell.cellTitle.text = translationResult.textToTranslate
-        cell.showSpinner(animate: true)
-        
-        if translationResult.translation != nil {
-            cell.showSpinner(animate: false)
-//            cell.errorMessage.isHidden = true
-            cell.cellSubtitle.isHidden = false
-            cell.cellSubtitle.text = translationResult.translation
-        } else if translationResult.error != nil {
-//      TO DO: error message does NOT work
-            cell.errorMessage.isHidden = false
-//            cell.errorMessage.isHidden = false
+//        cell.showSpinner(animate: true)
+
+        if let translation = translationResult.translation {
+//            cell.showSpinner(animate: false)
+            cell.cellSubtitle.text = translation
+        } else if let _ = translationResult.error {
+//            cell.showSpinner(animate: false)
+//      TO DO: error message (does NOT work)
+            cell.cellSubtitle.text = cell.errorMessage.text
         }
         
         return cell
