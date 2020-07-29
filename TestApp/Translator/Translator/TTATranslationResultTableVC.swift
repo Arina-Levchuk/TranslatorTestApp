@@ -271,10 +271,10 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         let translationResult = self.arrayOfResults[indexPath.row]
         
         cell.cellTitle.text = translationResult.textToTranslate
-//        cell.showSpinner(animate: true)
+        cell.showSpinner(animate: true)
 
         if let translation = translationResult.translation {
-//            cell.showSpinner(animate: false)
+            cell.showSpinner(animate: false)
             cell.cellSubtitle.text = translation
         } else if let _ = translationResult.error {
 //            cell.showSpinner(animate: false)

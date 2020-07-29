@@ -46,6 +46,7 @@ class TTACustomCell: UITableViewCell {
         if animate == true {
             spinner.isHidden = false
             spinner.startAnimating()
+            spinner.sizeToFit()
         }  else  {
             spinner.stopAnimating()
             spinner.hidesWhenStopped = true
@@ -58,12 +59,12 @@ class TTACustomCell: UITableViewCell {
         
         contentView.addSubview(cellTitle)
         contentView.addSubview(cellSubtitle)
-//        contentView.addSubview(spinner)
-//        spinner.isHidden = true
+        contentView.addSubview(spinner)
+        spinner.isHidden = true
         
         cellTitle.translatesAutoresizingMaskIntoConstraints = false
         cellSubtitle.translatesAutoresizingMaskIntoConstraints = false
-//        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.translatesAutoresizingMaskIntoConstraints = false
         
 //        Horizontal position for each label
         cellTitle.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
@@ -72,14 +73,14 @@ class TTACustomCell: UITableViewCell {
         cellSubtitle.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
         cellSubtitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
         
-//        spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-//        spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         
 //        Vertical position for each label
         cellTitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
-//        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
+        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
 
 //      TO DO: Spinner bottom anchor ?? 
 //        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: spinner.bottomAnchor, multiplier: 1).isActive = true
