@@ -178,15 +178,19 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
             
-            var requestToTranslate = TTATranslationResult(textToTranslate: textToTranslate)
+            let requestToTranslate = TTATranslationResult(textToTranslate: textToTranslate)
             self.arrayOfResults.append(requestToTranslate)
 
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error  in
                 if let result = result {
 //     TO DO: to update last resultResult value from array with the new result
+
+                    result.responseStatus = .success
                     self.arrayOfResults[self.arrayOfResults.count-1] = result
+
                 } else {
-                    requestToTranslate.error = error?.localizedDescription
+
+                    requestToTranslate.responseStatus = .failure
                     self.arrayOfResults[self.arrayOfResults.count-1] = requestToTranslate
                 }
                 self.tableView.reloadData()
@@ -197,7 +201,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
     func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (TTATranslationResult?, Error?) -> Void) {
 
-        var result = TTATranslationResult(textToTranslate: text)
+        let result = TTATranslationResult(textToTranslate: text)
         
         var url = address
         
@@ -271,15 +275,16 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         let translationResult = self.arrayOfResults[indexPath.row]
         
         cell.cellTitle.text = translationResult.textToTranslate
-        cell.showSpinner(animate: true)
-
-        if let translation = translationResult.translation {
+        
+        switch translationResult.responseStatus {
+        case .none:
+            cell.showSpinner(animate: true)
+        case .failure:
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = translation
-        } else if let _ = translationResult.error {
-//            cell.showSpinner(animate: false)
-//      TO DO: error message (does NOT work)
             cell.cellSubtitle.text = cell.errorMessage.text
+        case .success:
+            cell.showSpinner(animate: false)
+            cell.cellSubtitle.text = translationResult.translation
         }
         
         return cell

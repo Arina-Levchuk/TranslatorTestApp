@@ -8,16 +8,34 @@
 
 import Foundation
 
-struct TTATranslationResult {
+class TTATranslationResult {
     let textToTranslate: String
     var translation: String?
 //    var resultFromYandex: String?
 //    var resultFromFunTranslator: String?
-    var error: String?
-
-
+//    var error: String?
+    var responseStatus: ResponseResult?
+    
+    
+//    var arrayOfResults: [TTATranslationResult] = []
+    
+//    var responseResult: ((_ result: ResponseResult) -> Void)?
+    
+    enum ResponseResult {
+        case success, failure
+    }
+    
     init(textToTranslate: String) {
         self.textToTranslate = textToTranslate
+        
+//        responseResult = { response in
+//            self.responseStatus = response
+//        }
+        
+    }
+    
+    deinit {
+        print("Result for \(textToTranslate) was deallocated")
     }
     
 }

@@ -46,7 +46,7 @@ class TTACustomCell: UITableViewCell {
         if animate == true {
             spinner.isHidden = false
             spinner.startAnimating()
-            spinner.sizeToFit()
+//            spinner.sizeToFit()
         }  else  {
             spinner.stopAnimating()
             spinner.hidesWhenStopped = true
