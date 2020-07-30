@@ -184,13 +184,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error  in
                 if let result = result {
 //     TO DO: to update last resultResult value from array with the new result
-
-                    result.responseStatus = .success
+                    result.addResponseStatus?(.success)
                     self.arrayOfResults[self.arrayOfResults.count-1] = result
-
                 } else {
-
-                    requestToTranslate.responseStatus = .failure
+                    requestToTranslate.addResponseStatus?(.failure)
                     self.arrayOfResults[self.arrayOfResults.count-1] = requestToTranslate
                 }
                 self.tableView.reloadData()

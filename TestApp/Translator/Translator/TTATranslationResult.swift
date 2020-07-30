@@ -19,7 +19,7 @@ class TTATranslationResult {
     
 //    var arrayOfResults: [TTATranslationResult] = []
     
-//    var responseResult: ((_ result: ResponseResult) -> Void)?
+    var addResponseStatus: ((_ result: ResponseResult) -> Void)?
     
     enum ResponseResult {
         case success, failure
@@ -28,14 +28,14 @@ class TTATranslationResult {
     init(textToTranslate: String) {
         self.textToTranslate = textToTranslate
         
-//        responseResult = { response in
-//            self.responseStatus = response
-//        }
+        addResponseStatus = { response in
+            self.responseStatus = response
+        }
         
     }
-    
-    deinit {
-        print("Result for \(textToTranslate) was deallocated")
-    }
-    
+//    
+//    deinit {
+//        print("Result for \(textToTranslate) was deallocated")
+//    }
+//    
 }
