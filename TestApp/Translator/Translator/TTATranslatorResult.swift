@@ -1,5 +1,5 @@
 //
-//  TTATranslationResult.swift
+//  TTATranslatorResult.swift
 //  Translator
 //
 //  Created by admin on 7/7/20.
@@ -17,7 +17,7 @@ class TTATranslatorResult {
     var responseStatus: ResponseResult?
     
     
-//    var arrayOfResults: [TTATranslationResult] = []
+//    var arrayOfResults: [TTATranslatorResult] = []
     
     var setResponseStatus: ((_ result: ResponseResult) -> Void)?
     
