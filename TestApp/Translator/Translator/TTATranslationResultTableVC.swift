@@ -259,7 +259,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         
 
 
-// MARK: - Extension
+// MARK: - Extensions
 
 extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -268,28 +268,26 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
-
         let translationResult = self.arrayOfResults[indexPath.row]
-        
         cell.cellTitle.text = translationResult.textToTranslate
         
         switch translationResult.responseStatus {
         case .none:
             cell.showSpinner(animate: true)
-        case .failure:
-            cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = cell.errorMessage.text
         case .success:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = translationResult.translation
+        case .failure:
+            cell.showSpinner(animate: false)
+            cell.cellSubtitle.text = cell.errorMessage.text
         }
         
         return cell
     }
-
-
     
 }
+
+
     
     
 extension TTATranslationResultTableVC: TranslatorsListVCDelegate {

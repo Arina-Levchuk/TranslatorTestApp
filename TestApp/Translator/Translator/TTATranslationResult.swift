@@ -25,8 +25,9 @@ class TTATranslationResult {
         case success, failure
     }
     
-    init(textToTranslate: String) {
+    init(textToTranslate: String, translation: String? = nil) {
         self.textToTranslate = textToTranslate
+        self.translation = translation
         
         addResponseStatus = { response in
             self.responseStatus = response

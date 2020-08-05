@@ -13,6 +13,7 @@ class TTACustomCell: UITableViewCell {
     
     let cellTitle: UILabel = {
         let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .black
         lbl.font = UIFont.boldSystemFont(ofSize: 16)
         lbl.textAlignment = .left
@@ -21,8 +22,9 @@ class TTACustomCell: UITableViewCell {
         return lbl
     }()
     
-    var cellSubtitle: UILabel = {
+    let cellSubtitle: UILabel = {
         let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .black
         lbl.font = UIFont.systemFont(ofSize: 16)
         lbl.textAlignment = .left
@@ -33,6 +35,7 @@ class TTACustomCell: UITableViewCell {
     
     let errorMessage: UILabel = {
         let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.text = "Error. Please retry"
         lbl.textColor = .red
         lbl.font = UIFont.systemFont(ofSize: 16)
@@ -40,7 +43,11 @@ class TTACustomCell: UITableViewCell {
         return lbl
     }()
     
-    let spinner: UIActivityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+    let spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        return spinner
+    }()
     
     func showSpinner(animate: Bool) {
         if animate == true {
@@ -53,20 +60,8 @@ class TTACustomCell: UITableViewCell {
         }
     }
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        
-        contentView.addSubview(cellTitle)
-        contentView.addSubview(cellSubtitle)
-        contentView.addSubview(spinner)
-        spinner.isHidden = true
-        
-        cellTitle.translatesAutoresizingMaskIntoConstraints = false
-        cellSubtitle.translatesAutoresizingMaskIntoConstraints = false
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        
-//        Horizontal position for each label
+    func setUpHorizontalView() {
+//      Horizontal position for each label
         cellTitle.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
         cellTitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
 
@@ -75,19 +70,35 @@ class TTACustomCell: UITableViewCell {
         
         spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        
+    }
+    
+    func setUpVerticalView() {
 //        Vertical position for each label
         cellTitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
         spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
 
-//      TO DO: Spinner bottom anchor ?? 
+//      TO DO: Spinner bottom anchor ??
 //        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: spinner.bottomAnchor, multiplier: 1).isActive = true
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(cellTitle)
+        contentView.addSubview(cellSubtitle)
+        contentView.addSubview(spinner)
+        spinner.isHidden = true
+        
+        setUpHorizontalView()
+        setUpVerticalView()
+        
+            
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }
