@@ -85,10 +85,11 @@ class TTACustomCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        
         contentView.addSubview(cellTitle)
         contentView.addSubview(cellSubtitle)
         contentView.addSubview(spinner)
+        
         spinner.isHidden = true
         
         setUpHorizontalView()

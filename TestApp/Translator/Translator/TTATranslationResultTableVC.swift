@@ -43,6 +43,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         setUpTableView()
         
         self.tableView.register(TTACustomCell.self, forCellReuseIdentifier: TTACustomCell.reuseIdentifier)
+
         self.tableView.dataSource = self
         self.tableView.delegate = self
 
@@ -178,7 +179,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             guard let translatorURL = translator.url else { return }
             guard let textToTranslate = self.inputField.text else { return }
             
-            let requestToTranslate = TTATranslationResult(textToTranslate: textToTranslate)
+            var requestToTranslate = TTATranslationResult(textToTranslate: textToTranslate)
             self.arrayOfResults.append(requestToTranslate)
 
             sendToTranslate(to: translatorURL, with: textToTranslate, completionHandler: { result, error  in
@@ -198,7 +199,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
     func sendToTranslate(to address: URL, with text: String, completionHandler: @escaping (TTATranslationResult?, Error?) -> Void) {
 
-        let result = TTATranslationResult(textToTranslate: text)
+        var result = TTATranslationResult(textToTranslate: text)
         
         var url = address
         
@@ -269,6 +270,7 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
         let translationResult = self.arrayOfResults[indexPath.row]
+        
         cell.cellTitle.text = translationResult.textToTranslate
         
         switch translationResult.responseStatus {
