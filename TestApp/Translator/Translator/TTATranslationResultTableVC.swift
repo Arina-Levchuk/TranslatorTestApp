@@ -17,7 +17,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
-    var arrayOfResults = [TTATranslatorResult]()
+    var arrayOfResults = [TTATranslatorResult?]()
     
 //    var textToTranslate: String?
 //    var translatorURL: URL?
@@ -53,6 +53,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
         sendButton.addTarget(self, action: #selector(dismissKeyboard), for: .touchUpInside)
+
+        self.tableView.estimatedRowHeight = 80
+        self.tableView.rowHeight = UITableView.automaticDimension
+
     }
     
 
@@ -182,7 +186,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             let requestToTranslate = TTATranslatorResult(textToTranslate: textToTranslate)
             self.arrayOfResults.append(requestToTranslate)
             
-            getTranslation(from: translatorURL, with: requestToTranslate, completionHandler: { result, error in
+            getTranslation(to: translatorURL, with: requestToTranslate, completionHandler: { result, error in
                 if let result = result {
                     result.setResponseStatus?(.success)
                 } else {
@@ -204,7 +208,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func getTranslation(from address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
+    func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
             let result = request
             if let queryArray = selectedTranslator?.queryDict {
@@ -334,28 +338,32 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
-        let translationResult = self.arrayOfResults[indexPath.row]
+        let translation = self.arrayOfResults[indexPath.row]
         
-        cell.cellTitle.text = translationResult.textToTranslate
+        cell.cellTitle.text = translation?.textToTranslate
         
-        switch translationResult.responseStatus {
-        case .none:
-            cell.showSpinner(animate: true)
+        cell.showSpinner(animate: true)
+//        if translation?.translation != nil {
+//            cell.cellSubtitle.text = translation?.translation
+//        }
+        
+        switch translation?.responseStatus {
         case .success:
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = translationResult.translation
+            cell.cellSubtitle.text = translation?.translation
         case .failure:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = cell.errorMessage.text
+        default:
+            cell.showSpinner(animate: true)
         }
-        
+
+
         return cell
     }
+
     
 }
-
-
-    
     
 extension TTATranslationResultTableVC: TranslatorsListVCDelegate {
     func newTranslatorSelected(translator: TTATranslator) {

@@ -16,7 +16,6 @@ class TTATranslatorResult {
 //    var error: String?
     var responseStatus: ResponseResult?
     
-    
 //    var arrayOfResults: [TTATranslatorResult] = []
     
     var setResponseStatus: ((_ result: ResponseResult) -> Void)?
