@@ -192,26 +192,22 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
                 } else {
                     requestToTranslate.setResponseStatus?(.failure)
                 }
-                self.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.inputField.text = nil
+                }
             })
-            self.inputField.text = nil
-
-//            sendToTranslate(from: translatorURL, with: textToTranslate, completionHandler: { result, error  in
-//                if let result = result {
-//                    result.setResponseStatus?(.success)
-//                    self.arrayOfResults[self.arrayOfResults.count-1] = result
-//                } else {
-//                    requestToTranslate.setResponseStatus?(.failure)
-//                    self.arrayOfResults[self.arrayOfResults.count-1] = requestToTranslate
-//                }
-//                self.tableView.reloadData()
-//            })
+            
         }
     }
     
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
             let result = request
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        
             if let queryArray = selectedTranslator?.queryDict {
                 for (key, value) in queryArray {
                     url = url.append(key, value: value)
@@ -266,69 +262,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             task.resume()
         }
     }
-    
-
-//    func sendToTranslate(from address: URL, with text: String, completionHandler: @escaping (TTATranslationResult?, Error?) -> Void) {
-//
-//        let result = TTATranslationResult(textToTranslate: text)
-//
-//        var url = address
-//
-//        if let queryArray = selectedTranslator?.queryDict {
-//            for (key, value) in queryArray {
-//                url = url.append(key, value: value)
-//            }
-//        }
-//
-//        url = url.append("text", value: text)
-//        print(url)
-//
-//        let request = URLRequest(url: url)
-//
-//        let session = URLSession.shared
-//        let task = session.dataTask(with: request) { (data, response, error) in
-//            if error != nil || data == nil {
-//                completionHandler(nil, error)
-//                print("Client error!")
-//                return
-//            }
-//
-//            guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-//                completionHandler(nil, error)
-//                print("Server error!")
-//                return
-//            }
-//
-//            guard let mime = response.mimeType, mime == "application/json" else {
-//                completionHandler(nil, error)
-//                print("Wrong MIME type!")
-//                return
-//            }
-//
-//            DispatchQueue.main.async {
-//                guard let responseData = data else {  return  }
-//                let decoder = JSONDecoder()
-//                do {
-//                    let decodedData = try! decoder.decode(TTADecodedResponse.self, from: responseData)
-//
-//                    if decodedData.text != nil {
-//                        result.translation = decodedData.text?.joined(separator: "")
-//                    } else {
-//                        result.translation = decodedData.translated
-//                    }
-////                    print(result)
-//                    completionHandler(result, nil)
-//
-//                } catch {
-//                    completionHandler(nil, error)
-//                    print("JSON parsing error")
-//                }
-//            }
-//        }
-//        task.resume()
-//    }
         
-
 
 // MARK: - Extensions
 
@@ -342,11 +276,6 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         let translation = self.arrayOfResults[indexPath.row]
         
         cell.cellTitle.text = translation?.textToTranslate
-        
-//        cell.showSpinner(animate: true)
-//        if translation?.translation != nil {
-//            cell.cellSubtitle.text = translation?.translation
-//        }
         
         switch translation?.responseStatus {
         case .success:

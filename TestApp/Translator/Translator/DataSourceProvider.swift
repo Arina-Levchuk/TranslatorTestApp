@@ -59,3 +59,65 @@ extension DataSourceProvider {
     
     
 }
+
+
+
+//    func sendToTranslate(from address: URL, with text: String, completionHandler: @escaping (TTATranslationResult?, Error?) -> Void) {
+//
+//        let result = TTATranslationResult(textToTranslate: text)
+//
+//        var url = address
+//
+//        if let queryArray = selectedTranslator?.queryDict {
+//            for (key, value) in queryArray {
+//                url = url.append(key, value: value)
+//            }
+//        }
+//
+//        url = url.append("text", value: text)
+//        print(url)
+//
+//        let request = URLRequest(url: url)
+//
+//        let session = URLSession.shared
+//        let task = session.dataTask(with: request) { (data, response, error) in
+//            if error != nil || data == nil {
+//                completionHandler(nil, error)
+//                print("Client error!")
+//                return
+//            }
+//
+//            guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+//                completionHandler(nil, error)
+//                print("Server error!")
+//                return
+//            }
+//
+//            guard let mime = response.mimeType, mime == "application/json" else {
+//                completionHandler(nil, error)
+//                print("Wrong MIME type!")
+//                return
+//            }
+//
+//            DispatchQueue.main.async {
+//                guard let responseData = data else {  return  }
+//                let decoder = JSONDecoder()
+//                do {
+//                    let decodedData = try! decoder.decode(TTADecodedResponse.self, from: responseData)
+//
+//                    if decodedData.text != nil {
+//                        result.translation = decodedData.text?.joined(separator: "")
+//                    } else {
+//                        result.translation = decodedData.translated
+//                    }
+////                    print(result)
+//                    completionHandler(result, nil)
+//
+//                } catch {
+//                    completionHandler(nil, error)
+//                    print("JSON parsing error")
+//                }
+//            }
+//        }
+//        task.resume()
+//    }
