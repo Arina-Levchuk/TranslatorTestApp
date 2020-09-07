@@ -18,6 +18,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
     var arrayOfResults = [TTATranslatorResult?]()
+    var selectedRow: TTATranslatorResult? = nil
     
 //    var textToTranslate: String?
 //    var translatorURL: URL?
@@ -297,6 +298,29 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         guard editingStyle == .delete else { return }
         self.arrayOfResults.remove(at: indexPath.row)
         self.tableView.deleteRows(at: [indexPath], with: .fade)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedRow = self.arrayOfResults[indexPath.row]
+        guard let response = selectedRow?.responseStatus else { return }
+        
+        if response == .failure {
+            guard let request = self.selectedRow else { return }
+            guard let translator = self.selectedTranslator else { return }
+            getTranslation(to: translator.url!, with: request, completionHandler: { result, error in
+                if let result = result {
+                    result.translation = "SUCCESS"
+                    result.setResponseStatus?(.success)
+                } else {
+                    request.translation = "FAILURE"
+                    request.setResponseStatus?(.success)
+                    
+                }
+            })
+        } else {
+            return
+        }
+        self.tableView.reloadData()
     }
 
     
