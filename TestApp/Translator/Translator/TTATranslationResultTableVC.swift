@@ -354,13 +354,20 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
             cell.cellSubtitle.text = translation?.translation
         case .failure:
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = cell.errorMessage.text
+            cell.cellSubtitle.text = "Error. Please retry"
+            cell.cellSubtitle.textColor = .red
         default:
             cell.showSpinner(animate: true)
         }
 
 
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: TTACustomCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        self.arrayOfResults.remove(at: indexPath.row)
+        self.tableView.deleteRows(at: [indexPath], with: .fade)
     }
 
     

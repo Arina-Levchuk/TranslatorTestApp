@@ -33,16 +33,6 @@ class TTACustomCell: UITableViewCell {
         return lbl
     }()
     
-    let errorMessage: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Error. Please retry"
-        lbl.textColor = .red
-        lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textAlignment = .left
-        return lbl
-    }()
-    
     let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         spinner.translatesAutoresizingMaskIntoConstraints = false
