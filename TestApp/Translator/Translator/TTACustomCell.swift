@@ -46,7 +46,7 @@ class TTACustomCell: UITableViewCell {
     let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.sizeToFit()
+//        spinner.sizeToFit()
         return spinner
     }()
     
@@ -68,8 +68,8 @@ class TTACustomCell: UITableViewCell {
         cellSubtitle.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
         cellSubtitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
         
-//        spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-//        spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
     
     func setUpVerticalView() {
@@ -80,7 +80,7 @@ class TTACustomCell: UITableViewCell {
 //      TO DO: Spinner layout ??
 //        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: spinner.bottomAnchor, multiplier: 1).isActive = true
         
-//        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
+        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
 //        spinner.bottomAnchor.constraint(equalToSystemSpacingBelow: contentView.bottomAnchor, multiplier: 1).isActive = true
 
 //        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: spinner.bottomAnchor, multiplier: 1).isActive = true
@@ -95,8 +95,8 @@ class TTACustomCell: UITableViewCell {
         contentView.addSubview(cellTitle)
         contentView.addSubview(cellSubtitle)
         
-//        contentView.addSubview(spinner)
-//        spinner.isHidden = true
+        contentView.addSubview(spinner)
+        spinner.isHidden = true
         
         setUpHorizontalView()
         setUpVerticalView()

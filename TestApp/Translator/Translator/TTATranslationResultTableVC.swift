@@ -194,6 +194,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
                 }
                 self.tableView.reloadData()
             })
+            self.inputField.text = nil
 
 //            sendToTranslate(from: translatorURL, with: textToTranslate, completionHandler: { result, error  in
 //                if let result = result {
@@ -342,7 +343,7 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         
         cell.cellTitle.text = translation?.textToTranslate
         
-        cell.showSpinner(animate: true)
+//        cell.showSpinner(animate: true)
 //        if translation?.translation != nil {
 //            cell.cellSubtitle.text = translation?.translation
 //        }
