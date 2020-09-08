@@ -18,7 +18,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
     var arrayOfResults = [TTATranslatorResult?]()
-    var selectedRow: TTATranslatorResult? = nil
+    var selectedCell: TTATranslatorResult? = nil
     
 //    var textToTranslate: String?
 //    var translatorURL: URL?
@@ -275,7 +275,7 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
         let translation = self.arrayOfResults[indexPath.row]
-        
+    
         cell.cellTitle.text = translation?.textToTranslate
         
         switch translation?.responseStatus {
@@ -289,8 +289,6 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         default:
             cell.showSpinner(animate: true)
         }
-
-
         return cell
     }
     
@@ -300,30 +298,35 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         self.tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selectedRow = self.arrayOfResults[indexPath.row]
-        guard let response = selectedRow?.responseStatus else { return }
-        
-        if response == .failure {
-            guard let request = self.selectedRow else { return }
-            guard let translator = self.selectedTranslator else { return }
-            getTranslation(to: translator.url!, with: request, completionHandler: { result, error in
-                if let result = result {
-                    result.translation = "SUCCESS"
-                    result.setResponseStatus?(.success)
-                } else {
-                    request.translation = "FAILURE"
-                    request.setResponseStatus?(.success)
-                    
-                }
-            })
-        } else {
-            return
-        }
-        self.tableView.reloadData()
-    }
-
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("ROW IS TAPPED!!!")
+        
+//        let selectedRow = self.arrayOfResults[indexPath.row]
+//        self.selectedCell = selectedRow
+//
+//        guard selectedCell != nil else { return }
+//        guard let _ = selectedCell?.textToTranslate else { return }
+//        guard let responseStatus = selectedCell?.responseStatus else { return }
+//
+//        if responseStatus == .failure {
+//            guard let adress = self.selectedTranslator?.url else { return }
+//
+//            getTranslation(to: adress, with: selectedCell!, completionHandler: { result, error in
+//                if let result = result {
+////     TODO: Update selected row with failed request (test version for now)
+//                    result.setResponseStatus?(.success)
+//                    result.translation = "SUCCESS"
+//                } else {
+//                    self.selectedCell?.setResponseStatus?(.success)
+//                    self.selectedCell?.translation = "FAILURE"
+//                }
+//                DispatchQueue.main.async {
+//                    self.tableView.reloadData()
+//                }
+//            })
+//        }
+    }
 }
     
 extension TTATranslationResultTableVC: TranslatorsListVCDelegate {

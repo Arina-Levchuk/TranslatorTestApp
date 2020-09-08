@@ -36,7 +36,6 @@ class TTACustomCell: UITableViewCell {
     let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         spinner.translatesAutoresizingMaskIntoConstraints = false
-//        spinner.sizeToFit()
         return spinner
     }()
     
@@ -63,19 +62,13 @@ class TTACustomCell: UITableViewCell {
     }
     
     func setUpVerticalView() {
-//        Vertical position for each label
+//      Vertical position for each label
         cellTitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
-//      TO DO: Spinner layout ??
-//        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: spinner.bottomAnchor, multiplier: 1).isActive = true
         
+//      TO DO: Spinner layout ??
         spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
-//        spinner.bottomAnchor.constraint(equalToSystemSpacingBelow: contentView.bottomAnchor, multiplier: 1).isActive = true
-
-//        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: spinner.bottomAnchor, multiplier: 1).isActive = true
-
-//        spinner.heightAnchor.constraint(equalToConstant: cellTitle.bounds.height).isActive = true
     
     }
     
@@ -90,8 +83,6 @@ class TTACustomCell: UITableViewCell {
         
         setUpHorizontalView()
         setUpVerticalView()
-        
-            
     }
     
     required init?(coder: NSCoder) {
