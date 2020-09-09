@@ -8,10 +8,13 @@
 
 import UIKit
 import Foundation
+import CoreData
 
 class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
 //  MARK: - Properties
+    
+    var container: NSPersistentContainer!
 
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
@@ -36,6 +39,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        guard container != nil else {
+            fatalError("This view needs a persistent container.")
+        }
+        
         self.selectedTranslator = translators.first
         
         setUpNavBarAppearance()
@@ -55,8 +62,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
         sendButton.addTarget(self, action: #selector(dismissKeyboard), for: .touchUpInside)
 
-        self.tableView.estimatedRowHeight = 80
-        self.tableView.rowHeight = UITableView.automaticDimension
+//        self.tableView.estimatedRowHeight = 160
+//        self.tableView.rowHeight = UITableView.automaticDimension
 
     }
     
@@ -274,14 +281,14 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
-        let translation = self.arrayOfResults[indexPath.row]
-    
-        cell.cellTitle.text = translation?.textToTranslate
+        let translationResult = self.arrayOfResults[indexPath.row]
+
+        cell.cellTitle.text = translationResult?.textToTranslate
         
-        switch translation?.responseStatus {
+        switch translationResult?.responseStatus {
         case .success:
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = translation?.translation
+            cell.cellSubtitle.text = translationResult?.translation
         case .failure:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = "Error. Please retry"

@@ -11,9 +11,6 @@ import Foundation
 class TTATranslatorResult {
     let textToTranslate: String
     var translation: String?
-//    var resultFromYandex: String?
-//    var resultFromFunTranslator: String?
-//    var error: String?
     var responseStatus: ResponseResult?
     
 //    var arrayOfResults: [TTATranslatorResult] = []
