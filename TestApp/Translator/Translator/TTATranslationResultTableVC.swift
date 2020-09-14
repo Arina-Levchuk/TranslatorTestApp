@@ -14,13 +14,15 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
 //  MARK: - Properties
     
-    var container: NSPersistentContainer!
+//    var container: NSPersistentContainer!
 
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
     var arrayOfResults = [TTATranslatorResult?]()
+    var results: [NSManagedObject] = []
+    
     var selectedCell: TTATranslatorResult? = nil
     
 //    var textToTranslate: String?
@@ -39,9 +41,9 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard container != nil else {
-            fatalError("This view needs a persistent container.")
-        }
+//        guard container != nil else {
+//            fatalError("This view needs a persistent container.")
+//        }
         
         self.selectedTranslator = translators.first
         
@@ -193,10 +195,12 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             
             let requestToTranslate = TTATranslatorResult(textToTranslate: textToTranslate)
             self.arrayOfResults.append(requestToTranslate)
+//            self.save(data: textToTranslate)
             
             getTranslation(to: translatorURL, with: requestToTranslate, completionHandler: { result, error in
                 if let result = result {
                     result.setResponseStatus?(.success)
+//                    self.save(data: result.translation)
                 } else {
                     requestToTranslate.setResponseStatus?(.failure)
                 }
@@ -208,6 +212,25 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             
         }
     }
+    
+//    func save(data: String) {
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+//
+//        let managedContext = appDelegate.persistentContainer.viewContext
+//
+//        guard let entity = NSEntityDescription.entity(forEntityName: "TTAResult", in: managedContext) else { return }
+//
+//        var result = NSManagedObject(entity: entity, insertInto: managedContext)
+//
+//        result.setValue(data, forKeyPath: "textToTranslate")
+//
+//        do {
+//            try! managedContext.save()
+//            results.append(result)
+//        } catch let error as NSError {
+//            print("Could not save. \(error), \(error.userInfo)")
+//        }
+//    }
     
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
@@ -222,7 +245,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
                 }
             }
 
-            url = url.append("text", value: request.textToTranslate)
+        url = url.append("text", value: result.textToTranslate)
             print(url)
             
             let getRequest = URLRequest(url: url)
@@ -258,7 +281,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
                         } else {
                             result.translation = decodedData.translated
                         }
-//                    print(result)
                         completionHandler(result, nil)
 
                     } catch {
@@ -276,19 +298,23 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
 extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return self.results.count
         return self.arrayOfResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
+//        let translationResult = self.results[indexPath.row]
         let translationResult = self.arrayOfResults[indexPath.row]
-
+        
         cell.cellTitle.text = translationResult?.textToTranslate
+//        cell.cellTitle.text = translationResult.value(forKey: "textToTranslate") as? String
         
         switch translationResult?.responseStatus {
         case .success:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = translationResult?.translation
+//            cell.cellSubtitle.text = translationResult.value(forKeyPath: "translation") as? String
         case .failure:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = "Error. Please retry"
