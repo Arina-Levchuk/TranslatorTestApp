@@ -15,7 +15,7 @@ class TTATranslatorResult {
     
 //    var arrayOfResults: [TTATranslatorResult] = []
     
-    var setResponseStatus: ((_ result: ResponseResult) -> Void)?
+    var setResponseResult: ((_ result: ResponseResult) -> Void)?
     
     enum ResponseResult {
         case success, failure
@@ -27,7 +27,7 @@ class TTATranslatorResult {
         self.translation = translation
         self.responseStatus = responseStatus
         
-        setResponseStatus = { response in
+        setResponseResult = { response in
             self.responseStatus = response
         }
         
