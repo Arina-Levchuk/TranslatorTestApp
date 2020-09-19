@@ -19,7 +19,8 @@ extension TTATranslationResult {
 
     @NSManaged public var requestToTranslate: String
     @NSManaged public var translatedText: String?
-
+//    private var status: TTATranslatorResult.ResponseResult?
+    
 //    public enum ResponseStatus {
 //        case success, failure
 //    }

@@ -198,8 +198,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             guard let textToTranslate = self.inputField.text else { return }
             
             let translationRequest = TTATranslatorResult(textToTranslate: textToTranslate)
-            let translationResult = TTATranslationResult(entity: TTATranslationResult.entity(), insertInto: context)
-            translationResult.requestToTranslate = translationRequest.textToTranslate
+            let translationResult = TTATranslationResult(requestToTranslate: textToTranslate, translatedText: nil, responseStatus: nil, insertIntoManagedObjectContext: context)
+            
+//            let translationResult = TTATranslationResult(entity: TTATranslationResult.entity(), insertInto: context)
+//            translationResult.requestToTranslate = translationRequest.textToTranslate
             appDelegate.saveContext()
             self.arrayOfResults.append(translationRequest)
             self.results.append(translationResult)
@@ -210,14 +212,13 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
                 if let result = result {
                     result.setResponseResult?(.success)
                     translationResult.translatedText = result.translation
-                    translationResult.setResponseStatus?(true)
+                    translationResult.setResponseStatus?(.success)
                     self.appDelegate.saveContext()
                     print(translationResult.translatedText! as String)
                 } else {
                     translationRequest.setResponseResult?(.failure)
-                    translationResult.setResponseStatus?(false)
+                    translationResult.setResponseStatus?(.failure)
                     self.appDelegate.saveContext()
-//                    print(translationResult.responseIsOk! as Bool)
                 }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -305,12 +306,28 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
 //        cell.cellTitle.text = translationResult?.textToTranslate
         cell.cellTitle.text = translationResult.value(forKey: "requestToTranslate") as? String
         
-        if translationResult.translatedText != nil {
+//        if translationResult.translatedText != nil {
+//            cell.cellSubtitle.text = translationResult.value(forKeyPath: "translatedText") as? String
+//        } else {
+//            cell.cellSubtitle.text = "Error. Please retry"
+//            cell.cellSubtitle.textColor = .red
+//        }
+        
+        
+        
+        switch translationResult.status {
+        case .success:
+            cell.showSpinner(animate: false)
             cell.cellSubtitle.text = translationResult.value(forKeyPath: "translatedText") as? String
-        } else {
+        case .failure:
+            cell.showSpinner(animate: false)
             cell.cellSubtitle.text = "Error. Please retry"
             cell.cellSubtitle.textColor = .red
+        default:
+            cell.showSpinner(animate: true)
         }
+        
+
         
 //        switch translationResult.responseIsOk {
 //        case true:
