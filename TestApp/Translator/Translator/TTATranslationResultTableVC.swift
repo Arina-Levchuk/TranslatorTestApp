@@ -204,19 +204,20 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             self.arrayOfResults.append(translationRequest)
             self.results.append(translationResult)
 
+            print(translationResult.requestToTranslate)
             
             getTranslation(to: translatorURL, with: translationRequest, completionHandler: { result, error in
                 if let result = result {
-//                    result.setResponseResult?(.success)
-                    result.translation = translationResult.translatedText
-                    translationResult.setResponseStatus?(.success)
+                    result.setResponseResult?(.success)
+                    translationResult.translatedText = result.translation
+                    translationResult.setResponseStatus?(true)
                     self.appDelegate.saveContext()
-
+                    print(translationResult.translatedText! as String)
                 } else {
-//                    translationRequest.setResponseResult?(.failure)
-                    translationResult.setResponseStatus?(.failure)
+                    translationRequest.setResponseResult?(.failure)
+                    translationResult.setResponseStatus?(false)
                     self.appDelegate.saveContext()
-                    
+//                    print(translationResult.responseIsOk! as Bool)
                 }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -304,18 +305,25 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
 //        cell.cellTitle.text = translationResult?.textToTranslate
         cell.cellTitle.text = translationResult.value(forKey: "requestToTranslate") as? String
         
-        switch translationResult.responseStatus {
-        case .success:
-            cell.showSpinner(animate: false)
-//            cell.cellSubtitle.text = translationResult?.translation
+        if translationResult.translatedText != nil {
             cell.cellSubtitle.text = translationResult.value(forKeyPath: "translatedText") as? String
-        case .failure:
-            cell.showSpinner(animate: false)
+        } else {
             cell.cellSubtitle.text = "Error. Please retry"
             cell.cellSubtitle.textColor = .red
-        default:
-            cell.showSpinner(animate: true)
         }
+        
+//        switch translationResult.responseIsOk {
+//        case true:
+//            cell.showSpinner(animate: false)
+////            cell.cellSubtitle.text = translationResult?.translation
+//            cell.cellSubtitle.text = translationResult.value(forKeyPath: "translatedText") as? String
+//        case false:
+//            cell.showSpinner(animate: false)
+//            cell.cellSubtitle.text = "Error. Please retry"
+//            cell.cellSubtitle.textColor = .red
+//        default:
+//            cell.showSpinner(animate: true)
+//        }
         return cell
     }
     
@@ -328,7 +336,7 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         context.delete(result)
         self.results.remove(at: indexPath.row)
         self.tableView.deleteRows(at: [indexPath], with: .fade)
-        
+
         appDelegate.saveContext()
     }
     
