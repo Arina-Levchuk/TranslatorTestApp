@@ -14,6 +14,7 @@
 		841E1AB124B49F0B0075CB49 /* TTATranslatorResultOUTDATED.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841E1AB024B49F0B0075CB49 /* TTATranslatorResultOUTDATED.swift */; };
 		842C1E9C2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842C1E9A2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift */; };
 		842C1E9D2517A4E70036DF59 /* TTATranslatorResult+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842C1E9B2517A4E70036DF59 /* TTATranslatorResult+CoreDataProperties.swift */; };
+		842C1E9F2517E7D10036DF59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84DE9F9D24016C67007E4239 /* Assets.xcassets */; };
 		845A034B242F8877009B5339 /* TTATranslatorsListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */; };
 		84DD1A6724CF748B00147BC1 /* TTACustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DD1A6624CF748B00147BC1 /* TTACustomCell.swift */; };
 		84DE9F9224016C65007E4239 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9124016C65007E4239 /* AppDelegate.swift */; };
@@ -167,6 +168,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				842C1E9F2517E7D10036DF59 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
