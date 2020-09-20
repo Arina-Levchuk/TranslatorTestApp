@@ -12,25 +12,26 @@ import CoreData
 
 @objc(TTAResultTable)
 public class TTATranslationResult: NSManagedObject {
-//    public var responseStatus: ResponseStatus?
-//    var responseIsOk: Bool?
-    var status: ResponseStatus?
-//    public var setResponseStatus: ((_ status: ResponseStatus) -> Void)?
-    enum ResponseStatus {
+
+    enum ResponseStatus: String {
         case success, failure
     }
     var setResponseStatus: ((_ status: ResponseStatus?) -> Void)?
     
     
-    convenience init(requestToTranslate: String, translatedText: String?, responseStatus: ResponseStatus?, insertIntoManagedObjectContext context: NSManagedObjectContext) {
+    convenience init(requestToTranslate: String, translatedText: String? = nil, responseStatus: ResponseStatus? = nil, insertIntoManagedObjectContext context: NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: "TTATranslationResult", in: context)!
         self.init(entity: entity, insertInto: context)
         self.requestToTranslate = requestToTranslate
         self.translatedText = translatedText
-        self.status = responseStatus
+        self.responseStatus = responseStatus?.rawValue
         
         setResponseStatus = { status in
-            self.status = status
+            if let status = status {
+                self.responseStatus = status.rawValue
+            } else {
+                return
+            }
         }
 
     }

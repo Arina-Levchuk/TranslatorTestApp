@@ -210,13 +210,13 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             
             getTranslation(to: translatorURL, with: translationRequest, completionHandler: { result, error in
                 if let result = result {
-                    result.setResponseResult?(.success)
+//                    result.setResponseResult?(.success)
                     translationResult.translatedText = result.translation
                     translationResult.setResponseStatus?(.success)
                     self.appDelegate.saveContext()
                     print(translationResult.translatedText! as String)
                 } else {
-                    translationRequest.setResponseResult?(.failure)
+//                    translationRequest.setResponseResult?(.failure)
                     translationResult.setResponseStatus?(.failure)
                     self.appDelegate.saveContext()
                 }
@@ -306,20 +306,11 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
 //        cell.cellTitle.text = translationResult?.textToTranslate
         cell.cellTitle.text = translationResult.value(forKey: "requestToTranslate") as? String
         
-//        if translationResult.translatedText != nil {
-//            cell.cellSubtitle.text = translationResult.value(forKeyPath: "translatedText") as? String
-//        } else {
-//            cell.cellSubtitle.text = "Error. Please retry"
-//            cell.cellSubtitle.textColor = .red
-//        }
-        
-        
-        
-        switch translationResult.status {
-        case .success:
+        switch translationResult.responseStatus {
+        case "success":
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = translationResult.value(forKeyPath: "translatedText") as? String
-        case .failure:
+        case "failure":
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = "Error. Please retry"
             cell.cellSubtitle.textColor = .red
@@ -327,20 +318,6 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
             cell.showSpinner(animate: true)
         }
         
-
-        
-//        switch translationResult.responseIsOk {
-//        case true:
-//            cell.showSpinner(animate: false)
-////            cell.cellSubtitle.text = translationResult?.translation
-//            cell.cellSubtitle.text = translationResult.value(forKeyPath: "translatedText") as? String
-//        case false:
-//            cell.showSpinner(animate: false)
-//            cell.cellSubtitle.text = "Error. Please retry"
-//            cell.cellSubtitle.textColor = .red
-//        default:
-//            cell.showSpinner(animate: true)
-//        }
         return cell
     }
     

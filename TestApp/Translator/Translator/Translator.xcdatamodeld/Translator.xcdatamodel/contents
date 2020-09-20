@@ -2,7 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="TTATranslationResult" representedClassName=".TTATranslationResult" syncable="YES">
         <attribute name="requestToTranslate" attributeType="String"/>
-        <attribute name="responseIsOk" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="responseStatus" optional="YES" attributeType="String"/>
         <attribute name="translatedText" optional="YES" attributeType="String"/>
     </entity>
     <elements>

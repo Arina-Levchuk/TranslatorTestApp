@@ -11,9 +11,7 @@ import Foundation
 class TTATranslatorResult {
     let textToTranslate: String
     var translation: String?
-    var responseStatus: ResponseResult?
-    
-//    var arrayOfResults: [TTATranslatorResult] = []
+//    var responseStatus: ResponseResult?
     
     var setResponseResult: ((_ result: ResponseResult) -> Void)?
     
@@ -25,11 +23,11 @@ class TTATranslatorResult {
     init(textToTranslate: String, translation: String? = nil, responseStatus: ResponseResult? = nil) {
         self.textToTranslate = textToTranslate
         self.translation = translation
-        self.responseStatus = responseStatus
+//        self.responseStatus = responseStatus
         
-        setResponseResult = { response in
-            self.responseStatus = response
-        }
+//        setResponseResult = { response in
+//            self.responseStatus = response
+//        }
         
     }
 //    
