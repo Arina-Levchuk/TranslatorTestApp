@@ -33,6 +33,15 @@ class TTATranslatorResultCell: UITableViewCell {
         return lbl
     }()
     
+    let errorLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.textColor = .red
+        lbl.font = UIFont.systemFont(ofSize: 16)
+        lbl.text = "Error. Please retry"
+        return lbl
+    }()
+    
     let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -53,9 +62,12 @@ class TTATranslatorResultCell: UITableViewCell {
 //      Horizontal position for each label
         cellTitle.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
         cellTitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
-
+        
         cellSubtitle.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
         cellSubtitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+        
+//        errorLabel.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
+//        errorLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
         
         spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
@@ -64,11 +76,13 @@ class TTATranslatorResultCell: UITableViewCell {
     func setUpVerticalView() {
 //      Vertical position for each label
         cellTitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: contentView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
+            
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
-        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
         
-//      TO DO: Spinner layout ??
-        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
+        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
+                        
+// TODO: Spinner layout ??
+//        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
     
     }
     

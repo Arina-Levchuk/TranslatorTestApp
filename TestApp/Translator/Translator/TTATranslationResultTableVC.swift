@@ -14,7 +14,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
 //  MARK: - Properties
     
-//    var container: NSPersistentContainer!
     private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
@@ -22,13 +21,9 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
-//    var arrayOfResults = [TTATranslatorResult?]()
+
     var results: [TTATranslatorResult] = []
-    
-    var selectedCell: TTATranslatorResult? = nil
-    
-//    var textToTranslate: String?
-//    var translatorURL: URL?
+
     var selectedTranslator: TTATranslator? = nil
 //    var delegate: RequestProtocolDelegate?
 //  MARK: - View lifecycle
@@ -44,7 +39,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         do {
-            results = try context.fetch(TTATranslatorResult.fetchRequest())
+            self.results = try context.fetch(TTATranslatorResult.fetchRequest())
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
@@ -71,8 +66,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 //        self.tableView.estimatedRowHeight = 160
 //        self.tableView.rowHeight = UITableView.automaticDimension
 
+
     }
-    
 
 
 //    MARK: - Layout stuff
@@ -204,11 +199,12 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             getTranslation(to: translatorURL, with: translationRequest, completionHandler: { result, error in
                 if result != nil {
                     translationRequest.setResponseStatus?(.success)
-                    self.appDelegate.saveContext()
+//                    self.appDelegate.saveContext()
                 } else {
                     translationRequest.setResponseStatus?(.failure)
-                    self.appDelegate.saveContext()
+//                   self.appDelegate.saveContext()
                 }
+                self.appDelegate.saveContext()
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                     self.inputField.text = nil
@@ -217,6 +213,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             
         }
     }
+    
+// MARK: - Methods
     
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
@@ -276,8 +274,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             }
             task.resume()
         }
-    }
-        
+
+}
 
 // MARK: - Extensions
 
@@ -290,15 +288,13 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
         let translationResult = self.results[indexPath.row]
-//        let translationResult = self.arrayOfResults[indexPath.row]
         
-//        cell.cellTitle.text = translationResult?.textToTranslate
-        cell.cellTitle.text = translationResult.value(forKey: "textToTranslate") as? String
+        cell.cellTitle.text = translationResult.textToTranslate
         
         switch translationResult.responseStatus {
         case "success":
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = translationResult.value(forKeyPath: "translation") as? String
+            cell.cellSubtitle.text = translationResult.translation
         case "failure":
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = "Error. Please retry"
@@ -306,15 +302,14 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         default:
             cell.showSpinner(animate: true)
         }
-        
+
         return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
         guard editingStyle == .delete else { return }
-//        self.arrayOfResults.remove(at: indexPath.row)
 
-//      TODO: to remove object from Core Data
         let result = results[indexPath.row]
         context.delete(result)
         self.results.remove(at: indexPath.row)
@@ -323,34 +318,27 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         appDelegate.saveContext()
     }
     
-    
+//  TODO: to resend request to translate text after tapping on the cell with error
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("ROW IS TAPPED!!!")
+        let translatorResult = self.results[indexPath.row]
         
-//        let selectedRow = self.arrayOfResults[indexPath.row]
-//        self.selectedCell = selectedRow
-//
-//        guard selectedCell != nil else { return }
-//        guard let _ = selectedCell?.textToTranslate else { return }
-//        guard let responseStatus = selectedCell?.responseStatus else { return }
-//
-//        if responseStatus == .failure {
-//            guard let adress = self.selectedTranslator?.url else { return }
-//
-//            getTranslation(to: adress, with: selectedCell!, completionHandler: { result, error in
-//                if let result = result {
-////     TODO: Update selected row with failed request (test version for now)
-//                    result.setResponseStatus?(.success)
-//                    result.translation = "SUCCESS"
-//                } else {
-//                    self.selectedCell?.setResponseStatus?(.success)
-//                    self.selectedCell?.translation = "FAILURE"
-//                }
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-//                }
-//            })
-//        }
+        getTranslation(to: (self.selectedTranslator?.url)!, with: translatorResult) { (newResult, error) in
+            if newResult != nil {
+                newResult!.setResponseStatus?(.success)
+                newResult!.translation = "SUCCESS"
+//                self.appDelegate.saveContext()
+            } else {
+//            To set conditions
+                translatorResult.setResponseStatus?(.success)
+                translatorResult.translation = "FAILURE"
+                self.appDelegate.saveContext()
+            }
+            self.appDelegate.saveContext()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 }
     
