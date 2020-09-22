@@ -16,7 +16,7 @@
 		842C1E9D2517A4E70036DF59 /* TTATranslatorResult+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842C1E9B2517A4E70036DF59 /* TTATranslatorResult+CoreDataProperties.swift */; };
 		842C1E9F2517E7D10036DF59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84DE9F9D24016C67007E4239 /* Assets.xcassets */; };
 		845A034B242F8877009B5339 /* TTATranslatorsListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */; };
-		84DD1A6724CF748B00147BC1 /* TTACustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DD1A6624CF748B00147BC1 /* TTACustomCell.swift */; };
+		84DD1A6724CF748B00147BC1 /* TTATranslatorResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DD1A6624CF748B00147BC1 /* TTATranslatorResultCell.swift */; };
 		84DE9F9224016C65007E4239 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9124016C65007E4239 /* AppDelegate.swift */; };
 		84DE9F9424016C65007E4239 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9324016C65007E4239 /* SceneDelegate.swift */; };
 		84DE9F9C24016C65007E4239 /* Translator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9A24016C65007E4239 /* Translator.xcdatamodeld */; };
@@ -32,7 +32,7 @@
 		842C1E9A2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TTATranslatorResult+CoreDataClass.swift"; sourceTree = "<group>"; };
 		842C1E9B2517A4E70036DF59 /* TTATranslatorResult+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TTATranslatorResult+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTATranslatorsListVC.swift; sourceTree = "<group>"; };
-		84DD1A6624CF748B00147BC1 /* TTACustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTACustomCell.swift; sourceTree = "<group>"; };
+		84DD1A6624CF748B00147BC1 /* TTATranslatorResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTATranslatorResultCell.swift; sourceTree = "<group>"; };
 		84DE9F8E24016C65007E4239 /* Translator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Translator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DE9F9124016C65007E4239 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84DE9F9324016C65007E4239 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 				84DE9F9324016C65007E4239 /* SceneDelegate.swift */,
 				842C1E9E2517A4F50036DF59 /* Model */,
 				84003587245200B300FB3BA1 /* VC */,
-				84DD1A6624CF748B00147BC1 /* TTACustomCell.swift */,
+				84DD1A6624CF748B00147BC1 /* TTATranslatorResultCell.swift */,
 				8403EFBA241D4A1A0061765C /* TTATranslator.swift */,
 				841E1AAE24B49EFE0075CB49 /* TTADecodedResponse.swift */,
 				841E1AAA24B49E640075CB49 /* URLExtension.swift */,
@@ -190,7 +190,7 @@
 				84DE9FAD2402BB79007E4239 /* TTATranslationResultTableVC.swift in Sources */,
 				842C1E9C2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift in Sources */,
 				840035862450CADC00FB3BA1 /* DataSourceProvider.swift in Sources */,
-				84DD1A6724CF748B00147BC1 /* TTACustomCell.swift in Sources */,
+				84DD1A6724CF748B00147BC1 /* TTATranslatorResultCell.swift in Sources */,
 				841E1AB124B49F0B0075CB49 /* TTATranslatorResultOUTDATED.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

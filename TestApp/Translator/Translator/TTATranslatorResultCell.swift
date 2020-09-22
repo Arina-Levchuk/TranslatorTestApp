@@ -1,5 +1,5 @@
 //
-//  TTACustomCell.swift
+//  TTATranslatorResultCell.swift
 //  Translator
 //
 //  Created by admin on 7/27/20.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-class TTACustomCell: UITableViewCell {
-    static let reuseIdentifier = "TTACustomCell"
+class TTATranslatorResultCell: UITableViewCell {
+    static let reuseIdentifier = "TTATranslatorResultCell"
     
     let cellTitle: UILabel = {
         let lbl = UILabel()

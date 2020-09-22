@@ -22,7 +22,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
-    var arrayOfResults = [TTATranslatorResult?]()
+//    var arrayOfResults = [TTATranslatorResult?]()
     var results: [TTATranslatorResult] = []
     
     var selectedCell: TTATranslatorResult? = nil
@@ -56,7 +56,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         configureHorizontalStackView()
         setUpTableView()
         
-        self.tableView.register(TTACustomCell.self, forCellReuseIdentifier: TTACustomCell.reuseIdentifier)
+        self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
 
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -288,7 +288,7 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TTACustomCell.reuseIdentifier, for: indexPath) as! TTACustomCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
         let translationResult = self.results[indexPath.row]
 //        let translationResult = self.arrayOfResults[indexPath.row]
         
@@ -310,7 +310,7 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: TTACustomCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
 //        self.arrayOfResults.remove(at: indexPath.row)
 
