@@ -20,7 +20,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
-    let tableView = UITableView.init(frame: .zero, style: UITableView.Style.plain)
+    let tableView = UITableView.init(frame: .zero)
 
     var results: [TTATranslatorResult] = []
 
