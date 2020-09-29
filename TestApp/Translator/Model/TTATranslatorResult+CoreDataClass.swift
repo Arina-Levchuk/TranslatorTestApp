@@ -19,7 +19,6 @@ public class TTATranslatorResult: NSManagedObject {
 
     var setResponseStatus: ((_ status: ResponseStatus?) -> Void)?
 
-
     convenience init(textToTranslate: String, translation: String? = nil, responseStatus: ResponseStatus? = nil, insertIntoManagedObjectContext context: NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: "TTATranslatorResult", in: context)!
         self.init(entity: entity, insertInto: context)

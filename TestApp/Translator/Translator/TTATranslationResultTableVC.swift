@@ -55,17 +55,17 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        tableView.tableFooterView = UIView()
 
         self.inputField.delegate = self
         
         setUpKeyboard()
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
-        sendButton.addTarget(self, action: #selector(dismissKeyboard), for: .touchUpInside)
+//        sendButton.addTarget(self, action: #selector(dismissKeyboard), for: .touchUpInside)
 
 //        self.tableView.estimatedRowHeight = 160
 //        self.tableView.rowHeight = UITableView.automaticDimension
-
 
     }
 
@@ -190,13 +190,13 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     @objc func didTapSendButton() {
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
-            guard let textToTranslate = self.inputField.text else { return }
+            guard self.inputField.text != nil && self.inputField.text != "" else { return }
             
-            let translationRequest = TTATranslatorResult(textToTranslate: textToTranslate, translation: nil, responseStatus: nil, insertIntoManagedObjectContext: context)
+            let translationRequest = TTATranslatorResult(textToTranslate: self.inputField.text!, translation: nil, responseStatus: nil, insertIntoManagedObjectContext: context)
             appDelegate.saveContext()
             self.results.append(translationRequest)
             
-            getTranslation(to: translatorURL, with: translationRequest, completionHandler: { result, error in
+            getTranslation(to: translatorURL, with: translationRequest, completionHandler: { [weak self] (result, error) in
                 if result != nil {
                     translationRequest.setResponseStatus?(.success)
 //                    self.appDelegate.saveContext()
@@ -204,10 +204,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
                     translationRequest.setResponseStatus?(.failure)
 //                   self.appDelegate.saveContext()
                 }
-                self.appDelegate.saveContext()
+                self?.appDelegate.saveContext()
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.inputField.text = nil
+                    self?.tableView.reloadData()
+                    self?.inputField.text = nil
                 }
             })
             
@@ -287,17 +287,17 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
-        let translationResult = self.results[indexPath.row]
+        let result = self.results[indexPath.row]
         
-        cell.cellTitle.text = translationResult.textToTranslate
+        cell.cellTitle.text = result.textToTranslate
         
-        switch translationResult.responseStatus {
+        switch result.responseStatus {
         case "success":
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = translationResult.translation
+            cell.cellSubtitle.text = result.translation
         case "failure":
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = "Error. Please retry"
+            cell.cellSubtitle.text = "Error. Tap to retry"
             cell.cellSubtitle.textColor = .red
         default:
             cell.showSpinner(animate: true)
@@ -321,23 +321,27 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
 //  TODO: to resend request to translate text after tapping on the cell with error
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("ROW IS TAPPED!!!")
+        
         let translatorResult = self.results[indexPath.row]
         
-        getTranslation(to: (self.selectedTranslator?.url)!, with: translatorResult) { (newResult, error) in
-            if newResult != nil {
-                newResult!.setResponseStatus?(.success)
-                newResult!.translation = "SUCCESS"
-//                self.appDelegate.saveContext()
-            } else {
-//            To set conditions
-                translatorResult.setResponseStatus?(.success)
-                translatorResult.translation = "FAILURE"
-                self.appDelegate.saveContext()
+        if translatorResult.responseStatus == "failure" {
+            getTranslation(to: (self.selectedTranslator?.url)!, with: translatorResult) { [weak self] (newResult, error) in
+                if newResult != nil {
+                    newResult!.setResponseStatus?(.success)
+                    newResult!.translation = "SUCCESS"
+    //                self.appDelegate.saveContext()
+                } else {
+    //            To set conditions
+                    translatorResult.setResponseStatus?(.success)
+                    translatorResult.translation = "FAILURE"
+                    self?.appDelegate.saveContext()
+                }
+                self?.appDelegate.saveContext()
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
             }
-            self.appDelegate.saveContext()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            
         }
     }
 }
