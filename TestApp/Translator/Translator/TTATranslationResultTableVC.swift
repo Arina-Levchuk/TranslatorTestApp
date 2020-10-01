@@ -64,9 +64,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
 //        sendButton.addTarget(self, action: #selector(dismissKeyboard), for: .touchUpInside)
 
-//        self.tableView.estimatedRowHeight = 160
-//        self.tableView.rowHeight = UITableView.automaticDimension
-
     }
 
 
@@ -124,8 +121,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 //      The View Controller receives notification when the keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tapRecognizer)
+//        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        view.addGestureRecognizer(tapRecognizer)
         
     }
     
@@ -191,7 +188,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
             guard self.inputField.text != nil && self.inputField.text != "" else { return }
-            
+            dismissKeyboard()
             let translationRequest = TTATranslatorResult(textToTranslate: self.inputField.text!, translation: nil, responseStatus: nil, insertIntoManagedObjectContext: context)
             appDelegate.saveContext()
             self.results.append(translationRequest)
@@ -292,10 +289,10 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         cell.cellTitle.text = result.textToTranslate
         
         switch result.responseStatus {
-        case "success":
+        case TTATranslatorResult.ResponseStatus.success.description:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = result.translation
-        case "failure":
+        case TTATranslatorResult.ResponseStatus.failure.description:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = "Error. Tap to retry"
             cell.cellSubtitle.textColor = .red
@@ -322,18 +319,18 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("ROW IS TAPPED!!!")
         
-        let translatorResult = self.results[indexPath.row]
+        let result = self.results[indexPath.row]
         
-        if translatorResult.responseStatus == "failure" {
-            getTranslation(to: (self.selectedTranslator?.url)!, with: translatorResult) { [weak self] (newResult, error) in
+        if result.responseStatus == "failure" {
+            getTranslation(to: (self.selectedTranslator?.url)!, with: result) { [weak self] (newResult, error) in
                 if newResult != nil {
                     newResult!.setResponseStatus?(.success)
                     newResult!.translation = "SUCCESS"
     //                self.appDelegate.saveContext()
                 } else {
     //            To set conditions
-                    translatorResult.setResponseStatus?(.success)
-                    translatorResult.translation = "FAILURE"
+                    result.setResponseStatus?(.success)
+                    result.translation = "FAILURE"
                     self?.appDelegate.saveContext()
                 }
                 self?.appDelegate.saveContext()

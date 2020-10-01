@@ -15,6 +15,11 @@ public class TTATranslatorResult: NSManagedObject {
 
     enum ResponseStatus: String {
         case success, failure
+        
+        var description: String {
+            return self.rawValue
+        }
+        
     }
 
     var setResponseStatus: ((_ status: ResponseStatus?) -> Void)?
@@ -28,7 +33,7 @@ public class TTATranslatorResult: NSManagedObject {
 
         setResponseStatus = { status in
             if let status = status {
-                self.responseStatus = status.rawValue
+                self.responseStatus = status.description
             } else {
                 return
             }
