@@ -60,6 +60,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         tableView.tableFooterView = UIView()
 
         self.inputField.delegate = self
+        self.scrollView.delegate = self
         
         setUpKeyboard()
         
@@ -119,14 +120,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     func setUpKeyboard() {
 //      The View Controller receives notification when the keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 
 //      The View Controller receives notification when the keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
+
 //        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
 //        view.addGestureRecognizer(tapRecognizer)
         
@@ -137,7 +134,12 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         
         let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
         scrollView.contentInset.bottom += adjustmentHeight
+//        self.view.frame.origin.y -= adjustmentHeight
         self.view.frame.size.height -= adjustmentHeight
+//        if self.tableView.contentSize.height > keyboardFrame.cgRectValue.height {
+//            scrollView.contentInset.bottom += adjustmentHeight
+//        }
+        
         scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
     }
     
@@ -177,19 +179,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
         adjustInsetForKeyboardShow(true, notification: notification)
-//        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-////      If keyboard size isn't available - don't do anything
-//            return
-//        }
-//      Moving root view up by the distance of keyboard height
-//        self.view.frame.origin.y = 0 - keyboardSize.height
-
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
         adjustInsetForKeyboardShow(false, notification: notification)
-////      Moving back the root view origin to zero
-//        self.view.frame.origin.y = 0
     }
     
     @objc func dismissKeyboard() {
