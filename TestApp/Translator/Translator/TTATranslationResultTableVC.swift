@@ -23,6 +23,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let tableView = UITableView.init(frame: .zero)
 
     var results: [TTATranslatorResult] = []
+    
+    var scrollView = UIScrollView()
 
     var selectedTranslator: TTATranslator? = nil
 //    var delegate: RequestProtocolDelegate?
@@ -116,14 +118,27 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     
     func setUpKeyboard() {
 //      The View Controller receives notification when the keyboard is going to be shown
-        NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 
 //      The View Controller receives notification when the keyboard is going to be hidden
-        NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(TTATranslationResultTableVC.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
 //        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
 //        view.addGestureRecognizer(tapRecognizer)
         
+    }
+    
+    func adjustInsetForKeyboardShow(_ show: Bool, notification: NSNotification) {
+        guard let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
+        scrollView.contentInset.bottom += adjustmentHeight
+        self.view.frame.size.height -= adjustmentHeight
+        scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
     }
     
 //      [Return] button closes the keyboard
@@ -160,18 +175,21 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     
 // MARK: - Selectors
     
-    @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-//      If keyboard size isn't available - don't do anything
-            return
-        }
+    @objc func keyboardWillShow(_ notification: NSNotification) {
+        adjustInsetForKeyboardShow(true, notification: notification)
+//        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+////      If keyboard size isn't available - don't do anything
+//            return
+//        }
 //      Moving root view up by the distance of keyboard height
-        self.view.frame.origin.y = 0 - keyboardSize.height
+//        self.view.frame.origin.y = 0 - keyboardSize.height
+
     }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
-//      Moving back the root view origin to zero
-        self.view.frame.origin.y = 0
+    @objc func keyboardWillHide(_ notification: NSNotification) {
+        adjustInsetForKeyboardShow(false, notification: notification)
+////      Moving back the root view origin to zero
+//        self.view.frame.origin.y = 0
     }
     
     @objc func dismissKeyboard() {
@@ -196,10 +214,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             getTranslation(to: translatorURL, with: translationRequest, completionHandler: { [weak self] (result, error) in
                 if result != nil {
                     translationRequest.setResponseStatus?(.success)
-//                    self.appDelegate.saveContext()
                 } else {
                     translationRequest.setResponseStatus?(.failure)
-//                   self.appDelegate.saveContext()
                 }
                 self?.appDelegate.saveContext()
                 DispatchQueue.main.async {
@@ -279,7 +295,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.results.count
-//        return self.arrayOfResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -321,17 +336,12 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         
         let result = self.results[indexPath.row]
         
-        if result.responseStatus == "failure" {
+        if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
             getTranslation(to: (self.selectedTranslator?.url)!, with: result) { [weak self] (newResult, error) in
                 if newResult != nil {
                     newResult!.setResponseStatus?(.success)
-                    newResult!.translation = "SUCCESS"
-    //                self.appDelegate.saveContext()
                 } else {
-    //            To set conditions
-                    result.setResponseStatus?(.success)
-                    result.translation = "FAILURE"
-                    self?.appDelegate.saveContext()
+                    result.setResponseStatus?(.failure)
                 }
                 self?.appDelegate.saveContext()
                 DispatchQueue.main.async {
