@@ -60,9 +60,15 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         tableView.tableFooterView = UIView()
 
         self.inputField.delegate = self
-        self.scrollView.delegate = self
-        
+//        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height)
+//        setUpScrollView()
+//        self.scrollView.delegate = self
         setUpKeyboard()
+        
+        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapRecognizer)
+
+        tapRecognizer.cancelsTouchesInView = false
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
 //        sendButton.addTarget(self, action: #selector(dismissKeyboard), for: .touchUpInside)
@@ -73,7 +79,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 //    MARK: - Layout stuff
     func setUpNavBarAppearance() {
         view.backgroundColor = .white
-        navigationItem.title = "Translator"
+        navigationItem.title = "Results"
         navigationController?.navigationBar.prefersLargeTitles = true
         
         let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "list.dash"), style: .plain, target: self, action: #selector(moveToList))
@@ -117,15 +123,23 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         horizontalStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
     }
     
+    func setUpScrollView() {
+        scrollView = UIScrollView(frame: self.view.bounds)
+        
+//        scrollView.contentSize = tableView.contentSize // or tableView.bounds.size
+        scrollView.translatesAutoresizingMaskIntoConstraints = true
+        
+        scrollView.addSubview(tableView)
+        
+        view.addSubview(scrollView)
+    }
+    
     func setUpKeyboard() {
 //      The View Controller receives notification when the keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 
 //      The View Controller receives notification when the keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
-//        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-//        view.addGestureRecognizer(tapRecognizer)
         
     }
     
@@ -134,13 +148,11 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         
         let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
         scrollView.contentInset.bottom += adjustmentHeight
-//        self.view.frame.origin.y -= adjustmentHeight
-        self.view.frame.size.height -= adjustmentHeight
-//        if self.tableView.contentSize.height > keyboardFrame.cgRectValue.height {
-//            scrollView.contentInset.bottom += adjustmentHeight
-//        }
-        
         scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
+
+        self.view.frame.size.height -= adjustmentHeight
+//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: adjustmentHeight, right: 0)
+
     }
     
 //      [Return] button closes the keyboard
@@ -328,7 +340,7 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         print("ROW IS TAPPED!!!")
         
         let result = self.results[indexPath.row]
-        
+
         if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
             getTranslation(to: (self.selectedTranslator?.url)!, with: result) { [weak self] (newResult, error) in
                 if newResult != nil {
