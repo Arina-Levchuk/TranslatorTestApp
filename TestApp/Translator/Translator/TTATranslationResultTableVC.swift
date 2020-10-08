@@ -147,12 +147,19 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         guard let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
         let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
-        scrollView.contentInset.bottom += adjustmentHeight
-        scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
+//        scrollView.contentInset.bottom += adjustmentHeight
+//        scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
 
         self.view.frame.size.height -= adjustmentHeight
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: adjustmentHeight, right: 0)
-
+        
+//      TODO: to scroll tableview to the bottom if visibleArea > keyboard's height
+//      does NOT work (((((
+        
+        if (show == true) && (tableView.contentSize.height > keyboardFrame.cgRectValue.height) {
+            let index = IndexPath(row: self.results.count-1, section: 0)
+            self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
+        }
+    
     }
     
 //      [Return] button closes the keyboard
