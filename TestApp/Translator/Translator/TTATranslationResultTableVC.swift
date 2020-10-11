@@ -155,9 +155,11 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 //      TODO: to scroll tableview to the bottom if visibleArea > keyboard's height
 //      does NOT work (((((
         
-        if (show == true) && (tableView.contentSize.height > keyboardFrame.cgRectValue.height) {
-            let index = IndexPath(row: self.results.count-1, section: 0)
-            self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
+        if (show == true) && (tableView.contentSize.height > (keyboardFrame.cgRectValue.height + horizontalStackView.frame.height)) {
+            DispatchQueue.main.async {
+                let index = IndexPath(row: self.results.count-1, section: 0)
+                self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
+            }
         }
     
     }
