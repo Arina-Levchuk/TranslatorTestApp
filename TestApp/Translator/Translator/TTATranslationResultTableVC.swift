@@ -14,15 +14,23 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
 //  MARK: - Properties
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
+//    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    lazy var coreDataStack = TTACoreDataStack(modelName: "Translator")
+    
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
 
-    var results: [TTATranslatorResult] = []
+//    var results: [TTATranslatorResult] = []
+    
+//    lazy var fetchedResultsController: NSFetchedResultsController<TTATranslatorResult> = {
+//        let fetchRequest: NSFetchRequest<TTATranslatorResult> = TTATranslatorResult.fetchRequest()
+//
+//        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: <#T##NSManagedObjectContext#>, sectionNameKeyPath: <#T##String?#>, cacheName: <#T##String?#>)
+//    }()
     
     var scrollView = UIScrollView()
 
@@ -40,12 +48,12 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        do {
-            self.results = try context.fetch(TTATranslatorResult.fetchRequest())
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
-        
+//        do {
+//            self.results = try context.fetch(TTATranslatorResult.fetchRequest())
+//        } catch let error as NSError {
+//            print("Could not fetch. \(error), \(error.userInfo)")
+//        }
+    
         self.selectedTranslator = translators.first
         
         setUpNavBarAppearance()
@@ -155,12 +163,12 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 //      TODO: to scroll tableview to the bottom if visibleArea > keyboard's height
 //      does NOT work (((((
         
-        if (show == true) && (tableView.contentSize.height > (keyboardFrame.cgRectValue.height + horizontalStackView.frame.height)) {
-            DispatchQueue.main.async {
-                let index = IndexPath(row: self.results.count-1, section: 0)
-                self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
-            }
+//        if (show == true) && (tableView.contentSize.height > (keyboardFrame.cgRectValue.height + horizontalStackView.frame.height)) {
+        DispatchQueue.main.async {
+            let index = IndexPath(row: self.results.count-1, section: 0)
+            self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
         }
+//        }
     
     }
     
