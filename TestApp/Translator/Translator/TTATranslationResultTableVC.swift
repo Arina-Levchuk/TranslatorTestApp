@@ -29,7 +29,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         return fetchedResultsController
     }()
     
-    var dataSource: UITableViewDiffableDataSource<String?, TTATranslatorResult>?
+//    var dataSource: UITableViewDiffableDataSource<String?, TTATranslatorResult>?
     
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
@@ -66,9 +66,12 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         setUpTableView()
         
         self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
-
-        dataSource = setUpDataSource()
-        tableView.dataSource = dataSource
+        
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        
+//        dataSource = setUpDataSource()
+//        tableView.dataSource = dataSource
 //        self.tableView.delegate = self
         tableView.tableFooterView = UIView()
 
@@ -277,14 +280,14 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
     }
     
-    func setUpDataSource() -> UITableViewDiffableDataSource<String?, TTATranslatorResult> {
-        return UITableViewDiffableDataSource(tableView: tableView) { [unowned self] (tableView, indexPath, result) -> TTATranslatorResultCell? in
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath)
-            self.configure(cell: cell, for: indexPath)
-            return (cell as! TTATranslatorResultCell)
-        }
-    }
+//    func setUpDataSource() -> UITableViewDiffableDataSource<String?, TTATranslatorResult> {
+//        return UITableViewDiffableDataSource(tableView: tableView) { [unowned self] (tableView, indexPath, result) -> TTATranslatorResultCell? in
+//
+//            let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath)
+//            self.configure(cell: cell, for: indexPath)
+//            return (cell as! TTATranslatorResultCell)
+//        }
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("ROW IS TAPPED!!!")
@@ -304,23 +307,14 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
-        guard editingStyle == .delete else { return }
-
-        let result = self.fetchedResultsController.object(at: indexPath)
-        coreDataStack.managedContext.delete(result)
-        self.tableView.deleteRows(at: [indexPath], with: .fade)
-
-        coreDataStack.saveContext()
-    }
     
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
             let result = request
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
 //                self.tableView.reloadData()
-            }
+//            }
         
             if let queryArray = selectedTranslator?.queryDict {
                 for (key, value) in queryArray {
@@ -379,51 +373,36 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
 // MARK: - Extensions
 
-//extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
-//
-////        let result = self.fetchedResultsController.object(at: indexPath)
-////
-////        cell.cellTitle.text = result.textToTranslate
-////
-////        switch result.responseStatus {
-////        case TTATranslatorResult.ResponseStatus.success.description:
-////            cell.showSpinner(animate: false)
-////            cell.cellSubtitle.text = result.translation
-////        case TTATranslatorResult.ResponseStatus.failure.description:
-////            cell.showSpinner(animate: false)
-////            cell.cellSubtitle.text = "Error. Tap to retry"
-////            cell.cellSubtitle.textColor = .red
-////        default:
-////            cell.showSpinner(animate: true)
-////        }
-//
-//        return cell
-//    }
-//
-//
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return self.fetchedResultsController.sections?.count ?? 0
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        guard let sectionInfo = fetchedResultsController.sections?[section] else { return 0 }
-//        return sectionInfo.numberOfObjects
-//    }
-//
-//
-//    func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//
-//        guard editingStyle == .delete else { return }
-//
-//        let result = self.fetchedResultsController.object(at: indexPath)
-//        coreDataStack.managedContext.delete(result)
-//        self.tableView.deleteRows(at: [indexPath], with: .fade)
-//
-//        coreDataStack.saveContext()
-//    }
-//}
+extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
+
+        configure(cell: cell, for: indexPath)
+
+        return cell
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return self.fetchedResultsController.sections?.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sectionInfo = fetchedResultsController.sections?[section] else { return 0 }
+        return sectionInfo.numberOfObjects
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
+
+        guard editingStyle == .delete else { return }
+
+        let result = self.fetchedResultsController.object(at: indexPath)
+        coreDataStack.managedContext.delete(result)
+        self.tableView.deleteRows(at: [indexPath], with: .fade)
+
+        coreDataStack.saveContext()
+    }
+    
+}
     
 extension TTATranslationResultTableVC: TranslatorsListVCDelegate {
     func newTranslatorSelected(translator: TTATranslator) {
@@ -433,49 +412,51 @@ extension TTATranslationResultTableVC: TranslatorsListVCDelegate {
 
 extension TTATranslationResultTableVC: NSFetchedResultsControllerDelegate {
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        
-        var diff = NSDiffableDataSourceSnapshot<String?, TTATranslatorResult>()
-        
-        snapshot.sectionIdentifiers.forEach {section in
-            diff.appendSections([section as? String])
-            
-            let items = snapshot.itemIdentifiersInSection(withIdentifier: section).map { (objectId: Any) -> TTATranslatorResult in
-                let oid = objectId as! NSManagedObjectID
-                
-                return controller.managedObjectContext.object(with: oid) as! TTATranslatorResult
-            }
-            
-            diff.appendItems(items, toSection: section as? String)
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+
+        switch type {
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
+        case .update:
+            let cell = tableView.cellForRow(at: newIndexPath!) as! TTATranslatorResultCell
+            configure(cell: cell, for: indexPath!)
+        case .move:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
+            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        @unknown default:
+            print("Unexpected NSFetchedResultsChangeType")
         }
-        
-        dataSource?.apply(diff)
+    }
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
     
-//    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        tableView.beginUpdates()
-//    }
+//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
 //
-//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+//        var diff = NSDiffableDataSourceSnapshot<String?, TTATranslatorResult>()
 //
-//        switch type {
-//        case .insert:
-//            tableView.insertRows(at: [newIndexPath!], with: .automatic)
-//        case .delete:
-//            tableView.deleteRows(at: [indexPath!], with: .automatic)
-//        case .update:
-//            let cell = tableView.cellForRow(at: indexPath!) as! TTATranslatorResultCell
-//            configure(cell: cell, for: indexPath!)
-//        case .move:
-//            tableView.deleteRows(at: [indexPath!], with: .automatic)
-//            tableView.insertRows(at: [newIndexPath!], with: .automatic)
-//        @unknown default:
-//            print("Unexpected NSFetchedResultsChangeType")
+//        snapshot.sectionIdentifiers.forEach {section in
+//            diff.appendSections([section as? String])
+//
+//            let items = snapshot.itemIdentifiersInSection(withIdentifier: section).map { (objectId: Any) -> TTATranslatorResult in
+//                let oid = objectId as! NSManagedObjectID
+//
+//                return controller.managedObjectContext.object(with: oid) as! TTATranslatorResult
+//            }
+//
+//            diff.appendItems(items, toSection: section as? String)
 //        }
-//    }
 //
-//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        tableView.endUpdates()
+//        dataSource?.apply(diff)
 //    }
+    
+
 }
 
