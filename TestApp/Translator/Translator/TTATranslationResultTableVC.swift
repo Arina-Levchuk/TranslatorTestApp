@@ -208,7 +208,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
             self.navigationController?.pushViewController(TTATranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
         }
     }
-
+    
     @objc func didTapSendButton() {
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
@@ -223,7 +223,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
                 } else {
                     translationRequest.setResponseStatus?(.failure)
                 }
-                self!.coreDataStack.saveContext()
+                self?.coreDataStack.saveContext()
                 DispatchQueue.main.async {
 //                    self?.tableView.reloadData()
                     self?.inputField.text = nil
@@ -235,30 +235,9 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     
 // MARK: - Methods
     
-    func configure(cell: UITableViewCell, for indexPath: IndexPath) {
-        guard let cell = cell as? TTATranslatorResultCell else { return }
-        
-        let result = self.fetchedResultsController.object(at: indexPath)
-        
-        cell.cellTitle.text = result.textToTranslate
-        
-        switch result.responseStatus {
-        case TTATranslatorResult.ResponseStatus.success.description:
-            cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = result.translation
-        case TTATranslatorResult.ResponseStatus.failure.description:
-            cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = "Error. Tap to retry"
-            cell.cellSubtitle.textColor = .red
-        default:
-            cell.showSpinner(animate: true)
-        }
-
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("ROW IS TAPPED!!!")
-
+        print("Row is selected!")
+        
         let result = self.fetchedResultsController.object(at: indexPath)
 
         if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
@@ -274,14 +253,9 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-
-    
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
             let result = request
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
         
             if let queryArray = selectedTranslator?.queryDict {
                 for (key, value) in queryArray {
@@ -363,23 +337,13 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         return cell
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsController.sections?.count ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sectionInfo = fetchedResultsController.sections?[section] else { return 0 }
-        return sectionInfo.numberOfObjects
-    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
         guard editingStyle == .delete else { return }
-
         let result = self.fetchedResultsController.object(at: indexPath)
         coreDataStack.managedContext.delete(result)
-        self.tableView.deleteRows(at: [indexPath], with: .fade)
-
+        
         coreDataStack.saveContext()
     }
     
@@ -392,6 +356,15 @@ extension TTATranslationResultTableVC: TranslatorsListVCDelegate {
 }
 
 extension TTATranslationResultTableVC: NSFetchedResultsControllerDelegate {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return fetchedResultsController.sections?.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sectionInfo = fetchedResultsController.sections?[section] else { return 0 }
+        return sectionInfo.numberOfObjects
+    }
         
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -401,11 +374,11 @@ extension TTATranslationResultTableVC: NSFetchedResultsControllerDelegate {
 
         switch type {
         case .insert:
-            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
         case .delete:
-            tableView.deleteRows(at: [indexPath!], with: .automatic)
+            tableView.deleteRows(at: [indexPath!], with: .fade)
         case .update:
-            tableView.reloadRows(at: [indexPath!], with: .automatic)
+            tableView.reloadRows(at: [indexPath!], with: .fade)
         case .move:
             tableView.moveRow(at: indexPath!, to: newIndexPath!)
         @unknown default:
