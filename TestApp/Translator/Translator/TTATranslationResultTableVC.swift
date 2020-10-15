@@ -76,7 +76,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapRecognizer)
 
-        tapRecognizer.cancelsTouchesInView = false
+        tapRecognizer.cancelsTouchesInView = false // solves the problem of intefering with didSelectRow method
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
 
