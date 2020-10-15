@@ -29,14 +29,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         return fetchedResultsController
     }()
     
-//    var dataSource: UITableViewDiffableDataSource<String?, TTATranslatorResult>?
-    
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
-
-//    var scrollView = UIScrollView()
 
     var selectedTranslator: TTATranslator? = nil
 //    var delegate: RequestProtocolDelegate?
@@ -54,6 +50,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         
         do {
             try fetchedResultsController.performFetch()
+            tableView.reloadData()
         } catch let error as NSError {
             print("Fetching error: \(error), \(error.userInfo)")
         }
@@ -70,15 +67,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
-//        dataSource = setUpDataSource()
-//        tableView.dataSource = dataSource
-//        self.tableView.delegate = self
         tableView.tableFooterView = UIView()
 
         self.inputField.delegate = self
-//        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height)
-//        setUpScrollView()
-//        self.scrollView.delegate = self
+
         setUpKeyboard()
         
         let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -87,7 +79,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         tapRecognizer.cancelsTouchesInView = false
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
-//        sendButton.addTarget(self, action: #selector(dismissKeyboard), for: .touchUpInside)
 
     }
 
@@ -108,7 +99,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
-//        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor, constant: -2).isActive = true
         tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive = true
     }
     
@@ -138,18 +128,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         horizontalStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive    = true
         horizontalStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
     }
-    
-//    func setUpScrollView() {
-//        scrollView = UIScrollView(frame: self.view.bounds)
-//
-////        scrollView.contentSize = tableView.contentSize // or tableView.bounds.size
-//        scrollView.translatesAutoresizingMaskIntoConstraints = true
-//
-//        scrollView.addSubview(tableView)
-//
-//        view.addSubview(scrollView)
-//    }
-    
+        
     func setUpKeyboard() {
 //      The View Controller receives notification when the keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -165,18 +144,15 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
 //        scrollView.contentInset.bottom += adjustmentHeight
 //        scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
-
+        
         self.view.frame.size.height -= adjustmentHeight
         
-//      TODO: to scroll tableview to the bottom if visibleArea > keyboard's height
-//      does NOT work (((((
         
 //        if (show == true) && (tableView.contentSize.height > (keyboardFrame.cgRectValue.height + horizontalStackView.frame.height)) {
-//        DispatchQueue.main.async {
-//
-//            let index = IndexPath(row: self.tableView.numberOfRows(inSection: 0), section: 0)
-//            self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
-//        }
+//            DispatchQueue.main.async {
+//                let index = IndexPath(row: self.tableView.numberOfRows(inSection: 0), section: 0)
+//                self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
+//            }
 //        }
     
     }
@@ -280,15 +256,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
     }
     
-//    func setUpDataSource() -> UITableViewDiffableDataSource<String?, TTATranslatorResult> {
-//        return UITableViewDiffableDataSource(tableView: tableView) { [unowned self] (tableView, indexPath, result) -> TTATranslatorResultCell? in
-//
-//            let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath)
-//            self.configure(cell: cell, for: indexPath)
-//            return (cell as! TTATranslatorResultCell)
-//        }
-//    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("ROW IS TAPPED!!!")
 
@@ -376,14 +343,28 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
-
-        configure(cell: cell, for: indexPath)
+        
+        let result = self.fetchedResultsController.object(at: indexPath)
+        
+        cell.cellTitle.text = result.textToTranslate
+        
+        switch result.responseStatus {
+        case TTATranslatorResult.ResponseStatus.success.description:
+            cell.showSpinner(animate: false)
+            cell.cellSubtitle.text = result.translation
+        case TTATranslatorResult.ResponseStatus.failure.description:
+            cell.showSpinner(animate: false)
+            cell.cellSubtitle.text = "Error. Tap to retry"
+            cell.cellSubtitle.textColor = .red
+        default:
+            cell.showSpinner(animate: true)
+        }
 
         return cell
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.fetchedResultsController.sections?.count ?? 0
+        return fetchedResultsController.sections?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -411,7 +392,7 @@ extension TTATranslationResultTableVC: TranslatorsListVCDelegate {
 }
 
 extension TTATranslationResultTableVC: NSFetchedResultsControllerDelegate {
-    
+        
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
@@ -424,11 +405,9 @@ extension TTATranslationResultTableVC: NSFetchedResultsControllerDelegate {
         case .delete:
             tableView.deleteRows(at: [indexPath!], with: .automatic)
         case .update:
-            let cell = tableView.cellForRow(at: newIndexPath!) as! TTATranslatorResultCell
-            configure(cell: cell, for: indexPath!)
+            tableView.reloadRows(at: [indexPath!], with: .automatic)
         case .move:
-            tableView.deleteRows(at: [indexPath!], with: .automatic)
-            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            tableView.moveRow(at: indexPath!, to: newIndexPath!)
         @unknown default:
             print("Unexpected NSFetchedResultsChangeType")
         }
@@ -437,26 +416,6 @@ extension TTATranslationResultTableVC: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
-    
-//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-//
-//        var diff = NSDiffableDataSourceSnapshot<String?, TTATranslatorResult>()
-//
-//        snapshot.sectionIdentifiers.forEach {section in
-//            diff.appendSections([section as? String])
-//
-//            let items = snapshot.itemIdentifiersInSection(withIdentifier: section).map { (objectId: Any) -> TTATranslatorResult in
-//                let oid = objectId as! NSManagedObjectID
-//
-//                return controller.managedObjectContext.object(with: oid) as! TTATranslatorResult
-//            }
-//
-//            diff.appendItems(items, toSection: section as? String)
-//        }
-//
-//        dataSource?.apply(diff)
-//    }
-    
 
 }
 
