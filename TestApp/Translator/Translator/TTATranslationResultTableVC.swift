@@ -107,7 +107,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         horizontalStackView.axis = .horizontal
         horizontalStackView.distribution = .fillProportionally
         horizontalStackView.spacing = 10
-//      TODO: To make configurable horizontal stack height (to fit the inputField's height)
         horizontalStackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
 
         addElementsToHorizontalStack()
@@ -142,17 +141,15 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         guard let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
         let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
-//        scrollView.contentInset.bottom += adjustmentHeight
-//        scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
         
         self.view.frame.size.height -= adjustmentHeight
         
         
 //        if (show == true) && (tableView.contentSize.height > (keyboardFrame.cgRectValue.height + horizontalStackView.frame.height)) {
-//            DispatchQueue.main.async {
-//                let index = IndexPath(row: self.tableView.numberOfRows(inSection: 0), section: 0)
-//                self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
-//            }
+        DispatchQueue.main.async {
+            let index = IndexPath(row: (self.tableView.numberOfRows(inSection: 0) - 1), section: 0)
+            self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
+        }
 //        }
     
     }
@@ -179,8 +176,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         inputField.leftViewMode = .always
         inputField.leftView = spacer
-
-//      TODO: To make autoresizable inputField
         
     }
     
@@ -225,7 +220,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
                 }
                 self?.coreDataStack.saveContext()
                 DispatchQueue.main.async {
-//                    self?.tableView.reloadData()
                     self?.inputField.text = nil
                 }
             })
