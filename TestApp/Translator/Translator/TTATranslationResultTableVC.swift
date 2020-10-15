@@ -237,7 +237,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
             getTranslation(to: (self.selectedTranslator?.url)!, with: result) { [weak self] (newResult, error) in
                 if newResult != nil {
-                    newResult!.setResponseStatus?(.success)
+                    result.setResponseStatus?(.success)
                 } else {
                     result.setResponseStatus?(.failure)
                 }
