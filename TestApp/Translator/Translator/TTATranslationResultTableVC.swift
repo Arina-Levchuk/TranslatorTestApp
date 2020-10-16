@@ -34,7 +34,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     
-    
+    bjbsda
 
     var selectedTranslator: TTATranslator? = nil
 //    var delegate: RequestProtocolDelegate?
