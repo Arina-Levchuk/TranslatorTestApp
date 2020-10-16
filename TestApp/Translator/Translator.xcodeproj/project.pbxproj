@@ -30,7 +30,7 @@
 		841E1AAE24B49EFE0075CB49 /* TTADecodedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTADecodedResponse.swift; sourceTree = "<group>"; };
 		842C1E9A2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TTATranslatorResult+CoreDataClass.swift"; sourceTree = "<group>"; };
 		842C1E9B2517A4E70036DF59 /* TTATranslatorResult+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TTATranslatorResult+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		84457DD22534D0DD00F263F1 /* TTACoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TTACoreDataStack.swift; path = Translator/TTACoreDataStack.swift; sourceTree = SOURCE_ROOT; };
+		84457DD22534D0DD00F263F1 /* TTACoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TTACoreDataStack.swift; path = Model/TTACoreDataStack.swift; sourceTree = SOURCE_ROOT; };
 		845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTATranslatorsListVC.swift; sourceTree = "<group>"; };
 		84DD1A6624CF748B00147BC1 /* TTATranslatorResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTATranslatorResultCell.swift; sourceTree = "<group>"; };
 		84DE9F8E24016C65007E4239 /* Translator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Translator.app; sourceTree = BUILT_PRODUCTS_DIR; };
