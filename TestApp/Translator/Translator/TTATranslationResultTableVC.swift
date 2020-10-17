@@ -31,11 +31,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
+    let viewForInput = UIView()
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     
-    bjbsda
-
     var selectedTranslator: TTATranslator? = nil
 //    var delegate: RequestProtocolDelegate?
 //  MARK: - View lifecycle
@@ -60,8 +59,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         self.selectedTranslator = translators.first
         
         setUpNavBarAppearance()
-        
-        configureHorizontalStackView()
+        addSubViews()
+        configureViewForInput()
         setUpTableView()
         
         self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
@@ -95,24 +94,42 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         navigationItem.rightBarButtonItem = listOfTranslatorsButton
     }
     
-    func setUpTableView() {
+    func addSubViews() {
         view.addSubview(tableView)
+        view.addSubview(viewForInput)
+    }
+    
+    func setUpTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints                                             = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
-        tableView.bottomAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive = true
+//        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive      = true
+        tableView.bottomAnchor.constraint(equalTo: viewForInput.topAnchor).isActive              = true
+    }
+    
+    func configureViewForInput() {
+        viewForInput.addSubview(horizontalStackView)
+        configureHorizontalStackView()
+        
+        viewForInput.translatesAutoresizingMaskIntoConstraints                                             = false
+        viewForInput.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        viewForInput.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        viewForInput.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        viewForInput.topAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive = true
+
+        viewForInput.backgroundColor = .purple
     }
     
     func configureHorizontalStackView() {
-        view.addSubview(horizontalStackView)
+        addElementsToHorizontalStack()
+        setHorizontalStackConstraints()
+        
         horizontalStackView.axis = .horizontal
         horizontalStackView.distribution = .fillProportionally
         horizontalStackView.spacing = 10
         horizontalStackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
-
-        addElementsToHorizontalStack()
-        setStackViewConstraints()
+       
     }
     
     func addElementsToHorizontalStack() {
@@ -123,11 +140,11 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         horizontalStackView.addArrangedSubview(sendButton)
     }
     
-    func setStackViewConstraints() {
-        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                                           = false
-        horizontalStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive     = true
-        horizontalStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive    = true
-        horizontalStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+    func setHorizontalStackConstraints() {
+        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                                  = false
+        horizontalStackView.bottomAnchor.constraint(equalTo: viewForInput.bottomAnchor).isActive                    = true
+        horizontalStackView.leadingAnchor.constraint(equalTo: viewForInput.leadingAnchor, constant: 20).isActive    = true
+        horizontalStackView.trailingAnchor.constraint(equalTo: viewForInput.trailingAnchor, constant: -20).isActive = true
     }
         
     func setUpKeyboard() {
@@ -139,19 +156,28 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         
     }
     
+//    TO DO: tableView scrolling to the bottom
     func adjustInsetForKeyboardShow(_ show: Bool, notification: NSNotification) {
         guard let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
-        let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
+//            self.tableView.contentOffset = CGPoint(x: 0, y: tableView.contentOffset.y + keyboardFrame.cgRectValue.height)
+
+        if show == true {
+            self.viewForInput.frame.origin.y -= keyboardFrame.cgRectValue.height - 40
+        }
         
-        self.view.frame.size.height -= adjustmentHeight
+        
+        
+        
+        
+//        let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
         
         
 //        if (show == true) && (tableView.contentSize.height > (keyboardFrame.cgRectValue.height + horizontalStackView.frame.height)) {
-        DispatchQueue.main.async {
-            let index = IndexPath(row: (self.tableView.numberOfRows(inSection: 0) - 1), section: 0)
-            self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
-        }
+//        DispatchQueue.main.async {
+//            let index = IndexPath(row: (self.tableView.numberOfRows(inSection: 0) - 1), section: 0)
+//            self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
+//        }
 //        }
     
     }
