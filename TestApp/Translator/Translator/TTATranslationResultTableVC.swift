@@ -115,10 +115,10 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         viewForInput.translatesAutoresizingMaskIntoConstraints                                             = false
         viewForInput.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         viewForInput.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        viewForInput.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
-        viewForInput.topAnchor.constraint(equalTo: horizontalStackView.topAnchor).isActive = true
+        viewForInput.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        viewForInput.topAnchor.constraint(equalTo: horizontalStackView.topAnchor, constant: -2).isActive = true
 
-        viewForInput.backgroundColor = .purple
+//        viewForInput.backgroundColor = .purple
     }
     
     func configureHorizontalStackView() {
@@ -163,7 +163,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 //            self.tableView.contentOffset = CGPoint(x: 0, y: tableView.contentOffset.y + keyboardFrame.cgRectValue.height)
 
         if show == true {
-            self.viewForInput.frame.origin.y -= keyboardFrame.cgRectValue.height - 40
+//            self.viewForInput.frame.origin.y -= keyboardFrame.cgRectValue.height - 30
+            
         }
         
         
