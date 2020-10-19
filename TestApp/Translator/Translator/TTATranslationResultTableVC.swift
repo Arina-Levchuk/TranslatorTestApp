@@ -31,7 +31,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
-    let viewForInput = UIView()
+    let inputContainerView = UIView()
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     
@@ -60,7 +60,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         
         setUpNavBarAppearance()
         addSubViews()
-        configureViewForInput()
+        configureInputView()
         setUpTableView()
         
         self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
@@ -96,7 +96,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     
     func addSubViews() {
         view.addSubview(tableView)
-        view.addSubview(viewForInput)
+        view.addSubview(inputContainerView)
     }
     
     func setUpTableView() {
@@ -105,20 +105,23 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
 //        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive      = true
-        tableView.bottomAnchor.constraint(equalTo: viewForInput.topAnchor).isActive              = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive              = true
     }
     
-    func configureViewForInput() {
-        viewForInput.addSubview(horizontalStackView)
+    func configureInputView() {
+        inputContainerView.addSubview(horizontalStackView)
         configureHorizontalStackView()
         
-        viewForInput.translatesAutoresizingMaskIntoConstraints                                             = false
-        viewForInput.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        viewForInput.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        viewForInput.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        viewForInput.topAnchor.constraint(equalTo: horizontalStackView.topAnchor, constant: -2).isActive = true
-
-//        viewForInput.backgroundColor = .purple
+        inputContainerView.translatesAutoresizingMaskIntoConstraints                                             = false
+        inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        inputContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        
+        inputContainerView.centerXAnchor.constraint(equalTo: horizontalStackView.centerXAnchor).isActive = true
+        inputContainerView.centerYAnchor.constraint(equalTo: horizontalStackView.centerYAnchor).isActive = true
+        
+        inputContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        inputContainerView.backgroundColor = .purple
     }
     
     func configureHorizontalStackView() {
@@ -129,7 +132,6 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         horizontalStackView.distribution = .fillProportionally
         horizontalStackView.spacing = 10
         horizontalStackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
-       
     }
     
     func addElementsToHorizontalStack() {
@@ -141,10 +143,12 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     }
     
     func setHorizontalStackConstraints() {
-        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                                  = false
-        horizontalStackView.bottomAnchor.constraint(equalTo: viewForInput.bottomAnchor).isActive                    = true
-        horizontalStackView.leadingAnchor.constraint(equalTo: viewForInput.leadingAnchor, constant: 20).isActive    = true
-        horizontalStackView.trailingAnchor.constraint(equalTo: viewForInput.trailingAnchor, constant: -20).isActive = true
+        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                               = false
+//        horizontalStackView.topAnchor.constraint(equalTo: inputContainerView.topAnchor, constant: 3).isActive             = true
+//        horizontalStackView.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -3).isActive      = true
+        horizontalStackView.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive    = true
+        horizontalStackView.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
+
     }
         
     func setUpKeyboard() {
@@ -160,12 +164,20 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     func adjustInsetForKeyboardShow(_ show: Bool, notification: NSNotification) {
         guard let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
-//            self.tableView.contentOffset = CGPoint(x: 0, y: tableView.contentOffset.y + keyboardFrame.cgRectValue.height)
-
-        if show == true {
-//            self.viewForInput.frame.origin.y -= keyboardFrame.cgRectValue.height - 30
             
-        }
+
+         if show == true {
+            let visibleArea = self.tableView.contentSize.height
+            guard visibleArea > (keyboardFrame.cgRectValue.height + self.inputContainerView.bounds.height) else {
+                return
+            }
+            self.tableView.contentOffset = CGPoint(x: 0, y: keyboardFrame.cgRectValue.height)
+//            self.inputContainerView.frame.origin.y = 0 - keyboardFrame.cgRectValue.height
+            
+         } else {
+            self.tableView.contentOffset = CGPoint(x: 0, y: 0)
+            self.inputContainerView.frame.origin.y = 0
+         }
         
         
         
