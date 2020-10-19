@@ -115,7 +115,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         inputContainerView.translatesAutoresizingMaskIntoConstraints                                             = false
         inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        inputContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        inputContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         inputContainerView.centerXAnchor.constraint(equalTo: horizontalStackView.centerXAnchor).isActive = true
         inputContainerView.centerYAnchor.constraint(equalTo: horizontalStackView.centerYAnchor).isActive = true
