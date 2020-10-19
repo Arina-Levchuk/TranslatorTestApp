@@ -23,17 +23,25 @@ public class TTATranslatorResult: NSManagedObject {
     }
 
     var setResponseStatus: ((_ status: ResponseStatus?) -> Void)?
+    
+    func setTimeStamp() -> Double {
+        let currentDate = Date()
+        self.timeStamp = currentDate.timeIntervalSince1970
+        return timeStamp
+    }
 
     convenience init(textToTranslate: String, translation: String? = nil, responseStatus: ResponseStatus? = nil, insertIntoManagedObjectContext context: NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: "TTATranslatorResult", in: context)!
         self.init(entity: entity, insertInto: context)
         self.textToTranslate = textToTranslate
+        self.timeStamp = setTimeStamp()
+        
         self.translation = translation
         self.responseStatus = responseStatus?.rawValue
-
-        setResponseStatus = { status in
+        
+        setResponseStatus = { [weak self] status in
             if let status = status {
-                self.responseStatus = status.description
+                self?.responseStatus = status.description
             } else {
                 return
             }

@@ -20,5 +20,5 @@ extension TTATranslatorResult {
     @NSManaged public var responseStatus: String?
     @NSManaged public var textToTranslate: String
     @NSManaged public var translation: String?
-
+    @NSManaged public var timeStamp: Double
 }

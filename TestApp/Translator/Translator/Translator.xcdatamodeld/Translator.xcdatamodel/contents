@@ -3,9 +3,10 @@
     <entity name="TTATranslatorResult" representedClassName=".TTATranslatorResult" syncable="YES">
         <attribute name="responseStatus" optional="YES" attributeType="String"/>
         <attribute name="textToTranslate" attributeType="String"/>
+        <attribute name="timeStamp" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="translation" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="TTATranslatorResult" positionX="-36" positionY="9" width="128" height="88"/>
+        <element name="TTATranslatorResult" positionX="-36" positionY="9" width="128" height="103"/>
     </elements>
 </model>

@@ -19,7 +19,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     lazy var fetchedResultsController: NSFetchedResultsController<TTATranslatorResult> = {
         let fetchRequest: NSFetchRequest<TTATranslatorResult> = TTATranslatorResult.fetchRequest()
         
-        let sort = NSSortDescriptor(key: #keyPath(TTATranslatorResult.textToTranslate), ascending: true)
+        let sort = NSSortDescriptor(key: #keyPath(TTATranslatorResult.timeStamp), ascending: true)
         fetchRequest.sortDescriptors = [sort]
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
