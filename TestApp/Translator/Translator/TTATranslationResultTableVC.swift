@@ -35,6 +35,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     
+    var inputViewBottomConstraint: NSLayoutConstraint?
+    
     var selectedTranslator: TTATranslator? = nil
 //    var delegate: RequestProtocolDelegate?
 //  MARK: - View lifecycle
@@ -115,7 +117,11 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         inputContainerView.translatesAutoresizingMaskIntoConstraints                                             = false
         inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        inputContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+//        inputContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
+        
+        view.addConstraint(inputViewBottomConstraint!)
         
         inputContainerView.centerXAnchor.constraint(equalTo: horizontalStackView.centerXAnchor).isActive = true
         inputContainerView.centerYAnchor.constraint(equalTo: horizontalStackView.centerYAnchor).isActive = true
@@ -202,9 +208,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         self.tableView.contentInset = contentInsets
         tableView.scrollIndicatorInsets = contentInsets
         
-//        self.view.frame.origin.y -= keyboardSize.height
+        inputViewBottomConstraint?.constant = -keyboardSize.height
         
-//        tableView.contentOffset = CGPoint(x: 0, y: (inputContainerView.frame.origin.y - keyboardSize.height))
         let visibleArea = tableView.contentSize.height - keyboardSize.height - inputContainerView.frame.height
         tableView.contentOffset = CGPoint(x: 0, y: visibleArea)
     
@@ -212,13 +217,12 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
         
-        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//        self.inputContainerView.frame.origin.y = 0
+        self.tableView.contentInset = UIEdgeInsets.zero
         
-        tableView.contentOffset = CGPoint(x: 0, y: 0)
+        tableView.contentOffset = CGPoint.zero
         
-//        self.view.frame.origin.y = 0
-
+        inputViewBottomConstraint?.constant = 0
+        
     }
     
     @objc func dismissKeyboard() {
