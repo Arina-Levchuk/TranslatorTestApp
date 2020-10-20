@@ -72,7 +72,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
         self.inputField.delegate = self
 
-        setUpKeyboard()
+        setUpKeyboardShowing()
         
         let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapRecognizer)
@@ -151,48 +151,13 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
     }
         
-    func setUpKeyboard() {
+    func setUpKeyboardShowing() {
 //      The View Controller receives notification when the keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 
 //      The View Controller receives notification when the keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-    }
-    
-//    TO DO: tableView scrolling to the bottom
-    func adjustInsetForKeyboardShow(_ show: Bool, notification: NSNotification) {
-        guard let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        
-            
-
-         if show == true {
-            let visibleArea = self.tableView.contentSize.height
-            guard visibleArea > (keyboardFrame.cgRectValue.height + self.inputContainerView.bounds.height) else {
-                return
-            }
-            self.tableView.contentOffset = CGPoint(x: 0, y: keyboardFrame.cgRectValue.height)
-//            self.inputContainerView.frame.origin.y = 0 - keyboardFrame.cgRectValue.height
-            
-         } else {
-            self.tableView.contentOffset = CGPoint(x: 0, y: 0)
-            self.inputContainerView.frame.origin.y = 0
-         }
-        
-        
-        
-        
-        
-//        let adjustmentHeight = (keyboardFrame.cgRectValue.height) * (show ? 1 : -1)
-        
-        
-//        if (show == true) && (tableView.contentSize.height > (keyboardFrame.cgRectValue.height + horizontalStackView.frame.height)) {
-//        DispatchQueue.main.async {
-//            let index = IndexPath(row: (self.tableView.numberOfRows(inSection: 0) - 1), section: 0)
-//            self.tableView.scrollToRow(at: index, at: .bottom, animated: false)
-//        }
-//        }
-    
     }
     
 //      [Return] button closes the keyboard
@@ -218,6 +183,8 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         inputField.leftViewMode = .always
         inputField.leftView = spacer
         
+//        inputField.adjustsFontSizeToFitWidth = true
+        
     }
     
     func setUpSendButton() {
@@ -228,11 +195,30 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 // MARK: - Selectors
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
-        adjustInsetForKeyboardShow(true, notification: notification)
+        
+        guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: (keyboardSize.height + inputContainerView.frame.height), right: 0)
+        self.tableView.contentInset = contentInsets
+        tableView.scrollIndicatorInsets = contentInsets
+        
+//        self.view.frame.origin.y -= keyboardSize.height
+        
+//        tableView.contentOffset = CGPoint(x: 0, y: (inputContainerView.frame.origin.y - keyboardSize.height))
+        let visibleArea = tableView.contentSize.height - keyboardSize.height - inputContainerView.frame.height
+        tableView.contentOffset = CGPoint(x: 0, y: visibleArea)
+    
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
-        adjustInsetForKeyboardShow(false, notification: notification)
+        
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//        self.inputContainerView.frame.origin.y = 0
+        
+        tableView.contentOffset = CGPoint(x: 0, y: 0)
+        
+//        self.view.frame.origin.y = 0
+
     }
     
     @objc func dismissKeyboard() {
@@ -372,7 +358,6 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
         return cell
     }
     
-    
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
         guard editingStyle == .delete else { return }
@@ -426,4 +411,3 @@ extension TTATranslationResultTableVC: NSFetchedResultsControllerDelegate {
     }
 
 }
-
