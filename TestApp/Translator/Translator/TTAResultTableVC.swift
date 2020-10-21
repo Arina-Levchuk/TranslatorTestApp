@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
-class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
+class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 
 //  MARK: - Properties
     
@@ -208,7 +208,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
         self.tableView.contentInset = contentInsets
         tableView.scrollIndicatorInsets = contentInsets
         
-        inputViewBottomConstraint?.constant = -keyboardSize.height
+        inputViewBottomConstraint?.constant = -keyboardSize.height + view.safeAreaInsets.bottom // moves up the inputContainerView
         
         let visibleArea = tableView.contentSize.height - keyboardSize.height - inputContainerView.frame.height
         tableView.contentOffset = CGPoint(x: 0, y: visibleArea)
@@ -339,7 +339,7 @@ class TTATranslationResultTableVC: UIViewController, UITextFieldDelegate {
 
 // MARK: - Extensions
 
-extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegate {
+extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
         
@@ -373,13 +373,13 @@ extension TTATranslationResultTableVC: UITableViewDataSource, UITableViewDelegat
     
 }
     
-extension TTATranslationResultTableVC: TranslatorsListVCDelegate {
+extension TTAResultTableVC: TranslatorsListVCDelegate {
     func newTranslatorSelected(translator: TTATranslator) {
         self.selectedTranslator = translator
     }
 }
 
-extension TTATranslationResultTableVC: NSFetchedResultsControllerDelegate {
+extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultsController.sections?.count ?? 0

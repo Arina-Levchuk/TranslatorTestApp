@@ -20,7 +20,7 @@
 		84DE9F9224016C65007E4239 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9124016C65007E4239 /* AppDelegate.swift */; };
 		84DE9F9424016C65007E4239 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9324016C65007E4239 /* SceneDelegate.swift */; };
 		84DE9F9C24016C65007E4239 /* Translator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9A24016C65007E4239 /* Translator.xcdatamodeld */; };
-		84DE9FAD2402BB79007E4239 /* TTATranslationResultTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9FAC2402BB79007E4239 /* TTATranslationResultTableVC.swift */; };
+		84DE9FAD2402BB79007E4239 /* TTAResultTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9FAC2402BB79007E4239 /* TTAResultTableVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 		84DE9F9D24016C67007E4239 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84DE9FA024016C67007E4239 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84DE9FA224016C67007E4239 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84DE9FAC2402BB79007E4239 /* TTATranslationResultTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTATranslationResultTableVC.swift; sourceTree = "<group>"; };
+		84DE9FAC2402BB79007E4239 /* TTAResultTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTAResultTableVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +57,7 @@
 		84003587245200B300FB3BA1 /* VC */ = {
 			isa = PBXGroup;
 			children = (
-				84DE9FAC2402BB79007E4239 /* TTATranslationResultTableVC.swift */,
+				84DE9FAC2402BB79007E4239 /* TTAResultTableVC.swift */,
 				845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */,
 			);
 			name = VC;
@@ -188,7 +188,7 @@
 				842C1E9D2517A4E70036DF59 /* TTATranslatorResult+CoreDataProperties.swift in Sources */,
 				8403EFBB241D4A1A0061765C /* TTATranslator.swift in Sources */,
 				841E1AAB24B49E640075CB49 /* URLExtension.swift in Sources */,
-				84DE9FAD2402BB79007E4239 /* TTATranslationResultTableVC.swift in Sources */,
+				84DE9FAD2402BB79007E4239 /* TTAResultTableVC.swift in Sources */,
 				842C1E9C2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift in Sources */,
 				840035862450CADC00FB3BA1 /* DataSourceProvider.swift in Sources */,
 				84DD1A6724CF748B00147BC1 /* TTATranslatorResultCell.swift in Sources */,
