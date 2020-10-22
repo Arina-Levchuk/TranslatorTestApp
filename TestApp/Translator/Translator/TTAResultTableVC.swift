@@ -15,10 +15,13 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 //  MARK: - Properties
     
     lazy var coreDataStack = TTACoreDataStack(modelName: "Translator")
+<<<<<<< HEAD:TestApp/Translator/Translator/TTAResultTableVC.swift
     
     
     testtesttest
     
+=======
+>>>>>>> 95fb0ba... test commit #3:TestApp/Translator/Translator/TTATranslationResultTableVC.swift
     
     lazy var fetchedResultsController: NSFetchedResultsController<TTATranslatorResult> = {
         let fetchRequest: NSFetchRequest<TTATranslatorResult> = TTATranslatorResult.fetchRequest()
