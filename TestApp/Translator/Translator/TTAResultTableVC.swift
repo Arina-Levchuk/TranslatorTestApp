@@ -16,6 +16,10 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
     
     lazy var coreDataStack = TTACoreDataStack(modelName: "Translator")
     
+    
+    testtesttest
+    
+    
     lazy var fetchedResultsController: NSFetchedResultsController<TTATranslatorResult> = {
         let fetchRequest: NSFetchRequest<TTATranslatorResult> = TTATranslatorResult.fetchRequest()
         
