@@ -191,7 +191,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         inputField.leftViewMode = .always
         inputField.leftView = spacer
         
-//        inputField.adjustsFontSizeToFitWidth = true
+        inputField.adjustsFontSizeToFitWidth = true
         
     }
     
