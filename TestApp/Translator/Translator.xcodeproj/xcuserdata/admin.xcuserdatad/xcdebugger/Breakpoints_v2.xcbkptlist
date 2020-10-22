@@ -14,13 +14,8 @@
             filePath = "Translator/TTATranslationResultTableVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-<<<<<<< HEAD
             startingLineNumber = "400"
             endingLineNumber = "400"
-=======
-            startingLineNumber = "372"
-            endingLineNumber = "372"
->>>>>>> 95fb0ba... test commit #3
             landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -35,13 +30,8 @@
             filePath = "Translator/TTATranslationResultTableVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-<<<<<<< HEAD
             startingLineNumber = "394"
             endingLineNumber = "394"
-=======
-            startingLineNumber = "366"
-            endingLineNumber = "366"
->>>>>>> 95fb0ba... test commit #3
             landmarkName = "controllerWillChangeContent(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -56,13 +46,8 @@
             filePath = "Translator/TTATranslationResultTableVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-<<<<<<< HEAD
             startingLineNumber = "414"
             endingLineNumber = "414"
-=======
-            startingLineNumber = "386"
-            endingLineNumber = "386"
->>>>>>> 95fb0ba... test commit #3
             landmarkName = "controllerDidChangeContent(_:)"
             landmarkType = "7">
          </BreakpointContent>

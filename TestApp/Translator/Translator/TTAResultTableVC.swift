@@ -15,11 +15,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 //  MARK: - Properties
     
     lazy var coreDataStack = TTACoreDataStack(modelName: "Translator")
-    
-    
-    testtesttest
-    
-    
+
     lazy var fetchedResultsController: NSFetchedResultsController<TTATranslatorResult> = {
         let fetchRequest: NSFetchRequest<TTATranslatorResult> = TTATranslatorResult.fetchRequest()
         
@@ -133,7 +129,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         inputContainerView.centerYAnchor.constraint(equalTo: horizontalStackView.centerYAnchor).isActive = true
         
         inputContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        inputContainerView.backgroundColor = .purple
+//        inputContainerView.backgroundColor = .systemPurple
     }
     
     func configureHorizontalStackView() {
