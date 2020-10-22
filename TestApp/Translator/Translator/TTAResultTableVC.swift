@@ -1,5 +1,5 @@
 //
-//  TTATranslationResultTableVC.swift
+//  TTAResultTableVC.swift
 //  Translator
 //
 //  Created by admin on 2/23/20.
@@ -204,24 +204,38 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
         guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
+        let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double)
+//        print(keyboardAnimationDuration)
+        
+        UIView.animate(withDuration: keyboardAnimationDuration!) {
+            self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
+            self.view.layoutIfNeeded()
+        }
+        
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: (keyboardSize.height + inputContainerView.frame.height), right: 0)
         self.tableView.contentInset = contentInsets
         tableView.scrollIndicatorInsets = contentInsets
         
-        inputViewBottomConstraint?.constant = -keyboardSize.height + view.safeAreaInsets.bottom // moves up the inputContainerView
-        
-        let visibleArea = tableView.contentSize.height - keyboardSize.height - inputContainerView.frame.height
+        let visibleArea = tableView.contentSize.height - (keyboardSize.height + inputContainerView.frame.height)
+
         tableView.contentOffset = CGPoint(x: 0, y: visibleArea)
-    
+
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
+        
+        guard let userInfo = notification.userInfo else { return }
+        
+        let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double)
         
         self.tableView.contentInset = UIEdgeInsets.zero
         
         tableView.contentOffset = CGPoint.zero
         
-        inputViewBottomConstraint?.constant = 0
+        UIView.animate(withDuration: keyboardAnimationDuration!) {
+            self.inputViewBottomConstraint?.constant = 0
+            self.view.layoutIfNeeded()
+        }
         
     }
     
