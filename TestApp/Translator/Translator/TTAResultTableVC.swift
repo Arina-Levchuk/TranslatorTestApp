@@ -71,15 +71,16 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         self.tableView.delegate = self
         
         tableView.tableFooterView = UIView()
+        tableView.keyboardDismissMode = .onDrag
 
         self.inputField.delegate = self
 
         setUpKeyboardShowing()
         
-        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tapRecognizer)
-
-        tapRecognizer.cancelsTouchesInView = false // solves the problem of intefering with didSelectRow method
+//        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        view.addGestureRecognizer(tapRecognizer)
+//
+//        tapRecognizer.cancelsTouchesInView = false // solves the problem of intefering with didSelectRow method
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
 
@@ -87,6 +88,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 
 
 //    MARK: - Layout stuff
+    
     func setUpNavBarAppearance() {
         view.backgroundColor = .white
         navigationItem.title = "Results"
@@ -198,16 +200,21 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        UIView.animate(withDuration: 0.1) {
+            self.inputField.invalidateIntrinsicContentSize()
+            self.view.layoutIfNeeded()
+        }
+    }
 // MARK: - Selectors
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
         
-        guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-        
-        let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double)
+        guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
+    
 //        print(keyboardAnimationDuration)
         
-        UIView.animate(withDuration: keyboardAnimationDuration!) {
+        UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
             self.view.layoutIfNeeded()
         }
@@ -224,15 +231,13 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
         
-        guard let userInfo = notification.userInfo else { return }
-        
-        let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double)
+        guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
         
         self.tableView.contentInset = UIEdgeInsets.zero
         
         tableView.contentOffset = CGPoint.zero
         
-        UIView.animate(withDuration: keyboardAnimationDuration!) {
+        UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
             self.view.layoutIfNeeded()
         }
