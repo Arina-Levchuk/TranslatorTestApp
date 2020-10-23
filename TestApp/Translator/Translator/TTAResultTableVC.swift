@@ -129,7 +129,18 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         inputContainerView.centerYAnchor.constraint(equalTo: horizontalStackView.centerYAnchor).isActive = true
         
         inputContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        inputContainerView.backgroundColor = .systemPurple
+        
+        inputContainerView.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        inputContainerView.insertSubview(blurView, at: 0)
+        
+        NSLayoutConstraint.activate([
+            blurView.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor),
+            blurView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor),
+        ])
+        
     }
     
     func configureHorizontalStackView() {
@@ -223,10 +234,16 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         self.tableView.contentInset = contentInsets
         tableView.scrollIndicatorInsets = contentInsets
         
-        let visibleArea = tableView.contentSize.height - (keyboardSize.height + inputContainerView.frame.height)
-
-        tableView.contentOffset = CGPoint(x: 0, y: visibleArea)
-
+        if tableView.contentSize.height > (keyboardSize.height + inputContainerView.frame.height) {
+            tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+        }
+//
+//        let visibleArea = tableView.contentSize.height - (keyboardSize.height + inputContainerView.frame.height)
+//
+//        if visibleArea < tableView.contentSize.height {
+//            tableView.contentOffset = CGPoint(x: 0, y: visibleArea)
+//        }
+        
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
@@ -234,8 +251,10 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
         
         self.tableView.contentInset = UIEdgeInsets.zero
+        self.tableView.scrollIndicatorInsets = tableView.contentInset
         
-        tableView.contentOffset = CGPoint.zero
+//        tableView.contentOffset = CGPoint(x: 0, y: inputContainerView.frame.height)
+        tableView.contentOffset = CGPoint(x: 0, y: 0)
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
@@ -283,18 +302,18 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         print("Row is selected!")
         
         let result = self.fetchedResultsController.object(at: indexPath)
+        
+        guard result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description else { return }
 
-        if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
-            getTranslation(to: (self.selectedTranslator?.url)!, with: result) { [weak self] (newResult, error) in
-                if newResult != nil {
-                    result.setResponseStatus?(.success)
-                } else {
-                    result.setResponseStatus?(.failure)
-                }
-                self!.coreDataStack.saveContext()
+        getTranslation(to: (self.selectedTranslator?.url)!, with: result) { [weak self] (newResult, error) in
+            if newResult != nil {
+                result.setResponseStatus?(.success)
+            } else {
+                result.setResponseStatus?(.failure)
             }
-
+            self!.coreDataStack.saveContext()
         }
+    
     }
     
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
