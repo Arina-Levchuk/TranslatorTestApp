@@ -24,6 +24,8 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
         
+//        NSFetchedResultsController<TTATranslatorResult>.deleteCache(withName: nil)
+        
         fetchedResultsController.delegate = self
         
         return fetchedResultsController
@@ -71,7 +73,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         self.tableView.delegate = self
         
         tableView.tableFooterView = UIView()
-        tableView.keyboardDismissMode = .onDrag
+//        tableView.keyboardDismissMode = .onDrag
 
         self.inputField.delegate = self
 
@@ -108,8 +110,9 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
-//        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive      = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive              = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive       = true
+        
+        setUpDefaultTableViewInsets()
     }
     
     func configureInputView() {
@@ -217,12 +220,13 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
             self.view.layoutIfNeeded()
         }
     }
+    
+
 // MARK: - Selectors
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
         
         guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
-    
 //        print(keyboardAnimationDuration)
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
@@ -237,12 +241,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         if tableView.contentSize.height > (keyboardSize.height + inputContainerView.frame.height) {
             tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
         }
-//
-//        let visibleArea = tableView.contentSize.height - (keyboardSize.height + inputContainerView.frame.height)
-//
-//        if visibleArea < tableView.contentSize.height {
-//            tableView.contentOffset = CGPoint(x: 0, y: visibleArea)
-//        }
         
     }
     
@@ -250,11 +248,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
         guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
         
-        self.tableView.contentInset = UIEdgeInsets.zero
-        self.tableView.scrollIndicatorInsets = tableView.contentInset
-        
-//        tableView.contentOffset = CGPoint(x: 0, y: inputContainerView.frame.height)
-        tableView.contentOffset = CGPoint(x: 0, y: 0)
+        setUpDefaultTableViewInsets()
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
@@ -262,6 +256,27 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         }
         
     }
+    
+    func setUpDefaultTableViewInsets() {
+        
+        let visibleArea = view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height
+//        tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+        
+        if visibleArea < tableView.contentSize.height {
+//            let dif = tableView.contentSize.height - visibleArea
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+            tableView.scrollIndicatorInsets = tableView.contentInset
+            
+            tableView.contentOffset = CGPoint(x: 0, y: inputContainerView.frame.height)
+        } else {
+            tableView.contentInset = UIEdgeInsets.zero
+            tableView.scrollIndicatorInsets = tableView.contentInset
+            
+            tableView.contentOffset = CGPoint.zero
+        }
+
+    }
+    
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
