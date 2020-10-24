@@ -40,7 +40,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
     var inputViewBottomConstraint: NSLayoutConstraint?
     
     var selectedTranslator: TTATranslator? = nil
-//    var delegate: RequestProtocolDelegate?
+
 //  MARK: - View lifecycle
     
     var translators: [TTATranslator] = [
@@ -66,6 +66,9 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         addSubViews()
         configureInputView()
         setUpTableView()
+
+//        self.automaticallyAdjustsScrollViewInsets = false - deprecateds
+//        self.tableView.contentInsetAdjustmentBehavior = .never
         
         self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
         
@@ -111,8 +114,10 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive       = true
-        
-        setUpDefaultTableViewInsets()
+
+//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+//        tableView.scrollIndicatorInsets = tableView.contentInset
+
     }
     
     func configureInputView() {
@@ -248,7 +253,10 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
         guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
         
-        setUpDefaultTableViewInsets()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
+        
+        tableView.contentOffset = CGPoint.zero
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
@@ -256,27 +264,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         }
         
     }
-    
-    func setUpDefaultTableViewInsets() {
-        
-        let visibleArea = view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height
-//        tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
-        
-        if visibleArea < tableView.contentSize.height {
-//            let dif = tableView.contentSize.height - visibleArea
-            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
-            tableView.scrollIndicatorInsets = tableView.contentInset
-            
-            tableView.contentOffset = CGPoint(x: 0, y: inputContainerView.frame.height)
-        } else {
-            tableView.contentInset = UIEdgeInsets.zero
-            tableView.scrollIndicatorInsets = tableView.contentInset
-            
-            tableView.contentOffset = CGPoint.zero
-        }
-
-    }
-    
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
@@ -404,6 +391,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         case TTATranslatorResult.ResponseStatus.success.description:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = result.translation
+            cell.cellSubtitle.textColor = .black
         case TTATranslatorResult.ResponseStatus.failure.description:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = "Error. Tap to retry"
