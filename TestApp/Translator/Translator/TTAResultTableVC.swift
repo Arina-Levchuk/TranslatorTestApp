@@ -24,8 +24,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
         
-//        NSFetchedResultsController<TTATranslatorResult>.deleteCache(withName: nil)
-        
         fetchedResultsController.delegate = self
         
         return fetchedResultsController
@@ -47,8 +45,8 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
                                             TTATranslator(name: "Yoda translator", url: URL(string: "https://api.funtranslations.com/translate/yoda.json")),
                                             TTATranslator(name: "Klingon translator", url: URL(string: "https://api.funtranslations.com/translate/klingon.json")),
                                             TTATranslator(name: "Shakespeare translator", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json")),
-                                            TTATranslator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e", "lang": "en-ru"])
-    ]
+                                            TTATranslator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e", "lang": "en-ru"]),
+                                            TTATranslator(name: "Valyrian translator", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"))]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,13 +65,14 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         configureInputView()
         setUpTableView()
 
-//        self.automaticallyAdjustsScrollViewInsets = false - deprecateds
+//        self.automaticallyAdjustsScrollViewInsets = false - deprecated
 //        self.tableView.contentInsetAdjustmentBehavior = .never
         
         self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
         
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        
         
         tableView.tableFooterView = UIView()
 //        tableView.keyboardDismissMode = .onDrag
@@ -92,7 +91,11 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
     }
 
 
-//    MARK: - Layout stuff
+//    MARK: - Layout
+    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+    }
     
     func setUpNavBarAppearance() {
         view.backgroundColor = .white
@@ -113,7 +116,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive       = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive      = true
 
 //        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
 //        tableView.scrollIndicatorInsets = tableView.contentInset
@@ -193,7 +196,19 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         return true
     }
     
-//  MARK: - View
+    func setUpTableViewScroll() {
+        
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
+       
+//      TODO: recheck with 1 cell before acvieving the if condition
+        if tableView.contentSize.height > (view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height) {
+            self.tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+        } else {
+            self.tableView.contentOffset = CGPoint.zero
+        }
+    }
+    
     func setUpInputField() {
         inputField.backgroundColor = .white
         inputField.layer.cornerRadius = 17
@@ -219,12 +234,12 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        UIView.animate(withDuration: 0.1) {
-            self.inputField.invalidateIntrinsicContentSize()
-            self.view.layoutIfNeeded()
-        }
-    }
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        UIView.animate(withDuration: 0.1) {
+//            self.inputField.invalidateIntrinsicContentSize()
+//            self.view.layoutIfNeeded()
+//        }
+//    }
     
 
 // MARK: - Selectors
@@ -253,10 +268,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
         guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
         
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
-        tableView.scrollIndicatorInsets = tableView.contentInset
-        
-        tableView.contentOffset = CGPoint.zero
+        setUpTableViewScroll()
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
@@ -294,30 +306,13 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
                     self?.inputField.text = nil
                 }
             })
-            
+//      TODO: to remove OR not? makes table to scroll to the end of its content
+            setUpTableViewScroll()
         }
     }
     
 // MARK: - Methods
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Row is selected!")
         
-        let result = self.fetchedResultsController.object(at: indexPath)
-        
-        guard result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description else { return }
-
-        getTranslation(to: (self.selectedTranslator?.url)!, with: result) { [weak self] (newResult, error) in
-            if newResult != nil {
-                result.setResponseStatus?(.success)
-            } else {
-                result.setResponseStatus?(.failure)
-            }
-            self!.coreDataStack.saveContext()
-        }
-    
-    }
-    
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
             let result = request
@@ -373,8 +368,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
             }
             task.resume()
         }
-
-
 }
 
 // MARK: - Extensions
@@ -399,7 +392,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         default:
             cell.showSpinner(animate: true)
         }
-
+        
         return cell
     }
     
@@ -410,6 +403,24 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         coreDataStack.managedContext.delete(result)
         
         coreDataStack.saveContext()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Row is selected!")
+        
+        let result = self.fetchedResultsController.object(at: indexPath)
+        
+        guard result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description else { return }
+
+        getTranslation(to: (self.selectedTranslator?.url)!, with: result, completionHandler: { [weak self] (newResult, error) in
+            if newResult != nil {
+                result.setResponseStatus?(.success)
+            } else {
+                result.setResponseStatus?(.failure)
+            }
+            self!.coreDataStack.saveContext()
+        })
+    
     }
     
 }
