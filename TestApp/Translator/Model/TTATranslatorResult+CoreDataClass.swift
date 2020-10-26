@@ -31,14 +31,14 @@ public class TTATranslatorResult: NSManagedObject {
         return timeStamp
     }
 
-    convenience init(textToTranslate: String, translation: String? = nil, responseStatus: ResponseStatus? = nil, insertIntoManagedObjectContext context: NSManagedObjectContext) {
+    
+    convenience init(textToTranslate: String, insertInto context: NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: "TTATranslatorResult", in: context)!
         self.init(entity: entity, insertInto: context)
-        self.textToTranslate = textToTranslate
-        self.timeStamp = setTimeStamp()
         
-        self.translation = translation
-        self.responseStatus = responseStatus?.rawValue
+        self.textToTranslate = textToTranslate
+        
+        self.timeStamp = setTimeStamp()
         
         setResponseStatus = { [weak self] status in
             if let status = status {
@@ -48,4 +48,5 @@ public class TTATranslatorResult: NSManagedObject {
             }
         }
     }
+    
 }

@@ -293,7 +293,9 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
             guard self.inputField.text != nil && self.inputField.text != "" else { return }
             dismissKeyboard()
             
-            let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertIntoManagedObjectContext: coreDataStack.managedContext)
+//            let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertIntoManagedObjectContext: coreDataStack.managedContext)
+            
+            let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertInto: coreDataStack.managedContext)
             
             getTranslation(to: translatorURL, with: translationRequest, completionHandler: { [weak self] (result, error) in
                 if result != nil {
@@ -315,7 +317,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
-            let result = request
+//            let result = request
         
             if let queryArray = selectedTranslator?.queryDict {
                 for (key, value) in queryArray {
@@ -323,7 +325,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
                 }
             }
 
-        url = url.append("text", value: result.textToTranslate)
+        url = url.append("text", value: request.textToTranslate)
             print(url)
             
             let getRequest = URLRequest(url: url)
@@ -355,11 +357,11 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
                         let decodedData = try! decoder.decode(TTADecodedResponse.self, from: responseData)
                         
                         if decodedData.text != nil {
-                            result.translation = decodedData.text?.joined(separator: "")
+                            request.translation = decodedData.text?.joined(separator: "")
                         } else {
-                            result.translation = decodedData.translated
+                            request.translation = decodedData.translated
                         }
-                        completionHandler(result, nil)
+                        completionHandler(request, nil)
                     } catch {
                         completionHandler(nil, error)
                         print("JSON parsing error")
@@ -391,6 +393,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
             cell.cellSubtitle.textColor = .red
         default:
             cell.showSpinner(animate: true)
+            cell.cellSubtitle.text = nil
         }
         
         return cell
