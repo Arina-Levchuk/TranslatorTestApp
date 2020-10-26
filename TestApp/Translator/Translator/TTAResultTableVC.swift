@@ -62,7 +62,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
         setUpNavBarAppearance()
         addSubViews()
-        configureInputView()
+        configureInputContainerView()
         setUpTableView()
 
 //        self.automaticallyAdjustsScrollViewInsets = false - deprecated
@@ -93,10 +93,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 
 //    MARK: - Layout
     
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        
-    }
-    
     func setUpNavBarAppearance() {
         view.backgroundColor = .white
         navigationItem.title = "Results"
@@ -123,7 +119,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 
     }
     
-    func configureInputView() {
+    func configureInputContainerView() {
         inputContainerView.addSubview(horizontalStackView)
         configureHorizontalStackView()
         
