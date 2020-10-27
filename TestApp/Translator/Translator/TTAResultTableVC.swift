@@ -61,13 +61,9 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         self.selectedTranslator = translators.first
         
         setUpNavBarAppearance()
-        addSubViews()
-        configureInputContainerView()
         setUpTableView()
+        configureInputContainerView()
 
-//        self.automaticallyAdjustsScrollViewInsets = false - deprecated
-//        self.tableView.contentInsetAdjustmentBehavior = .never
-        
         self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
         
         self.tableView.dataSource = self
@@ -93,6 +89,12 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 
 //    MARK: - Layout
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
+    }
+    
     func setUpNavBarAppearance() {
         view.backgroundColor = .white
         navigationItem.title = "Results"
@@ -102,24 +104,19 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         navigationItem.rightBarButtonItem = listOfTranslatorsButton
     }
     
-    func addSubViews() {
-        view.addSubview(tableView)
-        view.addSubview(inputContainerView)
-    }
-    
     func setUpTableView() {
+        view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints                                             = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive      = true
 
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
-//        tableView.scrollIndicatorInsets = tableView.contentInset
-
     }
-    
+        
     func configureInputContainerView() {
+        view.addSubview(inputContainerView)
+        
         inputContainerView.addSubview(horizontalStackView)
         configureHorizontalStackView()
         
@@ -169,9 +166,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
     }
     
     func setHorizontalStackConstraints() {
-        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                               = false
-//        horizontalStackView.topAnchor.constraint(equalTo: inputContainerView.topAnchor, constant: 3).isActive             = true
-//        horizontalStackView.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -3).isActive      = true
+        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                                     = false
         horizontalStackView.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive    = true
         horizontalStackView.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
 
@@ -229,14 +224,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
         sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
     }
-    
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        UIView.animate(withDuration: 0.1) {
-//            self.inputField.invalidateIntrinsicContentSize()
-//            self.view.layoutIfNeeded()
-//        }
-//    }
-    
+
 
 // MARK: - Selectors
     
@@ -288,8 +276,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
             guard let translatorURL = translator.url else { return }
             guard self.inputField.text != nil && self.inputField.text != "" else { return }
             dismissKeyboard()
-            
-//            let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertIntoManagedObjectContext: coreDataStack.managedContext)
             
             let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertInto: coreDataStack.managedContext)
             
