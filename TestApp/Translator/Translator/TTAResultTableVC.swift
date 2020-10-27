@@ -254,16 +254,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 
         setUpTableViewScroll()
         
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
-//        tableView.scrollIndicatorInsets = tableView.contentInset
-//
-////      TODO: recheck with 1 cell before acvieving the if condition
-//        if tableView.contentSize.height > (view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height) {
-//            self.tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
-//        } else {
-//            self.tableView.contentOffset = CGPoint.zero
-//        }
-        
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
             self.view.layoutIfNeeded()
