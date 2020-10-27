@@ -66,9 +66,6 @@ class TTATranslatorResultCell: UITableViewCell {
         cellSubtitle.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
         cellSubtitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
         
-//        errorLabel.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
-//        errorLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
-        
         spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
@@ -80,9 +77,6 @@ class TTATranslatorResultCell: UITableViewCell {
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         
         contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
-                        
-// TODO: Spinner layout ??
-//        spinner.topAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
     
     }
     
@@ -101,6 +95,14 @@ class TTATranslatorResultCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellTitle.text = nil
+        cellSubtitle.text = nil
+        spinner.isHidden = true
+        cellSubtitle.textColor = .black
     }
     
 }
