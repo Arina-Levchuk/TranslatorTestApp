@@ -95,6 +95,13 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
 //        tableView.scrollIndicatorInsets = tableView.contentInset
 //    }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(false)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
+    }
+    
+    
     func setUpNavBarAppearance() {
         view.backgroundColor = .white
         navigationItem.title = "Results"
