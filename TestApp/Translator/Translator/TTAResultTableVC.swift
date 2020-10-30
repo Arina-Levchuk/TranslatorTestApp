@@ -265,7 +265,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
             self.inputViewBottomConstraint?.constant = 0
             self.view.layoutIfNeeded()
         }
-        
     }
     
     @objc func dismissKeyboard() {
@@ -401,19 +400,21 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         
         let result = self.fetchedResultsController.object(at: indexPath)
         
-        guard result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description else { return }
+        if let translator = self.selectedTranslator {
+            guard result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description else { return }
+            guard let translatorURL = translator.url else { return }
 
-        getTranslation(to: (self.selectedTranslator?.url)!, with: result, completionHandler: { [weak self] (newResult, error) in
-            if newResult != nil {
-                result.setResponseStatus?(.success)
-            } else {
-                result.setResponseStatus?(.failure)
-            }
-            self!.coreDataStack.saveContext()
-        })
-    
+            getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
+                if newResult != nil {
+//                    result.setResponseStatus?(.success)
+                    result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
+                } else {
+                    result.setValue(TTATranslatorResult.ResponseStatus.failure.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
+                }
+                self?.coreDataStack.saveContext()
+            })
+        }
     }
-    
 }
     
 extension TTAResultTableVC: TranslatorsListVCDelegate {
