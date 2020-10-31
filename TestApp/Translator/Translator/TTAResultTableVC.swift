@@ -32,7 +32,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
     let inputField = UITextField()
     let sendButton = UIButton.init(type: .custom)
     let inputContainerView = UIView()
-    let horizontalStackView = UIStackView()
+//    let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     
     var inputViewBottomConstraint: NSLayoutConstraint?
@@ -124,8 +124,11 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
     func configureInputContainerView() {
         view.addSubview(inputContainerView)
         
-        inputContainerView.addSubview(horizontalStackView)
-        configureHorizontalStackView()
+//        inputContainerView.addSubview(horizontalStackView)
+        inputContainerView.addSubview(inputField)
+        inputContainerView.addSubview(sendButton)
+        setUpSendButton()
+        setUpInputField()
         
         inputContainerView.translatesAutoresizingMaskIntoConstraints                                             = false
         inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -136,48 +139,90 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         
         view.addConstraint(inputViewBottomConstraint!)
         
-        inputContainerView.centerXAnchor.constraint(equalTo: horizontalStackView.centerXAnchor).isActive = true
-        inputContainerView.centerYAnchor.constraint(equalTo: horizontalStackView.centerYAnchor).isActive = true
+//        inputContainerView.centerXAnchor.constraint(equalTo: horizontalStackView.centerXAnchor).isActive = true
+//        inputContainerView.centerYAnchor.constraint(equalTo: horizontalStackView.centerYAnchor).isActive = true
         
         inputContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        inputContainerView.backgroundColor = .clear
-        let blurEffect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        inputContainerView.insertSubview(blurView, at: 0)
-        
-        NSLayoutConstraint.activate([
-            blurView.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor),
-            blurView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor),
-        ])
+        inputContainerView.backgroundColor = .purple
+//        inputContainerView.backgroundColor = .clear
+//        let blurEffect = UIBlurEffect(style: .light)
+//        let blurView = UIVisualEffectView(effect: blurEffect)
+//        blurView.translatesAutoresizingMaskIntoConstraints = false
+//        inputContainerView.insertSubview(blurView, at: 0)
+//
+//        NSLayoutConstraint.activate([
+//            blurView.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor),
+//            blurView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor),
+//        ])
         
     }
     
-    func configureHorizontalStackView() {
-        addElementsToHorizontalStack()
-        setHorizontalStackConstraints()
-        
-        horizontalStackView.axis = .horizontal
-        horizontalStackView.distribution = .fillProportionally
-        horizontalStackView.spacing = 10
-        horizontalStackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
-    }
-    
-    func addElementsToHorizontalStack() {
-        setUpInputField()
-        setUpSendButton()
-        
-        horizontalStackView.addArrangedSubview(inputField)
-        horizontalStackView.addArrangedSubview(sendButton)
-    }
-    
-    func setHorizontalStackConstraints() {
-        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                                     = false
-        horizontalStackView.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive    = true
-        horizontalStackView.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
+    func setUpInputField() {
+        inputField.backgroundColor = .white
+        inputField.layer.cornerRadius = 17
+        inputField.layer.borderWidth = 1
+        inputField.layer.borderColor = UIColor.darkGray.cgColor
+        inputField.placeholder = "Enter a word"
+        inputField.clearButtonMode = .whileEditing
+        inputField.keyboardAppearance = .light
+        inputField.keyboardType = .default
+        inputField.font = UIFont.systemFont(ofSize: 20.0)
 
+//      Space from the leftView of the input field
+        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        inputField.leftViewMode = .always
+        inputField.leftView = spacer
+        
+        inputField.adjustsFontSizeToFitWidth = true
+        
+        inputField.translatesAutoresizingMaskIntoConstraints = false
+        inputField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
+        inputField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive = true
+        inputField.bottomAnchor.constraint(equalTo: sendButton.bottomAnchor).isActive = true
+        inputField.topAnchor.constraint(equalTo: sendButton.topAnchor).isActive = true
+//        inputField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+//        inputField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
+        
     }
+    
+    func setUpSendButton() {
+        sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
+        
+        sendButton.translatesAutoresizingMaskIntoConstraints = false
+        sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
+        sendButton.heightAnchor.constraint(equalTo: sendButton.widthAnchor).isActive = true
+        
+        sendButton.leadingAnchor.constraint(equalTo: inputField.trailingAnchor, constant: 10).isActive = true
+        sendButton.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
+        sendButton.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+        sendButton.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
+    }
+    
+//    func configureHorizontalStackView() {
+//        addElementsToHorizontalStack()
+//        setHorizontalStackConstraints()
+//
+//        horizontalStackView.axis = .horizontal
+//        horizontalStackView.distribution = .fillProportionally
+//        horizontalStackView.spacing = 10
+//        horizontalStackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+//    }
+    
+//    func addElementsToHorizontalStack() {
+//        setUpInputField()
+//        setUpSendButton()
+//
+//        horizontalStackView.addArrangedSubview(inputField)
+//        horizontalStackView.addArrangedSubview(sendButton)
+//    }
+    
+//    func setHorizontalStackConstraints() {
+//        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                                     = false
+//        horizontalStackView.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive    = true
+//        horizontalStackView.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
+//
+//    }
         
     func setUpKeyboardShowing() {
 //      The View Controller receives notification when the keyboard is going to be shown
@@ -207,32 +252,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func setUpInputField() {
-        inputField.backgroundColor = .white
-        inputField.layer.cornerRadius = 17
-        inputField.layer.borderWidth = 1
-        inputField.layer.borderColor = UIColor.darkGray.cgColor
-        inputField.placeholder = "Enter a word"
-        inputField.clearButtonMode = .whileEditing
-        inputField.keyboardAppearance = .light
-        inputField.keyboardType = .default
-        inputField.font = UIFont.systemFont(ofSize: 20.0)
-
-//      Space from the leftView of the input field
-        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        inputField.leftViewMode = .always
-        inputField.leftView = spacer
-        
-        inputField.adjustsFontSizeToFitWidth = true
-        
-    }
-    
-    func setUpSendButton() {
-        sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
-        sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
-    }
-
-
 // MARK: - Selectors
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
