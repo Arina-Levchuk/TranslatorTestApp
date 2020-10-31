@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
-class TTAResultTableVC: UIViewController, UITextFieldDelegate {
+class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
 
 //  MARK: - Properties
     
@@ -29,7 +29,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         return fetchedResultsController
     }()
     
-    let inputField = UITextField()
+    let inputField = UITextView()
     let sendButton = UIButton.init(type: .custom)
     let inputContainerView = UIView()
 //    let horizontalStackView = UIStackView()
@@ -163,27 +163,39 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate {
         inputField.layer.cornerRadius = 17
         inputField.layer.borderWidth = 1
         inputField.layer.borderColor = UIColor.darkGray.cgColor
-        inputField.placeholder = "Enter a word"
-        inputField.clearButtonMode = .whileEditing
+//        inputField.placeholder = "Enter a word"
+//        inputField.clearButtonMode = .whileEditing
         inputField.keyboardAppearance = .light
         inputField.keyboardType = .default
-        inputField.font = UIFont.systemFont(ofSize: 20.0)
+        
+        inputField.font = UIFont.preferredFont(forTextStyle: .body)
+//        inputField.font = UIFont.systemFont(ofSize: 20.0)
+        
+        inputField.isScrollEnabled = false
 
 //      Space from the leftView of the input field
-        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        inputField.leftViewMode = .always
-        inputField.leftView = spacer
+//        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+//        inputField.leftViewMode = .always
+//        inputField.leftView = spacer
         
-        inputField.adjustsFontSizeToFitWidth = true
+//        inputField.adjustsFontSizeToFitWidth = true
         
         inputField.translatesAutoresizingMaskIntoConstraints = false
         inputField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
         inputField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive = true
         inputField.bottomAnchor.constraint(equalTo: sendButton.bottomAnchor).isActive = true
+//        inputField.heightAnchor.constraint(equalToConstant: sendButton.frame.height).isActive = true
         inputField.topAnchor.constraint(equalTo: sendButton.topAnchor).isActive = true
 //        inputField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
 //        inputField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
         
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let inputFieldSize = CGSize(width: inputContainerView.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(inputFieldSize)
+        
+        textView.heightAnchor.constraint(equalToConstant: estimatedSize.height).isActive = true
     }
     
     func setUpSendButton() {
