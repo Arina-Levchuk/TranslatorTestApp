@@ -32,7 +32,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
     let inputField = UITextView()
     let sendButton = UIButton.init(type: .custom)
     let inputContainerView = UIView()
-//    let horizontalStackView = UIStackView()
     let tableView = UITableView.init(frame: .zero)
     
     var inputViewBottomConstraint: NSLayoutConstraint?
@@ -71,7 +70,7 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
         
         
         tableView.tableFooterView = UIView()
-//        tableView.keyboardDismissMode = .onDrag
+        tableView.keyboardDismissMode = .onDrag
 
         self.inputField.delegate = self
 
@@ -113,34 +112,28 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
     
     func setUpTableView() {
         view.addSubview(tableView)
+        
         tableView.translatesAutoresizingMaskIntoConstraints                                             = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive      = true
-
     }
         
     func configureInputContainerView() {
         view.addSubview(inputContainerView)
         
-//        inputContainerView.addSubview(horizontalStackView)
         inputContainerView.addSubview(inputField)
         inputContainerView.addSubview(sendButton)
-        setUpSendButton()
         setUpInputField()
+        setUpSendButton()
         
         inputContainerView.translatesAutoresizingMaskIntoConstraints                                             = false
         inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-//        inputContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
         inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
         
         view.addConstraint(inputViewBottomConstraint!)
-        
-//        inputContainerView.centerXAnchor.constraint(equalTo: horizontalStackView.centerXAnchor).isActive = true
-//        inputContainerView.centerYAnchor.constraint(equalTo: horizontalStackView.centerYAnchor).isActive = true
         
         inputContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -163,15 +156,20 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
         inputField.layer.cornerRadius = 17
         inputField.layer.borderWidth = 1
         inputField.layer.borderColor = UIColor.darkGray.cgColor
-//        inputField.placeholder = "Enter a word"
+//        inputField.placeholder = "Enter a word..."
 //        inputField.clearButtonMode = .whileEditing
         inputField.keyboardAppearance = .light
         inputField.keyboardType = .default
         
-        inputField.font = UIFont.preferredFont(forTextStyle: .body)
-//        inputField.font = UIFont.systemFont(ofSize: 20.0)
+        inputField.textColor = .lightGray
+        inputField.text = "Enter a word..."
         
-        inputField.isScrollEnabled = false
+//        inputField.font = UIFont.preferredFont(forTextStyle: .body)
+        
+//        inputField.returnKeyType = UIReturnKeyType.done
+        inputField.font = UIFont.systemFont(ofSize: 20.0)
+        
+//        inputField.isScrollEnabled = false
 
 //      Space from the leftView of the input field
 //        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
@@ -191,12 +189,26 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
         
     }
     
-    func textViewDidChange(_ textView: UITextView) {
-        let inputFieldSize = CGSize(width: inputContainerView.frame.width, height: .infinity)
-        let estimatedSize = textView.sizeThatFits(inputFieldSize)
-        
-        textView.heightAnchor.constraint(equalToConstant: estimatedSize.height).isActive = true
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if inputField.textColor == .lightGray {
+            inputField.text = ""
+            inputField.textColor = .black
+        }
     }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if inputField.text.isEmpty {
+            inputField.textColor = .lightGray
+            inputField.text = "Enter a word..."
+        }
+    }
+    
+//    func textViewDidChange(_ textView: UITextView) {
+//        let inputFieldSize = CGSize(width: inputContainerView.frame.width, height: .infinity)
+//        let estimatedSize = textView.sizeThatFits(inputFieldSize)
+//
+//        textView.heightAnchor.constraint(equalToConstant: estimatedSize.height).isActive = true
+//    }
     
     func setUpSendButton() {
         sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
@@ -210,31 +222,6 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
         sendButton.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
         sendButton.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
     }
-    
-//    func configureHorizontalStackView() {
-//        addElementsToHorizontalStack()
-//        setHorizontalStackConstraints()
-//
-//        horizontalStackView.axis = .horizontal
-//        horizontalStackView.distribution = .fillProportionally
-//        horizontalStackView.spacing = 10
-//        horizontalStackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
-//    }
-    
-//    func addElementsToHorizontalStack() {
-//        setUpInputField()
-//        setUpSendButton()
-//
-//        horizontalStackView.addArrangedSubview(inputField)
-//        horizontalStackView.addArrangedSubview(sendButton)
-//    }
-    
-//    func setHorizontalStackConstraints() {
-//        horizontalStackView.translatesAutoresizingMaskIntoConstraints                                                     = false
-//        horizontalStackView.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive    = true
-//        horizontalStackView.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
-//
-//    }
         
     func setUpKeyboardShowing() {
 //      The View Controller receives notification when the keyboard is going to be shown
@@ -246,11 +233,15 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
     }
     
 //      [Return] button closes the keyboard
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        inputField.resignFirstResponder()
-        return true
-    }
+//    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+//        if inputField.text == "\n" {
+//            inputField.resignFirstResponder()
+//            return false
+//        }
+//        return true
+//    }
     
+
     func setUpTableViewScroll() {
         
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
@@ -437,7 +428,6 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
 
             getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
                 if newResult != nil {
-//                    result.setResponseStatus?(.success)
                     result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
                 } else {
                     result.setValue(TTATranslatorResult.ResponseStatus.failure.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
