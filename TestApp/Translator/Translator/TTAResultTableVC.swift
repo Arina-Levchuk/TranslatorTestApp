@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
-class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class TTAResultTableVC: UIViewController, UITextViewDelegate {
 
 //  MARK: - Properties
     
@@ -190,10 +190,14 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if inputField.textColor == .lightGray {
-            inputField.text = ""
-            inputField.textColor = .black
-        }
+        
+        inputField.text = ""
+        inputField.textColor = .black
+        
+//        if inputField.textColor == .lightGray {
+//            inputField.text = ""
+//            inputField.textColor = .black
+//        }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -233,13 +237,14 @@ class TTAResultTableVC: UIViewController, UITextFieldDelegate, UITextViewDelegat
     }
     
 //      [Return] button closes the keyboard
-//    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//        if inputField.text == "\n" {
-//            inputField.resignFirstResponder()
-//            return false
-//        }
-//        return true
-//    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text as NSString).rangeOfCharacter(from: CharacterSet.newlines).location == NSNotFound {
+            return true
+        } else {
+            inputField.resignFirstResponder()
+            return false
+        }
+    }
     
 
     func setUpTableViewScroll() {
