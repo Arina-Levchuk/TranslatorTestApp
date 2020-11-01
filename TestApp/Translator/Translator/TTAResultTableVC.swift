@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 
-class TTAResultTableVC: UIViewController, UITextViewDelegate {
+class TTAResultTableVC: UIViewController {
 
 //  MARK: - Properties
     
@@ -100,7 +100,6 @@ class TTAResultTableVC: UIViewController, UITextViewDelegate {
         tableView.scrollIndicatorInsets = tableView.contentInset
     }
     
-    
     func setUpNavBarAppearance() {
         view.backgroundColor = .white
         navigationItem.title = "Results"
@@ -189,31 +188,6 @@ class TTAResultTableVC: UIViewController, UITextViewDelegate {
         
     }
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        
-        inputField.text = ""
-        inputField.textColor = .black
-        
-//        if inputField.textColor == .lightGray {
-//            inputField.text = ""
-//            inputField.textColor = .black
-//        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if inputField.text.isEmpty {
-            inputField.textColor = .lightGray
-            inputField.text = "Enter a word..."
-        }
-    }
-    
-//    func textViewDidChange(_ textView: UITextView) {
-//        let inputFieldSize = CGSize(width: inputContainerView.frame.width, height: .infinity)
-//        let estimatedSize = textView.sizeThatFits(inputFieldSize)
-//
-//        textView.heightAnchor.constraint(equalToConstant: estimatedSize.height).isActive = true
-//    }
-    
     func setUpSendButton() {
         sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
         
@@ -236,17 +210,6 @@ class TTAResultTableVC: UIViewController, UITextViewDelegate {
         
     }
     
-//      [Return] button closes the keyboard
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if (text as NSString).rangeOfCharacter(from: CharacterSet.newlines).location == NSNotFound {
-            return true
-        } else {
-            inputField.resignFirstResponder()
-            return false
-        }
-    }
-    
-
     func setUpTableViewScroll() {
         
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
@@ -484,4 +447,43 @@ extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 
+}
+
+extension TTAResultTableVC: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+            
+            inputField.text = ""
+            inputField.textColor = .black
+            
+    //        if inputField.textColor == .lightGray {
+    //            inputField.text = ""
+    //            inputField.textColor = .black
+    //        }
+    }
+        
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if inputField.text == "" {
+            inputField.textColor = .lightGray
+            inputField.text = "Enter a word..."
+        }
+    }
+        
+    //    func textViewDidChange(_ textView: UITextView) {
+    //        let inputFieldSize = CGSize(width: inputContainerView.frame.width, height: .infinity)
+    //        let estimatedSize = textView.sizeThatFits(inputFieldSize)
+    //
+    //        textView.heightAnchor.constraint(equalToConstant: estimatedSize.height).isActive = true
+    //    }
+    
+//  [Return] button closes the keyboard
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text as NSString).rangeOfCharacter(from: CharacterSet.newlines).location == NSNotFound {
+            return true
+        } else {
+            inputField.resignFirstResponder()
+            return false
+        }
+    }
+    
 }
