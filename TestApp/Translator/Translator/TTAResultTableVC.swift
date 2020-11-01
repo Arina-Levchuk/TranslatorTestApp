@@ -134,7 +134,7 @@ class TTAResultTableVC: UIViewController {
         
         view.addConstraint(inputViewBottomConstraint!)
         
-        inputContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        inputContainerView.heightAnchor.constraint(equalToConstant: 45).isActive = true
         
         inputContainerView.backgroundColor = .purple
 //        inputContainerView.backgroundColor = .clear
@@ -152,7 +152,7 @@ class TTAResultTableVC: UIViewController {
     
     func setUpInputField() {
         inputField.backgroundColor = .white
-        inputField.layer.cornerRadius = 17
+        inputField.layer.cornerRadius = 15
         inputField.layer.borderWidth = 1
         inputField.layer.borderColor = UIColor.darkGray.cgColor
 //        inputField.placeholder = "Enter a word..."
@@ -452,14 +452,11 @@ extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
 extension TTAResultTableVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-            
-            inputField.text = ""
-            inputField.textColor = .black
-            
-    //        if inputField.textColor == .lightGray {
-    //            inputField.text = ""
-    //            inputField.textColor = .black
-    //        }
+        
+            if inputField.textColor == .lightGray {
+                inputField.text = nil
+                inputField.textColor = .black
+            }
     }
         
     func textViewDidEndEditing(_ textView: UITextView) {
