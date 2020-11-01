@@ -30,6 +30,14 @@ class TTAResultTableVC: UIViewController {
     }()
     
     let inputField = UITextView()
+    let textViewPlaceholder: UILabel = {
+        let tvPlaceholder = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        tvPlaceholder.text = "Enter a word..."
+        tvPlaceholder.textColor = .lightGray
+        tvPlaceholder.font = UIFont.systemFont(ofSize: 17.0)
+        return tvPlaceholder
+    }()
+    
     let sendButton = UIButton.init(type: .custom)
     let inputContainerView = UIView()
     let tableView = UITableView.init(frame: .zero)
@@ -160,16 +168,23 @@ class TTAResultTableVC: UIViewController {
         inputField.keyboardAppearance = .light
         inputField.keyboardType = .default
         
-        inputField.textColor = .lightGray
-        inputField.text = "Enter a word..."
+//        inputField.textColor = .lightGray
+//        inputField.text = "Enter a word..."
+        inputField.textColor = .black
         
 //        inputField.font = UIFont.preferredFont(forTextStyle: .body)
         
 //        inputField.returnKeyType = UIReturnKeyType.done
-        inputField.font = UIFont.systemFont(ofSize: 20.0)
+        inputField.font = UIFont.systemFont(ofSize: 18.0)
         
-//        inputField.isScrollEnabled = false
-
+        inputField.addSubview(textViewPlaceholder)
+        textViewPlaceholder.isHidden = false
+        textViewPlaceholder.translatesAutoresizingMaskIntoConstraints = false
+        textViewPlaceholder.leadingAnchor.constraint(equalTo: inputField.leadingAnchor, constant: 10).isActive = true
+        textViewPlaceholder.centerXAnchor.constraint(equalTo: inputField.centerXAnchor).isActive = true
+        textViewPlaceholder.centerYAnchor.constraint(equalTo: inputField.centerYAnchor).isActive = true
+        
+        inputField.isScrollEnabled = false
 //      Space from the leftView of the input field
 //        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
 //        inputField.leftViewMode = .always
@@ -182,9 +197,11 @@ class TTAResultTableVC: UIViewController {
         inputField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive = true
         inputField.bottomAnchor.constraint(equalTo: sendButton.bottomAnchor).isActive = true
 //        inputField.heightAnchor.constraint(equalToConstant: sendButton.frame.height).isActive = true
-        inputField.topAnchor.constraint(equalTo: sendButton.topAnchor).isActive = true
-//        inputField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
-//        inputField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
+//        inputField.topAnchor.constraint(equalTo: sendButton.topAnchor).isActive = true
+//        inputField.topAnchor.constraint(equalToSystemSpacingBelow: inputField.firstBaselineAnchor, multiplier: 1).isActive = true
+//        inputField.bottomAnchor.constraint(equalToSystemSpacingBelow: inputField.lastBaselineAnchor, multiplier: 1).isActive = true
+        inputField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+        inputField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
         
     }
     
@@ -284,6 +301,7 @@ class TTAResultTableVC: UIViewController {
                 self?.coreDataStack.saveContext()
                 DispatchQueue.main.async {
                     self?.inputField.text = nil
+                    self?.textViewPlaceholder.isHidden = false
                 }
             })
           setUpTableViewScroll()
@@ -453,25 +471,40 @@ extension TTAResultTableVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
-            if inputField.textColor == .lightGray {
-                inputField.text = nil
-                inputField.textColor = .black
+        DispatchQueue.main.async {
+            let arbitraryValue: Int = 2
+            if let newPosition = self.inputField.position(from: self.inputField.beginningOfDocument, in: .right, offset: arbitraryValue) {
+                self.inputField.selectedTextRange = self.inputField.textRange(from: newPosition, to: newPosition)
             }
+        }
+        
+        if inputField.text != "" || inputField.text != nil {
+            textViewPlaceholder.isHidden = true
+        }
+        
+//            if inputField.text == "Enter a word..." {
+//                inputField.text = ""
+//                inputField.textColor = .black
+//            }
     }
         
     func textViewDidEndEditing(_ textView: UITextView) {
-        if inputField.text == "" {
-            inputField.textColor = .lightGray
-            inputField.text = "Enter a word..."
+        
+        if inputField.text == "" || inputField.text == nil {
+            textViewPlaceholder.isHidden = false
         }
+//        if inputField.text == "" {
+//            inputField.textColor = .lightGray
+//            inputField.text = "Enter a word..."
+//        }
     }
         
-    //    func textViewDidChange(_ textView: UITextView) {
-    //        let inputFieldSize = CGSize(width: inputContainerView.frame.width, height: .infinity)
-    //        let estimatedSize = textView.sizeThatFits(inputFieldSize)
-    //
-    //        textView.heightAnchor.constraint(equalToConstant: estimatedSize.height).isActive = true
-    //    }
+    func textViewDidChange(_ textView: UITextView) {
+        let inputFieldSize = CGSize(width: inputContainerView.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(inputFieldSize)
+
+        textView.heightAnchor.constraint(equalToConstant: estimatedSize.height).isActive = true
+    }
     
 //  [Return] button closes the keyboard
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
