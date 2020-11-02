@@ -43,6 +43,7 @@ class TTAResultTableVC: UIViewController {
     let tableView = UITableView.init(frame: .zero)
     
     var inputViewBottomConstraint: NSLayoutConstraint?
+    var inputViewTopConstraint: NSLayoutConstraint?
     
     var selectedTranslator: TTATranslator? = nil
 
@@ -140,9 +141,12 @@ class TTAResultTableVC: UIViewController {
         inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
         
-        view.addConstraint(inputViewBottomConstraint!)
+        inputViewTopConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: -45)
         
-        inputContainerView.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        view.addConstraint(inputViewBottomConstraint!)
+        view.addConstraint(inputViewTopConstraint!)
+        
+//        inputContainerView.heightAnchor.constraint(equalToConstant: 45).isActive = true
         
         inputContainerView.backgroundColor = .purple
 //        inputContainerView.backgroundColor = .clear
@@ -181,6 +185,7 @@ class TTAResultTableVC: UIViewController {
         textViewPlaceholder.isHidden = false
         textViewPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         textViewPlaceholder.leadingAnchor.constraint(equalTo: inputField.leadingAnchor, constant: 10).isActive = true
+        textViewPlaceholder.trailingAnchor.constraint(equalTo: inputField.trailingAnchor).isActive = true
         textViewPlaceholder.centerXAnchor.constraint(equalTo: inputField.centerXAnchor).isActive = true
         textViewPlaceholder.centerYAnchor.constraint(equalTo: inputField.centerYAnchor).isActive = true
         
@@ -196,8 +201,8 @@ class TTAResultTableVC: UIViewController {
         inputField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
         inputField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive = true
         inputField.bottomAnchor.constraint(equalTo: sendButton.bottomAnchor).isActive = true
-//        inputField.heightAnchor.constraint(equalToConstant: sendButton.frame.height).isActive = true
-//        inputField.topAnchor.constraint(equalTo: sendButton.topAnchor).isActive = true
+
+//        inputField.topAnchor.constraint(equalTo: inputContainerView.topAnchor, constant: 5).isActive = true
 //        inputField.topAnchor.constraint(equalToSystemSpacingBelow: inputField.firstBaselineAnchor, multiplier: 1).isActive = true
 //        inputField.bottomAnchor.constraint(equalToSystemSpacingBelow: inputField.lastBaselineAnchor, multiplier: 1).isActive = true
         inputField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
@@ -205,17 +210,20 @@ class TTAResultTableVC: UIViewController {
         
     }
     
+
+    
     func setUpSendButton() {
         sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
-        sendButton.heightAnchor.constraint(equalTo: sendButton.widthAnchor).isActive = true
+        sendButton.heightAnchor.constraint(equalToConstant: 35.0).isActive = true
         
         sendButton.leadingAnchor.constraint(equalTo: inputField.trailingAnchor, constant: 10).isActive = true
         sendButton.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
-        sendButton.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
-        sendButton.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
+        sendButton.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -5).isActive = true
+//        sendButton.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+//        sendButton.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
     }
         
     func setUpKeyboardShowing() {
@@ -249,6 +257,7 @@ class TTAResultTableVC: UIViewController {
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
+            self.inputViewTopConstraint?.constant -= keyboardSize.height
             self.view.layoutIfNeeded()
         }
         
@@ -264,12 +273,13 @@ class TTAResultTableVC: UIViewController {
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
         
-        guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
+        guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
 
         setUpTableViewScroll()
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
+            self.inputViewTopConstraint?.constant += keyboardSize.height
             self.view.layoutIfNeeded()
         }
     }
@@ -471,21 +481,16 @@ extension TTAResultTableVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
-        DispatchQueue.main.async {
-            let arbitraryValue: Int = 2
-            if let newPosition = self.inputField.position(from: self.inputField.beginningOfDocument, in: .right, offset: arbitraryValue) {
-                self.inputField.selectedTextRange = self.inputField.textRange(from: newPosition, to: newPosition)
-            }
-        }
+//        DispatchQueue.main.async {
+//            let arbitraryValue: Int = 2
+//            if let newPosition = self.inputField.position(from: self.inputField.beginningOfDocument, in: .right, offset: arbitraryValue) {
+//                self.inputField.selectedTextRange = self.inputField.textRange(from: newPosition, to: newPosition)
+//            }
+//        }
         
         if inputField.text != "" || inputField.text != nil {
             textViewPlaceholder.isHidden = true
         }
-        
-//            if inputField.text == "Enter a word..." {
-//                inputField.text = ""
-//                inputField.textColor = .black
-//            }
     }
         
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -493,17 +498,24 @@ extension TTAResultTableVC: UITextViewDelegate {
         if inputField.text == "" || inputField.text == nil {
             textViewPlaceholder.isHidden = false
         }
-//        if inputField.text == "" {
-//            inputField.textColor = .lightGray
-//            inputField.text = "Enter a word..."
-//        }
     }
         
     func textViewDidChange(_ textView: UITextView) {
-        let inputFieldSize = CGSize(width: inputContainerView.frame.width, height: .infinity)
-        let estimatedSize = textView.sizeThatFits(inputFieldSize)
 
-        textView.heightAnchor.constraint(equalToConstant: estimatedSize.height).isActive = true
+//        self.inputField.sizeToFit()
+        
+        while inputViewTopConstraint!.constant > -(view.safeAreaLayoutGuide.layoutFrame.height/2) {
+            let size = CGSize(width: inputField.frame.width, height: .infinity)
+            let resizedInputField = inputField.sizeThatFits(size)
+            
+            self.inputViewTopConstraint?.constant -= resizedInputField.height
+            
+//            UIView.animate(withDuration: 0) {
+//                self.inputViewTopConstraint?.constant -= resizedInputField.height
+//                self.view.layoutIfNeeded()
+//            }
+        }
+
     }
     
 //  [Return] button closes the keyboard
