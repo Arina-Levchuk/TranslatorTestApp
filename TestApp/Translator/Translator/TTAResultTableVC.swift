@@ -43,7 +43,7 @@ class TTAResultTableVC: UIViewController {
     let tableView = UITableView.init(frame: .zero)
     
     var inputViewBottomConstraint: NSLayoutConstraint?
-    var inputViewTopConstraint: NSLayoutConstraint?
+    var inputFieldTopConstraint: NSLayoutConstraint?
     
     var selectedTranslator: TTATranslator? = nil
 
@@ -141,10 +141,12 @@ class TTAResultTableVC: UIViewController {
         inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
         
-        inputViewTopConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: -45)
+        inputContainerView.topAnchor.constraint(equalTo: inputField.topAnchor, constant: -5).isActive = true
+        
+//        inputViewTopConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: -45)
         
         view.addConstraint(inputViewBottomConstraint!)
-        view.addConstraint(inputViewTopConstraint!)
+//        view.addConstraint(inputViewTopConstraint!)
         
 //        inputContainerView.heightAnchor.constraint(equalToConstant: 45).isActive = true
         
@@ -201,12 +203,17 @@ class TTAResultTableVC: UIViewController {
         inputField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
         inputField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive = true
         inputField.bottomAnchor.constraint(equalTo: sendButton.bottomAnchor).isActive = true
+//        inputField.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        
+        inputFieldTopConstraint = NSLayoutConstraint(item: inputField, attribute: .height, relatedBy: .equal, toItem: inputField, attribute: .height, multiplier: 1, constant: 35)
+        
+        view.addConstraint(inputFieldTopConstraint!)
 
 //        inputField.topAnchor.constraint(equalTo: inputContainerView.topAnchor, constant: 5).isActive = true
 //        inputField.topAnchor.constraint(equalToSystemSpacingBelow: inputField.firstBaselineAnchor, multiplier: 1).isActive = true
 //        inputField.bottomAnchor.constraint(equalToSystemSpacingBelow: inputField.lastBaselineAnchor, multiplier: 1).isActive = true
-        inputField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
-        inputField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
+//        inputField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+//        inputField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
         
     }
     
@@ -257,7 +264,7 @@ class TTAResultTableVC: UIViewController {
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
-            self.inputViewTopConstraint?.constant -= keyboardSize.height
+//            self.inputViewTopConstraint?.constant -= keyboardSize.height
             self.view.layoutIfNeeded()
         }
         
@@ -279,7 +286,7 @@ class TTAResultTableVC: UIViewController {
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
-            self.inputViewTopConstraint?.constant += keyboardSize.height
+//            self.inputViewTopConstraint?.constant += keyboardSize.height
             self.view.layoutIfNeeded()
         }
     }
@@ -501,20 +508,14 @@ extension TTAResultTableVC: UITextViewDelegate {
     }
         
     func textViewDidChange(_ textView: UITextView) {
-
-//        self.inputField.sizeToFit()
         
-        while inputViewTopConstraint!.constant > -(view.safeAreaLayoutGuide.layoutFrame.height/2) {
-            let size = CGSize(width: inputField.frame.width, height: .infinity)
-            let resizedInputField = inputField.sizeThatFits(size)
-            
-            self.inputViewTopConstraint?.constant -= resizedInputField.height
-            
-//            UIView.animate(withDuration: 0) {
-//                self.inputViewTopConstraint?.constant -= resizedInputField.height
-//                self.view.layoutIfNeeded()
-//            }
-        }
+//        if inputFieldTopConstraint!.constant > -(view.safeAreaLayoutGuide.layoutFrame.height/2) {
+        let size = CGSize(width: inputField.frame.width, height: .infinity)
+        let resizedInputField = inputField.sizeThatFits(size)
+        
+        self.inputFieldTopConstraint?.constant = resizedInputField.height
+
+//        }
 
     }
     
@@ -529,3 +530,4 @@ extension TTAResultTableVC: UITextViewDelegate {
     }
     
 }
+
