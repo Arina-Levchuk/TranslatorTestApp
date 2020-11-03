@@ -143,12 +143,7 @@ class TTAResultTableVC: UIViewController {
         
         inputContainerView.topAnchor.constraint(equalTo: inputField.topAnchor, constant: -5).isActive = true
         
-//        inputViewTopConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: -45)
-        
         view.addConstraint(inputViewBottomConstraint!)
-//        view.addConstraint(inputViewTopConstraint!)
-        
-//        inputContainerView.heightAnchor.constraint(equalToConstant: 45).isActive = true
         
         inputContainerView.backgroundColor = .purple
 //        inputContainerView.backgroundColor = .clear
@@ -169,13 +164,9 @@ class TTAResultTableVC: UIViewController {
         inputField.layer.cornerRadius = 15
         inputField.layer.borderWidth = 1
         inputField.layer.borderColor = UIColor.darkGray.cgColor
-//        inputField.placeholder = "Enter a word..."
-//        inputField.clearButtonMode = .whileEditing
         inputField.keyboardAppearance = .light
         inputField.keyboardType = .default
         
-//        inputField.textColor = .lightGray
-//        inputField.text = "Enter a word..."
         inputField.textColor = .black
         
 //        inputField.font = UIFont.preferredFont(forTextStyle: .body)
@@ -192,6 +183,7 @@ class TTAResultTableVC: UIViewController {
         textViewPlaceholder.centerYAnchor.constraint(equalTo: inputField.centerYAnchor).isActive = true
         
         inputField.isScrollEnabled = false
+        
 //      Space from the leftView of the input field
 //        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
 //        inputField.leftViewMode = .always
@@ -216,8 +208,6 @@ class TTAResultTableVC: UIViewController {
 //        inputField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
         
     }
-    
-
     
     func setUpSendButton() {
         sendButton.setImage(UIImage(named: "sendButton"), for: .normal)
@@ -264,7 +254,6 @@ class TTAResultTableVC: UIViewController {
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
-//            self.inputViewTopConstraint?.constant -= keyboardSize.height
             self.view.layoutIfNeeded()
         }
         
@@ -280,13 +269,12 @@ class TTAResultTableVC: UIViewController {
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
         
-        guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
+        guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
 
         setUpTableViewScroll()
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
-//            self.inputViewTopConstraint?.constant += keyboardSize.height
             self.view.layoutIfNeeded()
         }
     }
@@ -508,19 +496,30 @@ extension TTAResultTableVC: UITextViewDelegate {
     }
         
     func textViewDidChange(_ textView: UITextView) {
-        
-//        if inputFieldTopConstraint!.constant > -(view.safeAreaLayoutGuide.layoutFrame.height/2) {
-        let size = CGSize(width: inputField.frame.width, height: .infinity)
-        let resizedInputField = inputField.sizeThatFits(size)
-        
-        self.inputFieldTopConstraint?.constant = resizedInputField.height
-
+//        let height = inputField.contentSize.height
+        let fixedWidth = inputField.frame.width
+        let size = CGSize(width: fixedWidth, height: .infinity)
+    
+//        if height <= self.view.safeAreaLayoutGuide.layoutFrame.height/5 {
+        let newInputFieldSize = inputField.sizeThatFits(size)
+        self.inputFieldTopConstraint?.constant = newInputFieldSize.height
 //        }
-
+        
+        
+//        if newInputFieldSize.height < 150 {
+//            self.inputFieldTopConstraint?.constant = newInputFieldSize.height
+//            inputField.isScrollEnabled = false
+////            print(newInputFieldSize.height)
+//        } else {
+//            newInputFieldSize.height = 150
+//            inputField.isScrollEnabled = true
+//        }
+//        self.inputFieldTopConstraint?.constant = newInputFieldSize.height
     }
     
 //  [Return] button closes the keyboard
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
         if (text as NSString).rangeOfCharacter(from: CharacterSet.newlines).location == NSNotFound {
             return true
         } else {
