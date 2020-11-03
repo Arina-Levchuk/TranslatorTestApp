@@ -15,7 +15,7 @@ class TTATranslatorResultCell: UITableViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .black
-        lbl.font = UIFont.boldSystemFont(ofSize: 16)
+        lbl.font = UIFont.boldSystemFont(ofSize: 17)
         lbl.textAlignment = .left
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
@@ -26,7 +26,7 @@ class TTATranslatorResultCell: UITableViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .black
-        lbl.font = UIFont.systemFont(ofSize: 16)
+        lbl.font = UIFont.systemFont(ofSize: 17)
         lbl.textAlignment = .left
         lbl.numberOfLines = 0   // to remove any maximum limit, and use as many lines as needed, set the value of this property to 0
         lbl.lineBreakMode = .byWordWrapping
@@ -37,7 +37,7 @@ class TTATranslatorResultCell: UITableViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .red
-        lbl.font = UIFont.systemFont(ofSize: 16)
+        lbl.font = UIFont.systemFont(ofSize: 17)
         lbl.text = "Error. Please retry"
         return lbl
     }()

@@ -172,7 +172,9 @@ class TTAResultTableVC: UIViewController {
 //        inputField.font = UIFont.preferredFont(forTextStyle: .body)
         
 //        inputField.returnKeyType = UIReturnKeyType.done
-        inputField.font = UIFont.systemFont(ofSize: 18.0)
+        inputField.font = UIFont.systemFont(ofSize: 17.0)
+        inputField.textContainerInset.left = 10
+        inputField.textContainerInset.right = inputField.textContainerInset.left
         
         inputField.addSubview(textViewPlaceholder)
         textViewPlaceholder.isHidden = false
@@ -496,25 +498,22 @@ extension TTAResultTableVC: UITextViewDelegate {
     }
         
     func textViewDidChange(_ textView: UITextView) {
+
 //        let height = inputField.contentSize.height
         let fixedWidth = inputField.frame.width
-        let size = CGSize(width: fixedWidth, height: .infinity)
-    
-//        if height <= self.view.safeAreaLayoutGuide.layoutFrame.height/5 {
-        let newInputFieldSize = inputField.sizeThatFits(size)
-        self.inputFieldTopConstraint?.constant = newInputFieldSize.height
-//        }
+        let size = CGSize(width: fixedWidth, height: .leastNormalMagnitude)
+
         
-        
-//        if newInputFieldSize.height < 150 {
-//            self.inputFieldTopConstraint?.constant = newInputFieldSize.height
+//        if height <= 70 {
 //            inputField.isScrollEnabled = false
-////            print(newInputFieldSize.height)
 //        } else {
-//            newInputFieldSize.height = 150
+//
 //            inputField.isScrollEnabled = true
 //        }
-//        self.inputFieldTopConstraint?.constant = newInputFieldSize.height
+//        size.height = height
+        let newInputFieldSize = inputField.sizeThatFits(size)
+        self.inputFieldTopConstraint?.constant = newInputFieldSize.height
+        
     }
     
 //  [Return] button closes the keyboard
