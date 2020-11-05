@@ -30,6 +30,7 @@ class TTAResultTableVC: UIViewController {
     }()
     
     let inputField = UITextView()
+    var inputFieldTopConstraint: NSLayoutConstraint?
     let textViewPlaceholder: UILabel = {
         let tvPlaceholder = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         tvPlaceholder.text = "Enter a word..."
@@ -43,7 +44,7 @@ class TTAResultTableVC: UIViewController {
     let tableView = UITableView.init(frame: .zero)
     
     var inputViewBottomConstraint: NSLayoutConstraint?
-    var inputFieldTopConstraint: NSLayoutConstraint?
+    
     
     var selectedTranslator: TTATranslator? = nil
 
@@ -97,11 +98,38 @@ class TTAResultTableVC: UIViewController {
 
 //    MARK: - Layout
     
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 //        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
 //        tableView.scrollIndicatorInsets = tableView.contentInset
-//    }
+
+        let newTxtViewHeight = self.inputField.contentSize.height
+//        let size = CGSize(width: self.inputField.frame.width, height: newTxtViewHeight)
+//        let newTxtViewSize = self.inputField.sizeThatFits(size)
+
+        let limitedHeight = view.safeAreaLayoutGuide.layoutFrame.height/5
+
+        self.inputField.isScrollEnabled = false
+        self.inputFieldTopConstraint?.constant = newTxtViewHeight
+        
+        if newTxtViewHeight > limitedHeight {
+            self.inputField.isScrollEnabled = true
+            self.inputFieldTopConstraint?.constant = limitedHeight
+            self.inputFieldTopConstraint?.isActive = true
+        }
+        
+//        if newTxtViewHeight > limitedHeight && !self.inputField.isScrollEnabled {
+//            self.inputField.isScrollEnabled = true
+//            self.inputFieldTopConstraint!.constant = limitedHeight
+////            self.inputFieldTopConstraint!.isActive = true
+//        } else if newTxtViewHeight < limitedHeight && self.inputField.isScrollEnabled {
+//            print("newTxtViewHeight < limitedHeight")
+//            self.inputField.isScrollEnabled = false
+////            textViewDidChange(inputField)
+////            self.inputFieldTopConstraint!.constant = newTxtViewSize.height
+//            self.inputFieldTopConstraint!.isActive = false
+//        }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
@@ -168,10 +196,7 @@ class TTAResultTableVC: UIViewController {
         inputField.keyboardType = .default
         
         inputField.textColor = .black
-        
-//        inputField.font = UIFont.preferredFont(forTextStyle: .body)
-        
-//        inputField.returnKeyType = UIReturnKeyType.done
+
         inputField.font = UIFont.systemFont(ofSize: 17.0)
         inputField.textContainerInset.left = 10
         inputField.textContainerInset.right = inputField.textContainerInset.left
@@ -186,28 +211,14 @@ class TTAResultTableVC: UIViewController {
         
         inputField.isScrollEnabled = false
         
-//      Space from the leftView of the input field
-//        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-//        inputField.leftViewMode = .always
-//        inputField.leftView = spacer
-        
-//        inputField.adjustsFontSizeToFitWidth = true
-        
         inputField.translatesAutoresizingMaskIntoConstraints = false
         inputField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
         inputField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive = true
         inputField.bottomAnchor.constraint(equalTo: sendButton.bottomAnchor).isActive = true
-//        inputField.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
         inputFieldTopConstraint = NSLayoutConstraint(item: inputField, attribute: .height, relatedBy: .equal, toItem: inputField, attribute: .height, multiplier: 1, constant: 35)
         
         view.addConstraint(inputFieldTopConstraint!)
-
-//        inputField.topAnchor.constraint(equalTo: inputContainerView.topAnchor, constant: 5).isActive = true
-//        inputField.topAnchor.constraint(equalToSystemSpacingBelow: inputField.firstBaselineAnchor, multiplier: 1).isActive = true
-//        inputField.bottomAnchor.constraint(equalToSystemSpacingBelow: inputField.lastBaselineAnchor, multiplier: 1).isActive = true
-//        inputField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
-//        inputField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
         
     }
     
@@ -221,8 +232,6 @@ class TTAResultTableVC: UIViewController {
         sendButton.leadingAnchor.constraint(equalTo: inputField.trailingAnchor, constant: 10).isActive = true
         sendButton.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
         sendButton.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -5).isActive = true
-//        sendButton.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
-//        sendButton.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
     }
         
     func setUpKeyboardShowing() {
@@ -319,7 +328,6 @@ class TTAResultTableVC: UIViewController {
         
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
-//            let result = request
         
             if let queryArray = selectedTranslator?.queryDict {
                 for (key, value) in queryArray {
@@ -478,13 +486,6 @@ extension TTAResultTableVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
-//        DispatchQueue.main.async {
-//            let arbitraryValue: Int = 2
-//            if let newPosition = self.inputField.position(from: self.inputField.beginningOfDocument, in: .right, offset: arbitraryValue) {
-//                self.inputField.selectedTextRange = self.inputField.textRange(from: newPosition, to: newPosition)
-//            }
-//        }
-        
         if inputField.text != "" || inputField.text != nil {
             textViewPlaceholder.isHidden = true
         }
@@ -497,24 +498,11 @@ extension TTAResultTableVC: UITextViewDelegate {
         }
     }
         
-    func textViewDidChange(_ textView: UITextView) {
-
-//        let height = inputField.contentSize.height
-        let fixedWidth = inputField.frame.width
-        let size = CGSize(width: fixedWidth, height: .leastNormalMagnitude)
-
-        
-//        if height <= 70 {
-//            inputField.isScrollEnabled = false
-//        } else {
+//    func textViewDidChange(_ textView: UITextView) {
 //
-//            inputField.isScrollEnabled = true
-//        }
-//        size.height = height
-        let newInputFieldSize = inputField.sizeThatFits(size)
-        self.inputFieldTopConstraint?.constant = newInputFieldSize.height
-        
-    }
+//        self.inputFieldTopConstraint?.constant = textView.contentSize.height
+//
+//    }
     
 //  [Return] button closes the keyboard
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
