@@ -59,7 +59,7 @@ class TTAResultTableVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        print("VIEW DID LOAD")
         do {
             try fetchedResultsController.performFetch()
             tableView.reloadData()
@@ -92,14 +92,14 @@ class TTAResultTableVC: UIViewController {
 //        tapRecognizer.cancelsTouchesInView = false // solves the problem of intefering with didSelectRow method
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
-
+        
     }
-
 
 //    MARK: - Layout
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+//        print("VIEW DID LAYOUT SUBVIEWS")
 //        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
 //        tableView.scrollIndicatorInsets = tableView.contentInset
 
@@ -107,29 +107,20 @@ class TTAResultTableVC: UIViewController {
 //        let size = CGSize(width: self.inputField.frame.width, height: newTxtViewHeight)
 //        let newTxtViewSize = self.inputField.sizeThatFits(size)
 
-        let limitedHeight = view.safeAreaLayoutGuide.layoutFrame.height/5
+//        let limitedHeight = view.safeAreaLayoutGuide.layoutFrame.height/5
+        let limitedHeight: CGFloat = 60
 
-        self.inputField.isScrollEnabled = false
-        self.inputFieldTopConstraint?.constant = newTxtViewHeight
-        
-        if newTxtViewHeight > limitedHeight {
+        if newTxtViewHeight > limitedHeight  {
             self.inputField.isScrollEnabled = true
             self.inputFieldTopConstraint?.constant = limitedHeight
-            self.inputFieldTopConstraint?.isActive = true
+//            self.inputFieldTopConstraint?.isActive = true
+        } else {
+            self.inputField.isScrollEnabled = false
         }
-        
-//        if newTxtViewHeight > limitedHeight && !self.inputField.isScrollEnabled {
-//            self.inputField.isScrollEnabled = true
-//            self.inputFieldTopConstraint!.constant = limitedHeight
-////            self.inputFieldTopConstraint!.isActive = true
-//        } else if newTxtViewHeight < limitedHeight && self.inputField.isScrollEnabled {
-//            print("newTxtViewHeight < limitedHeight")
-//            self.inputField.isScrollEnabled = false
-////            textViewDidChange(inputField)
-////            self.inputFieldTopConstraint!.constant = newTxtViewSize.height
-//            self.inputFieldTopConstraint!.isActive = false
-//        }
+        self.inputFieldTopConstraint?.constant = newTxtViewHeight
+
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
@@ -321,6 +312,7 @@ class TTAResultTableVC: UIViewController {
                 }
             })
           setUpTableViewScroll()
+
         }
     }
     
