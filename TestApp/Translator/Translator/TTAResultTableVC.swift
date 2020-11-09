@@ -86,10 +86,9 @@ class TTAResultTableVC: UIViewController {
 
         setUpKeyboardShowing()
         
-//        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-//        view.addGestureRecognizer(tapRecognizer)
-//
+//        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIView.endEditing(_:)))
 //        tapRecognizer.cancelsTouchesInView = false // solves the problem of intefering with didSelectRow method
+//        view.addGestureRecognizer(tapRecognizer)
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
         
@@ -121,11 +120,15 @@ class TTAResultTableVC: UIViewController {
 
     }
     
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(false)
+        self.view.endEditing(true)
     }
     
     func setUpNavBarAppearance() {
