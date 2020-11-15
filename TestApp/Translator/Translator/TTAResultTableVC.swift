@@ -98,16 +98,17 @@ class TTAResultTableVC: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        print("VIEW DID LAYOUT SUBVIEWS")
+    
 //        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
 //        tableView.scrollIndicatorInsets = tableView.contentInset
 
-        let newTxtViewHeight = self.inputField.contentSize.height
+
 //        let size = CGSize(width: self.inputField.frame.width, height: newTxtViewHeight)
 //        let newTxtViewSize = self.inputField.sizeThatFits(size)
 
 //        let limitedHeight = view.safeAreaLayoutGuide.layoutFrame.height/5
-        let limitedHeight: CGFloat = 60
+        let newTxtViewHeight = self.inputField.contentSize.height
+        let limitedHeight: CGFloat = 70
 
         if newTxtViewHeight > limitedHeight  {
             self.inputField.isScrollEnabled = true
@@ -124,6 +125,7 @@ class TTAResultTableVC: UIViewController {
         super.viewDidAppear(false)
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -298,7 +300,7 @@ class TTAResultTableVC: UIViewController {
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
             guard self.inputField.text != nil && self.inputField.text != "" else { return }
-            dismissKeyboard()
+
             
             let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertInto: coreDataStack.managedContext)
             
@@ -314,6 +316,7 @@ class TTAResultTableVC: UIViewController {
                     self?.textViewPlaceholder.isHidden = false
                 }
             })
+          dismissKeyboard()
           setUpTableViewScroll()
 
         }
@@ -385,6 +388,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         
         let result = self.fetchedResultsController.object(at: indexPath)
         
+        cell.accessoryType = .disclosureIndicator
         cell.cellTitle.text = result.textToTranslate
         
         switch result.responseStatus {
@@ -432,6 +436,18 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
             })
         }
     }
+    
+    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+//       TO CHECK WHETHER responseStatus = OK -> proceed with the very method
+        let result = self.fetchedResultsController.object(at: indexPath)
+        
+        guard result.responseStatus == TTATranslatorResult.ResponseStatus.success.description else { return }
+        
+        let userLocationVC = TTAUserLocationVC()
+        self.navigationController?.pushViewController(userLocationVC, animated: true)
+            
+    }
+    
 }
     
 extension TTAResultTableVC: TranslatorsListVCDelegate {
