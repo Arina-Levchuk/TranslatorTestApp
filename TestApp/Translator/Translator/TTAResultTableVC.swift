@@ -322,6 +322,10 @@ class TTAResultTableVC: UIViewController {
         }
     }
     
+    @objc func openMap() {
+        self.navigationController?.pushViewController(TTAUserLocationVC(), animated: true)
+    }
+    
 // MARK: - Methods
         
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
@@ -391,6 +395,8 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
 //        cell.accessoryType = .disclosureIndicator
         cell.cellTitle.text = result.textToTranslate
         
+        cell.locationButton.addTarget(self, action: #selector(openMap), for: .touchUpInside)
+        
         switch result.responseStatus {
         case TTATranslatorResult.ResponseStatus.success.description:
             cell.showSpinner(animate: false)
@@ -436,20 +442,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
             })
         }
     }
-    
-    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-//       TO CHECK WHETHER responseStatus = OK -> proceed with the very method
-        
-        print("Accessory is tapped")
-        let result = self.fetchedResultsController.object(at: indexPath)
-        
-        guard result.responseStatus == TTATranslatorResult.ResponseStatus.success.description else { return }
-        
-        let userLocationVC = TTAUserLocationVC()
-        self.navigationController?.pushViewController(userLocationVC, animated: true)
-            
-    }
-    
+
 }
     
 extension TTAResultTableVC: TranslatorsListVCDelegate {
