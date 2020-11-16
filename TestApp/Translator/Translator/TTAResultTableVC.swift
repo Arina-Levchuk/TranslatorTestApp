@@ -136,7 +136,7 @@ class TTAResultTableVC: UIViewController {
     func setUpNavBarAppearance() {
         view.backgroundColor = .white
         navigationItem.title = "Results"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = false
         
         let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "list.dash"), style: .plain, target: self, action: #selector(moveToList))
         navigationItem.rightBarButtonItem = listOfTranslatorsButton
@@ -388,7 +388,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         
         let result = self.fetchedResultsController.object(at: indexPath)
         
-        cell.accessoryType = .disclosureIndicator
+//        cell.accessoryType = .disclosureIndicator
         cell.cellTitle.text = result.textToTranslate
         
         switch result.responseStatus {
@@ -421,7 +421,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         print("Row is selected!")
         
         let result = self.fetchedResultsController.object(at: indexPath)
-        
+  
         if let translator = self.selectedTranslator {
             guard result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description else { return }
             guard let translatorURL = translator.url else { return }
@@ -439,6 +439,8 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 //       TO CHECK WHETHER responseStatus = OK -> proceed with the very method
+        
+        print("Accessory is tapped")
         let result = self.fetchedResultsController.object(at: indexPath)
         
         guard result.responseStatus == TTATranslatorResult.ResponseStatus.success.description else { return }

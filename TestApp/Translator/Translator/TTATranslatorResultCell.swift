@@ -33,13 +33,12 @@ class TTATranslatorResultCell: UITableViewCell {
         return lbl
     }()
     
-    let errorLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.textColor = .red
-        lbl.font = UIFont.systemFont(ofSize: 17)
-        lbl.text = "Error. Please retry"
-        return lbl
+    let locationButton: UIButton = {
+        let button = UIButton.init(type: .custom)
+        button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        return button
     }()
     
     let spinner: UIActivityIndicatorView = {
@@ -61,13 +60,17 @@ class TTATranslatorResultCell: UITableViewCell {
     func setUpHorizontalView() {
 //      Horizontal position for each label
         cellTitle.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
-        cellTitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+        cellTitle.trailingAnchor.constraint(equalTo: locationButton.leadingAnchor).isActive = true
         
         cellSubtitle.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
-        cellSubtitle.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+        cellSubtitle.trailingAnchor.constraint(equalTo: cellTitle.trailingAnchor).isActive = true
         
         spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        
+//        locationButton.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
+        locationButton.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
+        
     }
     
     func setUpVerticalView() {
@@ -77,6 +80,9 @@ class TTATranslatorResultCell: UITableViewCell {
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         
         contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
+                
+//        locationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        locationButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     
     }
     
@@ -85,6 +91,7 @@ class TTATranslatorResultCell: UITableViewCell {
         
         contentView.addSubview(cellTitle)
         contentView.addSubview(cellSubtitle)
+        contentView.addSubview(locationButton)
         
         contentView.addSubview(spinner)
         spinner.isHidden = true
