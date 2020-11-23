@@ -8,9 +8,9 @@
 
 import UIKit
 
-protocol RequestProtocolDelegate: class {
-    func passURLOfTranslator(selectedItem: String) -> URL
-}
+//protocol RequestProtocolDelegate: class {
+//    func passURLOfTranslator(selectedItem: String) -> URL
+//}
 
 protocol TranslatorsListVCDelegate: class {
     func newTranslatorSelected(translator: TTATranslator)

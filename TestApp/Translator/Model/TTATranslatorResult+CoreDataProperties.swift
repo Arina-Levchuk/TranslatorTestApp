@@ -21,4 +21,6 @@ extension TTATranslatorResult {
     @NSManaged public var textToTranslate: String
     @NSManaged public var translation: String?
     @NSManaged public var timeStamp: Double
+    @NSManaged public var latitude: Double
+    @NSManaged public var longitude: Double
 }

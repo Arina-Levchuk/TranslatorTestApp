@@ -8,8 +8,16 @@
 
 import UIKit
 
+protocol TTATranslatorResultCellDelegate: class {
+    func passIndexOfSelectedResultObject(_ indexPathForCell: IndexPath?)
+}
+
 class TTATranslatorResultCell: UITableViewCell {
     static let reuseIdentifier = "TTATranslatorResultCell"
+    
+    weak var delegate: TTATranslatorResultCellDelegate?
+    
+    var indexPathForCell: IndexPath? = nil
     
     let cellTitle: UILabel = {
         let lbl = UILabel()
@@ -55,6 +63,10 @@ class TTATranslatorResultCell: UITableViewCell {
             spinner.stopAnimating()
             spinner.hidesWhenStopped = true
         }
+    }
+    
+    @objc func locationButtonIsTapped(_ sender: UIButton) {
+        self.delegate?.passIndexOfSelectedResultObject(indexPathForCell!)
     }
     
     func setUpHorizontalView() {
@@ -113,3 +125,4 @@ class TTATranslatorResultCell: UITableViewCell {
     }
     
 }
+

@@ -10,12 +10,13 @@ import UIKit
 import Foundation
 import CoreData
 
+
 class TTAResultTableVC: UIViewController {
 
 //  MARK: - Properties
     
     lazy var coreDataStack = TTACoreDataStack(modelName: "Translator")
-
+    
     lazy var fetchedResultsController: NSFetchedResultsController<TTATranslatorResult> = {
         let fetchRequest: NSFetchRequest<TTATranslatorResult> = TTATranslatorResult.fetchRequest()
         
@@ -28,6 +29,8 @@ class TTAResultTableVC: UIViewController {
         
         return fetchedResultsController
     }()
+    
+    var resultObject: TTATranslatorResult? = nil
     
     let inputField = UITextView()
     var inputFieldTopConstraint: NSLayoutConstraint?
@@ -138,7 +141,7 @@ class TTAResultTableVC: UIViewController {
         navigationItem.title = "Results"
         navigationController?.navigationBar.prefersLargeTitles = false
         
-        let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "list.dash"), style: .plain, target: self, action: #selector(moveToList))
+        let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "list.dash"), style: .plain, target: self, action: #selector(moveToTranslatorsList))
         navigationItem.rightBarButtonItem = listOfTranslatorsButton
     }
     
@@ -290,7 +293,7 @@ class TTAResultTableVC: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func moveToList() {
+    @objc func moveToTranslatorsList() {
         if let translator = self.selectedTranslator {
             self.navigationController?.pushViewController(TTATranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
         }
@@ -322,9 +325,10 @@ class TTAResultTableVC: UIViewController {
         }
     }
     
-    @objc func openMap() {
-        self.navigationController?.pushViewController(TTAUserLocationVC(), animated: true)
-    }
+//    @objc func openMap() {
+////    А    let result = self.fetchedResultsController.object(at: indexPath)
+//        self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: self.resultObject.latitude, longitude: self.resultObject.longitude), animated: true)
+//    }
     
 // MARK: - Methods
         
@@ -393,9 +397,15 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         let result = self.fetchedResultsController.object(at: indexPath)
         
 //        cell.accessoryType = .disclosureIndicator
+        cell.delegate = self
+        
         cell.cellTitle.text = result.textToTranslate
         
-        cell.locationButton.addTarget(self, action: #selector(openMap), for: .touchUpInside)
+//        cell.locationButton.addTarget(self, action: #selector(openMap), for: .touchUpInside)
+        
+        cell.locationButton.addTarget(self, action: #selector(cell.locationButtonIsTapped(_:)), for: .touchUpInside)
+        
+        cell.indexPathForCell = indexPath
         
         switch result.responseStatus {
         case TTATranslatorResult.ResponseStatus.success.description:
@@ -443,12 +453,6 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
-}
-    
-extension TTAResultTableVC: TranslatorsListVCDelegate {
-    func newTranslatorSelected(translator: TTATranslator) {
-        self.selectedTranslator = translator
-    }
 }
 
 extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
@@ -521,5 +525,28 @@ extension TTAResultTableVC: UITextViewDelegate {
         }
     }
     
+}
+
+extension TTAResultTableVC: TranslatorsListVCDelegate {
+    func newTranslatorSelected(translator: TTATranslator) {
+        self.selectedTranslator = translator
+    }
+}
+
+extension TTAResultTableVC: TTAUserLocationVCDelegate {
+    func passUserCoordinates(latitude: Double, longitude: Double) {
+
+        self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: self.resultObject?.latitude, longitude: self.resultObject?.longitude), animated: true)
+        
+    }
+}
+
+extension TTAResultTableVC: TTATranslatorResultCellDelegate {
+    func passIndexOfSelectedResultObject(_ indexPathForCell: IndexPath?) {
+        
+        let resultObject = self.fetchedResultsController.object(at: indexPathForCell!)
+        self.resultObject = resultObject
+        
+    }
 }
 

@@ -30,8 +30,7 @@ public class TTATranslatorResult: NSManagedObject {
 //        print("\(Date(timeIntervalSince1970: timeStamp))")
         return timeStamp
     }
-
-    
+        
     convenience init(textToTranslate: String, insertInto context: NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: "TTATranslatorResult", in: context)!
         self.init(entity: entity, insertInto: context)
@@ -49,4 +48,12 @@ public class TTATranslatorResult: NSManagedObject {
         }
     }
     
+}
+
+extension TTATranslatorResult: TTAUserLocationVCDelegate {
+    func passUserCoordinates(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+
 }
