@@ -29,9 +29,7 @@ class TTAResultTableVC: UIViewController {
         
         return fetchedResultsController
     }()
-    
-    var resultObject: TTATranslatorResult? = nil
-    
+        
     let inputField = UITextView()
     var inputFieldTopConstraint: NSLayoutConstraint?
     let textViewPlaceholder: UILabel = {
@@ -325,10 +323,6 @@ class TTAResultTableVC: UIViewController {
         }
     }
     
-//    @objc func openMap() {
-////    А    let result = self.fetchedResultsController.object(at: indexPath)
-//        self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: self.resultObject.latitude, longitude: self.resultObject.longitude), animated: true)
-//    }
     
 // MARK: - Methods
         
@@ -397,16 +391,11 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         let result = self.fetchedResultsController.object(at: indexPath)
         
 //        cell.accessoryType = .disclosureIndicator
-        cell.delegate = self
-        
+
         cell.cellTitle.text = result.textToTranslate
-        
-//        cell.locationButton.addTarget(self, action: #selector(openMap), for: .touchUpInside)
-        
-        cell.locationButton.addTarget(self, action: #selector(TTATranslatorResultCell.locationButtonIsTapped(_:)), for: .touchUpInside)
-        
-        cell.indexPathForCell = indexPath
-        
+                
+        cell.locationButton.addTarget(self, action: #selector(didTapLocationButton), for: .touchUpInside)
+                
         switch result.responseStatus {
         case TTATranslatorResult.ResponseStatus.success.description:
             cell.showSpinner(animate: false)
@@ -422,6 +411,17 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         }
         
         return cell
+    }
+    
+    @objc func didTapLocationButton(_ sender: UIButton) {
+        
+        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
+            if let cellIndexPath = self.tableView.indexPath(for: cell) {
+                let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
+                
+                self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -535,18 +535,6 @@ extension TTAResultTableVC: TranslatorsListVCDelegate {
 
 extension TTAResultTableVC: TTAUserLocationVCDelegate {
     func passUserCoordinates(latitude: Double, longitude: Double) {
-
-        self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: self.resultObject?.latitude, longitude: self.resultObject?.longitude), animated: true)
         
     }
 }
-
-extension TTAResultTableVC: TTATranslatorResultCellDelegate {
-    func getIndexOfSelectedResultObject(_ indexPathForCell: IndexPath?) {
-        
-        let resultObject = self.fetchedResultsController.object(at: indexPathForCell!)
-        self.resultObject = resultObject
-        
-    }
-}
-
