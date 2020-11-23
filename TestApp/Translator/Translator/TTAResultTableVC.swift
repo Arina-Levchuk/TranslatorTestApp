@@ -403,7 +403,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         
 //        cell.locationButton.addTarget(self, action: #selector(openMap), for: .touchUpInside)
         
-        cell.locationButton.addTarget(self, action: #selector(cell.locationButtonIsTapped(_:)), for: .touchUpInside)
+        cell.locationButton.addTarget(self, action: #selector(TTATranslatorResultCell.locationButtonIsTapped(_:)), for: .touchUpInside)
         
         cell.indexPathForCell = indexPath
         
@@ -542,7 +542,7 @@ extension TTAResultTableVC: TTAUserLocationVCDelegate {
 }
 
 extension TTAResultTableVC: TTATranslatorResultCellDelegate {
-    func passIndexOfSelectedResultObject(_ indexPathForCell: IndexPath?) {
+    func getIndexOfSelectedResultObject(_ indexPathForCell: IndexPath?) {
         
         let resultObject = self.fetchedResultsController.object(at: indexPathForCell!)
         self.resultObject = resultObject

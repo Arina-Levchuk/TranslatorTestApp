@@ -9,7 +9,7 @@
 import UIKit
 
 protocol TTATranslatorResultCellDelegate: class {
-    func passIndexOfSelectedResultObject(_ indexPathForCell: IndexPath?)
+    func getIndexOfSelectedResultObject(_ indexPathForCell: IndexPath?)
 }
 
 class TTATranslatorResultCell: UITableViewCell {
@@ -66,7 +66,7 @@ class TTATranslatorResultCell: UITableViewCell {
     }
     
     @objc func locationButtonIsTapped(_ sender: UIButton) {
-        self.delegate?.passIndexOfSelectedResultObject(indexPathForCell!)
+        self.delegate?.getIndexOfSelectedResultObject(indexPathForCell!)
     }
     
     func setUpHorizontalView() {

@@ -43,12 +43,17 @@ class TTAUserLocationVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        getUserLocation()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpMapView()
-        getUserLocation()
-        
+//        getUserLocation()
     }
     
     func setUpMapView() {
