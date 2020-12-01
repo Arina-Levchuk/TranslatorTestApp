@@ -293,7 +293,9 @@ class TTAResultTableVC: UIViewController {
     
     @objc func moveToTranslatorsList() {
         if let translator = self.selectedTranslator {
-            self.navigationController?.pushViewController(TTATranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
+//            self.navigationController?.pushViewController(TTATranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
+            
+            self.navigationController?.pushViewController(TTASettingsList(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
         }
     }
     
@@ -529,6 +531,12 @@ extension TTAResultTableVC: UITextViewDelegate {
 
 extension TTAResultTableVC: TranslatorsListVCDelegate {
     func newTranslatorSelected(translator: TTATranslator) {
+        self.selectedTranslator = translator
+    }
+}
+
+extension TTAResultTableVC: TTASettingsListDelegate {
+    func newTranslatorIsSelected(translator: TTATranslator) {
         self.selectedTranslator = translator
     }
 }

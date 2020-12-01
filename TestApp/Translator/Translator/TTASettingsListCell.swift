@@ -34,9 +34,24 @@ class TTASettingsListCell: UICollectionViewCell {
         return lbl
     }()
     
+    let cellView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 10
+        view.layer.borderColor = UIColor.systemGray.cgColor
+        view.layer.borderWidth = 1
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     func setupCellLayout() {
+        self.contentView.addSubview(cellView)
         self.contentView.addSubview(cellTitle)
-        cellTitle.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        cellTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        cellView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        cellView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        cellView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor).isActive = true
+        cellView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        cellTitle.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
+        cellTitle.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
     }
 }
