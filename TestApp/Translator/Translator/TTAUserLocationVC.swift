@@ -106,9 +106,13 @@ class TTAUserLocationVC: UIViewController {
 
 extension TTAUserLocationVC: CLLocationManagerDelegate {
     
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("localizationManager error: \(error.localizedDescription)")
+    }
+    
     func getUserLocation() {
         locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
+//        locationManager.requestWhenInUseAuthorization()
         
         if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
             locationManager.requestLocation()

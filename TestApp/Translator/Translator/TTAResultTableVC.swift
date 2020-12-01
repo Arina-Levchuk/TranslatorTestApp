@@ -52,11 +52,11 @@ class TTAResultTableVC: UIViewController {
 //  MARK: - View lifecycle
     
     var translators: [TTATranslator] = [
-                                            TTATranslator(name: "Yoda translator", url: URL(string: "https://api.funtranslations.com/translate/yoda.json")),
-                                            TTATranslator(name: "Klingon translator", url: URL(string: "https://api.funtranslations.com/translate/klingon.json")),
-                                            TTATranslator(name: "Shakespeare translator", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json")),
-                                            TTATranslator(name: "Yandex translate", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e", "lang": "en-ru"]),
-                                            TTATranslator(name: "Valyrian translator", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"))]
+                                            TTATranslator(name: "Yoda", url: URL(string: "https://api.funtranslations.com/translate/yoda.json")),
+                                            TTATranslator(name: "Klingon", url: URL(string: "https://api.funtranslations.com/translate/klingon.json")),
+                                            TTATranslator(name: "Shakespeare", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json")),
+                                            TTATranslator(name: "Yandex", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e", "lang": "en-ru"]),
+                                            TTATranslator(name: "Valyrian", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"))]
     
     override func viewDidLoad() {
         super.viewDidLoad()
