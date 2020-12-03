@@ -36,6 +36,7 @@ class TTASettingsListCell: UICollectionViewCell {
     
     let cellView: UIView = {
         let view = UIView()
+        view.backgroundColor = .white
         view.layer.cornerRadius = 10
         view.layer.borderColor = UIColor.systemGray.cgColor
         view.layer.borderWidth = 1
@@ -43,15 +44,29 @@ class TTASettingsListCell: UICollectionViewCell {
         return view
     }()
     
+    let cellIcon : UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        return img
+    }()
+    
     func setupCellLayout() {
         self.contentView.addSubview(cellView)
-        self.contentView.addSubview(cellTitle)
+//        self.contentView.addSubview(cellTitle)
+        self.contentView.addSubview(cellIcon)
         cellView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor).isActive = true
         cellView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor).isActive = true
         cellView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor).isActive = true
         cellView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
-        cellTitle.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
-        cellTitle.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
+//        cellIcon.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
+//        cellIcon.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
+        cellIcon.leadingAnchor.constraint(equalTo: cellView.leadingAnchor).isActive = true
+        cellIcon.trailingAnchor.constraint(equalTo: cellView.trailingAnchor).isActive = true
+        cellIcon.topAnchor.constraint(equalTo: cellView.topAnchor).isActive = true
+        cellIcon.bottomAnchor.constraint(equalTo: cellView.bottomAnchor).isActive = true
+        
+//        cellTitle.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
+//        cellTitle.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
     }
 }

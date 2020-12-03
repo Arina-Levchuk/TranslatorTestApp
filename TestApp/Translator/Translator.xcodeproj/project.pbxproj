@@ -63,9 +63,9 @@
 		84003587245200B300FB3BA1 /* VC */ = {
 			isa = PBXGroup;
 			children = (
-				84DE9FAC2402BB79007E4239 /* TTAResultTableVC.swift */,
-				846A57362570260000363261 /* TTASettingsList.swift */,
-				8488B7912561A57D00933856 /* TTAUserLocationVC.swift */,
+				846A573A25796EFE00363261 /* ResultVC */,
+				846A573B25796F1100363261 /* SettingsVC */,
+				846A573C25796F5B00363261 /* MapVC */,
 				845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */,
 			);
 			name = VC;
@@ -80,6 +80,32 @@
 			);
 			name = Model;
 			path = ../Model;
+			sourceTree = "<group>";
+		};
+		846A573A25796EFE00363261 /* ResultVC */ = {
+			isa = PBXGroup;
+			children = (
+				84DE9FAC2402BB79007E4239 /* TTAResultTableVC.swift */,
+				84DD1A6624CF748B00147BC1 /* TTATranslatorResultCell.swift */,
+			);
+			name = ResultVC;
+			sourceTree = "<group>";
+		};
+		846A573B25796F1100363261 /* SettingsVC */ = {
+			isa = PBXGroup;
+			children = (
+				846A57362570260000363261 /* TTASettingsList.swift */,
+				846A573825702B6500363261 /* TTASettingsListCell.swift */,
+			);
+			name = SettingsVC;
+			sourceTree = "<group>";
+		};
+		846A573C25796F5B00363261 /* MapVC */ = {
+			isa = PBXGroup;
+			children = (
+				8488B7912561A57D00933856 /* TTAUserLocationVC.swift */,
+			);
+			name = MapVC;
 			sourceTree = "<group>";
 		};
 		84DE9F8524016C65007E4239 = {
@@ -105,8 +131,6 @@
 				84DE9F9324016C65007E4239 /* SceneDelegate.swift */,
 				842C1E9E2517A4F50036DF59 /* Model */,
 				84003587245200B300FB3BA1 /* VC */,
-				84DD1A6624CF748B00147BC1 /* TTATranslatorResultCell.swift */,
-				846A573825702B6500363261 /* TTASettingsListCell.swift */,
 				8403EFBA241D4A1A0061765C /* TTATranslator.swift */,
 				841E1AAE24B49EFE0075CB49 /* TTADecodedResponse.swift */,
 				841E1AAA24B49E640075CB49 /* URLExtension.swift */,

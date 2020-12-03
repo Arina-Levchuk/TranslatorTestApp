@@ -93,8 +93,9 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.reuseID, for: indexPath) as! TTASettingsListCell
         
         let currentTranslator = allTranslators[indexPath.row]
-        cell.cellTitle.text = currentTranslator.name
-        
+//        cell.cellTitle.text = currentTranslator.name
+        cell.cellIcon.image = currentTranslator.translatorIcon
+
         return cell
     }
     
