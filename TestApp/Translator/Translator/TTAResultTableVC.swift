@@ -139,7 +139,7 @@ class TTAResultTableVC: UIViewController {
         navigationItem.title = "Results"
         navigationController?.navigationBar.prefersLargeTitles = false
         
-        let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "list.dash"), style: .plain, target: self, action: #selector(moveToTranslatorsList))
+        let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(moveToTranslatorsList))
         navigationItem.rightBarButtonItem = listOfTranslatorsButton
     }
     
