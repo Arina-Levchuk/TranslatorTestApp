@@ -50,7 +50,8 @@ class TTASettingsList: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-  
+        navigationItem.title = "Settings"
+        
         setUpCollectionView()
 
     }
@@ -112,7 +113,7 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
 
 extension TTASettingsList: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 76)
+        return CGSize(width: view.frame.width, height: 70)
     }
 }
 

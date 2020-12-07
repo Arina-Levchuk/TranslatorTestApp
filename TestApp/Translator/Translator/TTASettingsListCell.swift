@@ -27,7 +27,7 @@ class TTASettingsListCell: UICollectionViewCell {
     
     let cellTitle: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 17)
+        lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.textAlignment = .center
         lbl.textColor = .black
         lbl.translatesAutoresizingMaskIntoConstraints = false
