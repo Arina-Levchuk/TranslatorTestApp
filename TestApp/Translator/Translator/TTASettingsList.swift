@@ -38,7 +38,7 @@ class TTASettingsList: UIViewController {
     }
     
     lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout())
+        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseID)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -57,28 +57,30 @@ class TTASettingsList: UIViewController {
     
     func setUpCollectionView() {
         
-        self.view.backgroundColor = .white
+        collectionView.backgroundColor = .systemYellow
+        
+//        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+//        collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+//        collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+//        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         
         view.addSubview(collectionView)
-        
-        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
     }
     
-    func setUpCollectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewFlowLayout()
-        
-        let cellWidthHeightConstant: CGFloat = UIScreen.main.bounds.width * 0.2
-        
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        
-        layout.itemSize = CGSize(width: cellWidthHeightConstant, height: cellWidthHeightConstant)
-        
-        return layout
-    }
+//    func setUpCollectionViewLayout() -> UICollectionViewLayout {
+//        let layout = UICollectionViewFlowLayout()
+//        
+//        let cellWidthHeightConstant: CGFloat = UIScreen.main.bounds.width * 0.2
+//        
+//        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+//        
+//        layout.itemSize = CGSize(width: cellWidthHeightConstant, height: cellWidthHeightConstant)
+//        
+//        return layout
+//    }
 
 
 }
@@ -93,7 +95,7 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.reuseID, for: indexPath) as! TTASettingsListCell
         
         let currentTranslator = allTranslators[indexPath.row]
-//        cell.cellTitle.text = currentTranslator.name
+        cell.cellTitle.text = currentTranslator.name
         cell.cellIcon.image = currentTranslator.translatorIcon
 
         return cell
@@ -106,6 +108,12 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
     }
         
+}
+
+extension TTASettingsList: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 76)
+    }
 }
 
 
