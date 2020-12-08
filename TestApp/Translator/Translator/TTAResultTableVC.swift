@@ -402,11 +402,11 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         case TTATranslatorResult.ResponseStatus.success.description:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = result.translation
-            cell.cellSubtitle.textColor = .black
+            cell.cellSubtitle.textColor = .label
         case TTATranslatorResult.ResponseStatus.failure.description:
             cell.showSpinner(animate: false)
             cell.cellSubtitle.text = "Error. Tap to retry"
-            cell.cellSubtitle.textColor = .red
+            cell.cellSubtitle.textColor = .systemRed
         default:
             cell.showSpinner(animate: true)
 //            cell.cellSubtitle.text = nil

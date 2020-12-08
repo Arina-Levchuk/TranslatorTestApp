@@ -29,14 +29,14 @@ class TTASettingsListCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.textAlignment = .center
-        lbl.textColor = .black
+        lbl.textColor = .label
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
     let cellView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
 //        view.layer.cornerRadius = 10
         view.layer.borderColor = UIColor.systemGray.cgColor
         view.layer.borderWidth = 1

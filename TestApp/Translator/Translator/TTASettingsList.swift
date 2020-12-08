@@ -38,12 +38,12 @@ class TTASettingsList: UIViewController {
     }
     
     lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
+        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: setUpCollectionViewLayout())
         collectionView.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseID)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .yellow
+        collectionView.backgroundColor = .systemYellow
         return collectionView
     }()
  
@@ -71,17 +71,18 @@ class TTASettingsList: UIViewController {
 
     }
     
-//    func setUpCollectionViewLayout() -> UICollectionViewLayout {
-//        let layout = UICollectionViewFlowLayout()
-//        
+    func setUpCollectionViewLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
 //        let cellWidthHeightConstant: CGFloat = UIScreen.main.bounds.width * 0.2
-//        
+        
 //        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-//        
+        
 //        layout.itemSize = CGSize(width: cellWidthHeightConstant, height: cellWidthHeightConstant)
-//        
-//        return layout
-//    }
+        
+        return layout
+    }
 
 
 }
