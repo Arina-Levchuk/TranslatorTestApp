@@ -13,13 +13,23 @@ protocol TTASettingsListDelegate: class {
 }
 
 class TTASettingsList: UIViewController {
+    
+    var defaults = UserDefaults.standard
+    private var appearanceMode: AppearanceMode {
+        get {
+            return defaults.appearanceMode
+        } set {
+            defaults.appearanceMode = newValue
+            setAppearanceMode(for: newValue)
+        }
+    }
 
 //    Section ID type
-    enum TTASettingsSection {
-        case translators
-        case appModes
-        case languageModes
-    }
+//    enum TTASettingsSection {
+//        case translators
+//        case appModes
+//        case languageModes
+//    }
     
     weak var delegate: TTASettingsListDelegate? = nil
     var allTranslators: [TTATranslator] = []
@@ -82,6 +92,11 @@ class TTASettingsList: UIViewController {
 //        layout.itemSize = CGSize(width: cellWidthHeightConstant, height: cellWidthHeightConstant)
         
         return layout
+    }
+    
+    
+    private func setAppearanceMode(for theme: AppearanceMode) {
+        view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
 
 
