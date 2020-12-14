@@ -9,7 +9,7 @@
 import UIKit
 
 class TTASettingsListCell: UICollectionViewCell {
-    static let reuseID = "TTASettingsListCell"
+    static let reuseID = "TTATranslatorsListCell"
     
 //    ???? collection view cell init???
     

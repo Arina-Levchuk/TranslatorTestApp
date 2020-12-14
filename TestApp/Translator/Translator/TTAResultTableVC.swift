@@ -529,11 +529,11 @@ extension TTAResultTableVC: UITextViewDelegate {
     
 }
 
-extension TTAResultTableVC: TranslatorsListVCDelegate {
-    func newTranslatorSelected(translator: TTATranslator) {
-        self.selectedTranslator = translator
-    }
-}
+//extension TTAResultTableVC: TranslatorsListVCDelegate {
+//    func newTranslatorSelected(translator: TTATranslator) {
+//        self.selectedTranslator = translator
+//    }
+//}
 
 extension TTAResultTableVC: TTASettingsListDelegate {
     func newTranslatorIsSelected(translator: TTATranslator) {

@@ -28,7 +28,8 @@ class TTASettingsList: UIViewController {
 //    enum TTASettingsSection {
 //        case translators
 //        case appModes
-//        case languageModes
+//        case flagModes
+//        case textDirectionMode
 //    }
     
     weak var delegate: TTASettingsListDelegate? = nil
@@ -47,39 +48,98 @@ class TTASettingsList: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: setUpCollectionViewLayout())
-        collectionView.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseID)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemYellow
-        return collectionView
+    var scrollView = UIScrollView()
+    
+    lazy var translatorsCV: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout())
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseID)
+        cv.delegate = self
+        cv.dataSource = self
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.isScrollEnabled = false
+        cv.backgroundColor = .systemYellow
+        return cv
     }()
  
+    lazy var flagsCV: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        cv.delegate = self
+        cv.dataSource = self
+//      TODO: TO REGISTER CELL
+        
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.isScrollEnabled = false
+        cv.backgroundColor = .systemGray
+        return cv
+    }()
+    
+    lazy var appearanceModesCV: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        cv.delegate = self
+        cv.dataSource = self
+//      TODO: TO REGISTER CELL
+        
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.isScrollEnabled = false
+        cv.backgroundColor = .systemPurple
+        return cv
+    }()
+    
+    lazy var textDirectionCV: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        cv.delegate = self
+        cv.dataSource = self
+//      TODO: TO REGISTER CELL
+        
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.isScrollEnabled = false
+        cv.backgroundColor = .systemGreen
+        return cv
+    }()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Settings"
         
-        setUpCollectionView()
+        setupViewLayout()
+        
+//        setUpCollectionView()
 
     }
     
-    func setUpCollectionView() {
-        
-        collectionView.backgroundColor = .systemYellow
-        
-//        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-//        collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-//        collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-//        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
-        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        
-        view.addSubview(collectionView)
+    func setupViewLayout() {
+        view.addSubview(scrollView)
+        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
+        scrollView.addSubview(translatorsCV)
+        translatorsCV.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        translatorsCV.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        translatorsCV.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+//        translatorsCV.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        scrollView.addSubview(flagsCV)
+        flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
+        flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
+        flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
+        
+        scrollView.addSubview(textDirectionCV)
+        textDirectionCV.leadingAnchor.constraint(equalTo: flagsCV.leadingAnchor).isActive = true
+        textDirectionCV.trailingAnchor.constraint(equalTo: flagsCV.trailingAnchor).isActive = true
+        textDirectionCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
+        
+        scrollView.addSubview(appearanceModesCV)
+        appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
+        appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
+        appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
+        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+            
     }
+    
     
     func setUpCollectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
@@ -109,7 +169,7 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.reuseID, for: indexPath) as! TTASettingsListCell
+        let cell = translatorsCV.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.reuseID, for: indexPath) as! TTASettingsListCell
         
         let currentTranslator = allTranslators[indexPath.row]
         cell.cellTitle.text = currentTranslator.name
@@ -118,12 +178,12 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.selectedTranslator = allTranslators[indexPath.row]
-        self.collectionView.reloadData()
-        
-        self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        self.selectedTranslator = allTranslators[indexPath.row]
+//        self.translatorsCollectionView.reloadData()
+//
+//        self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
+//    }
         
 }
 
