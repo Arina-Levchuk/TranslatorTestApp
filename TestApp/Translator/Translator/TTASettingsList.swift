@@ -48,16 +48,21 @@ class TTASettingsList: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var scrollView = UIScrollView()
+    var scrollView: UIScrollView = {
+        var sv = UIScrollView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.backgroundColor = .systemYellow
+        return sv
+    }()
     
     lazy var translatorsCV: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout())
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseID)
         cv.delegate = self
         cv.dataSource = self
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
-        cv.backgroundColor = .systemYellow
+        cv.backgroundColor = .systemPink
         return cv
     }()
  
@@ -111,6 +116,7 @@ class TTASettingsList: UIViewController {
     
     func setupViewLayout() {
         view.addSubview(scrollView)
+        
         scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
@@ -120,39 +126,36 @@ class TTASettingsList: UIViewController {
         translatorsCV.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         translatorsCV.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         translatorsCV.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-//        translatorsCV.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
-        scrollView.addSubview(flagsCV)
-        flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
-        flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
-        flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
-        
-        scrollView.addSubview(textDirectionCV)
-        textDirectionCV.leadingAnchor.constraint(equalTo: flagsCV.leadingAnchor).isActive = true
-        textDirectionCV.trailingAnchor.constraint(equalTo: flagsCV.trailingAnchor).isActive = true
-        textDirectionCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
-        
-        scrollView.addSubview(appearanceModesCV)
-        appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
-        appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
-        appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
-        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+////        translatorsCV.heightAnchor.constraint(equalToConstant: translatorsCV.contentSize.height).isActive = true
+        translatorsCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+//
+//        scrollView.addSubview(flagsCV)
+//        flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
+//        flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
+//        flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
+//        flagsCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
+//
+//        scrollView.addSubview(textDirectionCV)
+//        textDirectionCV.leadingAnchor.constraint(equalTo: flagsCV.leadingAnchor).isActive = true
+//        textDirectionCV.trailingAnchor.constraint(equalTo: flagsCV.trailingAnchor).isActive = true
+//        textDirectionCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
+//        textDirectionCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
+//
+//        scrollView.addSubview(appearanceModesCV)
+//        appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
+//        appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
+//        appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
+//        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
             
     }
     
-    
-    func setUpCollectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        
+//    func setUpCollectionViewLayout() -> UICollectionViewLayout {
+//        let layout = UICollectionViewFlowLayout()
 //        let cellWidthHeightConstant: CGFloat = UIScreen.main.bounds.width * 0.2
-        
 //        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        
 //        layout.itemSize = CGSize(width: cellWidthHeightConstant, height: cellWidthHeightConstant)
-        
-        return layout
-    }
+//        return layout
+//    }
     
     
     private func setAppearanceMode(for theme: AppearanceMode) {
@@ -165,7 +168,9 @@ class TTASettingsList: UIViewController {
 extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return allTranslators.count
+//        if collectionView == self.translatorsCV {
+            return allTranslators.count
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
