@@ -129,29 +129,39 @@ class TTASettingsList: UIViewController {
         translatorsCV.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor).isActive = true
         translatorsCV.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
 //        translatorsCV.heightAnchor.constraint(equalToConstant: translatorsCV.contentSize.height).isActive = true
-        translatorsCV.heightAnchor.constraint(equalToConstant: view.bounds.height).isActive = true
+//        TODO: SET THE CORRECT HEIGHT CONSTRAINT
+        translatorsCV.heightAnchor.constraint(equalToConstant: 400).isActive = true
         translatorsCV.widthAnchor.constraint(equalToConstant: view.bounds.width).isActive = true
 //        translatorsCV.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor).isActive = true
 //        translatorsCV.widthAnchor.constraint(equalToConstant: translatorsCV.contentSize.width).isActive = true
 //
-//        scrollView.addSubview(flagsCV)
-//        flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
-//        flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
-//        flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
-//        flagsCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//
-//        scrollView.addSubview(textDirectionCV)
-//        textDirectionCV.leadingAnchor.constraint(equalTo: flagsCV.leadingAnchor).isActive = true
-//        textDirectionCV.trailingAnchor.constraint(equalTo: flagsCV.trailingAnchor).isActive = true
-//        textDirectionCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
-//        textDirectionCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//
-//        scrollView.addSubview(appearanceModesCV)
-//        appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
-//        appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
-//        appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
-//        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-            
+        scrollView.addSubview(flagsCV)
+        flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
+        flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
+        flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
+        flagsCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
+
+        scrollView.addSubview(textDirectionCV)
+        textDirectionCV.leadingAnchor.constraint(equalTo: flagsCV.leadingAnchor).isActive = true
+        textDirectionCV.trailingAnchor.constraint(equalTo: flagsCV.trailingAnchor).isActive = true
+        textDirectionCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
+        textDirectionCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
+
+        scrollView.addSubview(appearanceModesCV)
+        appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
+        appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
+        appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
+        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        
+        setupScrollViewInsets()
+        
+    }
+    
+    func setupScrollViewInsets() {
+        scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
+        
+        scrollView.contentOffset = CGPoint(x: 0, y: (scrollView.contentSize.height - view.bounds.height))
     }
     
 //    func setUpCollectionViewLayout() -> UICollectionViewLayout {
@@ -199,7 +209,13 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
 
 extension TTASettingsList: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 70)
+        var cvCellSize: CGSize?
+        if collectionView == self.translatorsCV {
+            cvCellSize = CGSize(width: view.frame.width, height: 70)
+        } else {
+            cvCellSize = CGSize.zero
+        }
+        return cvCellSize!
     }
 }
 
