@@ -10,6 +10,8 @@ import UIKit
 
 protocol TTASettingsListDelegate: class {
     func newTranslatorIsSelected(translator: TTATranslator)
+    
+    func newLanguageSelected(language: TTATranslatorLanguage)
 }
 
 class TTASettingsList: UIViewController {
@@ -36,9 +38,19 @@ class TTASettingsList: UIViewController {
     var allTranslators: [TTATranslator] = []
     var selectedTranslator: TTATranslator!
     
-    init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], delegate: TTASettingsListDelegate?) {
+    var allLanguages: [TTATranslatorLanguage] = []
+    var selectedLanguage: TTATranslatorLanguage!
+    
+    var allModes: [TTAAppearanceMode] = [
+        TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light")),
+        TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"))
+    ]
+    
+    init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], allLanguages: [TTATranslatorLanguage], selectedLanguage: TTATranslatorLanguage, delegate: TTASettingsListDelegate?) {
         self.selectedTranslator = selectedTranslator
         self.allTranslators = allTranslators
+        self.selectedLanguage = selectedLanguage
+        self.allLanguages = allLanguages
         self.delegate = delegate
         
         super.init(nibName: nil, bundle: nil)
@@ -101,9 +113,7 @@ class TTASettingsList: UIViewController {
         cv.backgroundColor = .systemGreen
         return cv
     }()
-    
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Settings"
@@ -151,7 +161,8 @@ class TTASettingsList: UIViewController {
         appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
         appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
         appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
-        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        appearanceModesCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
+//        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
         
         setupScrollViewInsets()
         
@@ -183,9 +194,17 @@ class TTASettingsList: UIViewController {
 extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        if collectionView == self.translatorsCV {
-            return allTranslators.count
-//        }
+        var numberOfItems: Int = 0
+        
+        if collectionView == self.translatorsCV {
+            numberOfItems = allTranslators.count
+        } else if collectionView == self.flagsCV {
+            numberOfItems = allLanguages.count
+        } else if collectionView == self.appearanceModesCV {
+            numberOfItems = allModes.count
+        }
+    
+        return numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -203,6 +222,7 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
 //        self.translatorsCollectionView.reloadData()
 //
 //        self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
+//        self.delegate?.newLanguageSelected(language: self.selectedLanguage)
 //    }
         
 }

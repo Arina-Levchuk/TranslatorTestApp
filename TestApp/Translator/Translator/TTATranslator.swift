@@ -14,4 +14,16 @@ struct TTATranslator {
     var url: URL? = nil
     var translatorIcon: UIImage? = nil
     var queryDict: [String: String]?
+
+}
+
+struct TTATranslatorLanguage {
+    let language: String
+    var flagImg: UIImage? = nil
+    let languageCode: String
+}
+
+struct TTAAppearanceMode {
+    let mode: String
+    var modeImg: UIImage? = nil
 }
