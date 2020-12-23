@@ -46,6 +46,15 @@ class TTASettingsList: UIViewController {
         TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"))
     ]
     
+    var languages: [TTATranslatorLanguage] = [
+        TTATranslatorLanguage(language: "Russian", flagImg: UIImage(named: "ru"), languageCode: "ru"),
+        TTATranslatorLanguage(language: "Hebrew", flagImg: UIImage(named: "he"), languageCode: "he"),
+        TTATranslatorLanguage(language: "Polish", flagImg: UIImage(named: "pl"), languageCode: "pl"),
+        TTATranslatorLanguage(language: "Chinese", flagImg: UIImage(named: "zh"), languageCode: "zh"),
+        TTATranslatorLanguage(language: "Spanish", flagImg: UIImage(named: "es"), languageCode: "es"),
+        TTATranslatorLanguage(language: "Ukrainian", flagImg: UIImage(named: "uk"), languageCode: "uk")
+    ]
+    
     init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], delegate: TTASettingsListDelegate?) {
         self.selectedTranslator = selectedTranslator
         self.allTranslators = allTranslators
@@ -68,7 +77,7 @@ class TTASettingsList: UIViewController {
     }()
     
     lazy var translatorsCV: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout())
         cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseID)
         cv.delegate = self
         cv.dataSource = self
@@ -164,24 +173,16 @@ class TTASettingsList: UIViewController {
         appearanceModesCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
 //        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
         
-        setupScrollViewInsets()
-        
     }
     
-    func setupScrollViewInsets() {
-        scrollView.contentInset = UIEdgeInsets.zero
-        scrollView.scrollIndicatorInsets = scrollView.contentInset
-        
-        scrollView.contentOffset = CGPoint(x: 0, y: (scrollView.contentSize.height - view.bounds.height))
-    }
     
-//    func setUpCollectionViewLayout() -> UICollectionViewLayout {
-//        let layout = UICollectionViewFlowLayout()
-//        let cellWidthHeightConstant: CGFloat = UIScreen.main.bounds.width * 0.2
-//        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-//        layout.itemSize = CGSize(width: cellWidthHeightConstant, height: cellWidthHeightConstant)
-//        return layout
-//    }
+    func setUpCollectionViewLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewFlowLayout()
+        let cellWidthHeightConstant: CGFloat = UIScreen.main.bounds.width * 0.2
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        layout.itemSize = CGSize(width: cellWidthHeightConstant, height: cellWidthHeightConstant)
+        return layout
+    }
     
     
     private func setAppearanceMode(for theme: AppearanceMode) {
@@ -199,7 +200,7 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         if collectionView == self.translatorsCV {
             numberOfItems = allTranslators.count
         } else if collectionView == self.flagsCV {
-            numberOfItems = allLanguages.count
+            numberOfItems = languages.count
         } else if collectionView == self.appearanceModesCV {
             numberOfItems = allModes.count
         }
@@ -210,10 +211,20 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = translatorsCV.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.reuseID, for: indexPath) as! TTASettingsListCell
         
-        let currentTranslator = allTranslators[indexPath.row]
-        cell.cellTitle.text = currentTranslator.name
-        cell.cellIcon.image = currentTranslator.translatorIcon
-
+        if collectionView == self.translatorsCV {
+            let currentTranslator = allTranslators[indexPath.row]
+            cell.cellTitle.text = currentTranslator.name
+            cell.cellIcon.image = currentTranslator.translatorIcon
+        } else if collectionView == self.appearanceModesCV {
+            let selectedMode = allModes[indexPath.row]
+            cell.cellTitle.text = selectedMode.mode
+            cell.cellIcon.image = selectedMode.modeImg
+        } else if collectionView == self.flagsCV {
+            let selectedLanguage = languages[indexPath.row]
+            cell.cellTitle.text = selectedLanguage.language
+            cell.cellIcon.image = selectedLanguage.flagImg
+        }
+        
         return cell
     }
     
@@ -227,17 +238,17 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         
 }
 
-extension TTASettingsList: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var cvCellSize: CGSize?
-        if collectionView == self.translatorsCV {
-            cvCellSize = CGSize(width: view.frame.width, height: 70)
-        } else {
-            cvCellSize = CGSize.zero
-        }
-        return cvCellSize!
-    }
-}
+//extension TTASettingsList: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        var cvCellSize: CGSize?
+//        if collectionView == self.translatorsCV {
+//            cvCellSize = CGSize(width: view.frame.width, height: 51)
+//        } else {
+//            cvCellSize = CGSize.zero
+//        }
+//        return cvCellSize!
+//    }
+//}
 
 
 // Supplementary View for headers and footers
