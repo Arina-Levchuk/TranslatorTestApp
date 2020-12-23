@@ -77,10 +77,14 @@ class TTATranslatorsListVC: UIViewController, UITableViewDelegate, UITableViewDa
         let currentTranslator = self.allTranslators[indexPath.row]
         cell.textLabel?.text = currentTranslator.name
         
+        cell.imageView?.image = currentTranslator.translatorIcon
+        
         cell.accessoryType = .none
         if currentTranslator.url == self.selectedTranslator.url {
             cell.accessoryType = .checkmark
         }
+        
+        print("ContentSize: \(tableView.contentSize.height)")
         return cell
     }
         

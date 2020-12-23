@@ -303,10 +303,13 @@ class TTAResultTableVC: UIViewController {
     
     @objc func moveToTranslatorsList() {
         if let translator = self.selectedTranslator {
-            guard let language = self.selectedLanguage else { return }
-//            self.navigationController?.pushViewController(TTATranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
+//            guard let language = self.selectedLanguage else { return }
             
-            self.navigationController?.pushViewController(TTASettingsList(selectedTranslator: translator, allTranslators: self.translators, allLanguages: self.languages, selectedLanguage: language, delegate: self), animated: true)
+            self.navigationController?.pushViewController(TTATranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
+            
+//            self.navigationController?.pushViewController(TTASettingsList(selectedTranslator: translator, allTranslators: self.translators, allLanguages: self.languages, delegate: self), animated: true)
+            
+//            self.navigationController?.pushViewController(TTASettingsList(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
         }
     }
     
@@ -433,7 +436,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
             if let cellIndexPath = self.tableView.indexPath(for: cell) {
                 let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
                 
-                self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
+//                self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
             }
         }
     }
@@ -541,11 +544,11 @@ extension TTAResultTableVC: UITextViewDelegate {
     
 }
 
-//extension TTAResultTableVC: TranslatorsListVCDelegate {
-//    func newTranslatorSelected(translator: TTATranslator) {
-//        self.selectedTranslator = translator
-//    }
-//}
+extension TTAResultTableVC: TranslatorsListVCDelegate {
+    func newTranslatorSelected(translator: TTATranslator) {
+        self.selectedTranslator = translator
+    }
+}
 
 extension TTAResultTableVC: TTASettingsListDelegate {
     func newTranslatorIsSelected(translator: TTATranslator) {
@@ -557,8 +560,8 @@ extension TTAResultTableVC: TTASettingsListDelegate {
     }
 }
 
-extension TTAResultTableVC: TTAUserLocationVCDelegate {
-    func passUserCoordinates(latitude: Double, longitude: Double) {
-        
-    }
-}
+//extension TTAResultTableVC: TTAUserLocationVCDelegate {
+//    func passUserCoordinates(latitude: Double, longitude: Double) {
+//
+//    }
+

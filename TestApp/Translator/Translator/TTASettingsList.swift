@@ -46,11 +46,11 @@ class TTASettingsList: UIViewController {
         TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"))
     ]
     
-    init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], allLanguages: [TTATranslatorLanguage], selectedLanguage: TTATranslatorLanguage, delegate: TTASettingsListDelegate?) {
+    init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], delegate: TTASettingsListDelegate?) {
         self.selectedTranslator = selectedTranslator
         self.allTranslators = allTranslators
-        self.selectedLanguage = selectedLanguage
-        self.allLanguages = allLanguages
+//        self.selectedLanguage = selectedLanguage
+//        self.allLanguages = allLanguages
         self.delegate = delegate
         
         super.init(nibName: nil, bundle: nil)
