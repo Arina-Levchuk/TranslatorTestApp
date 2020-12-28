@@ -78,7 +78,7 @@ class TTASettingsList: UIViewController {
     
     lazy var translatorsCV: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout())
-        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseID)
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.delegate = self
         cv.dataSource = self
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -92,7 +92,7 @@ class TTASettingsList: UIViewController {
         cv.delegate = self
         cv.dataSource = self
 //      TODO: TO REGISTER CELL
-        
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .systemGray
@@ -104,7 +104,7 @@ class TTASettingsList: UIViewController {
         cv.delegate = self
         cv.dataSource = self
 //      TODO: TO REGISTER CELL
-        
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .systemPurple
@@ -116,7 +116,7 @@ class TTASettingsList: UIViewController {
         cv.delegate = self
         cv.dataSource = self
 //      TODO: TO REGISTER CELL
-        
+//        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .systemGreen
@@ -209,7 +209,7 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = translatorsCV.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.reuseID, for: indexPath) as! TTASettingsListCell
+        let cell: TTASettingsListCell = collectionView.dequeueReusableCell(for: indexPath)
         
         if collectionView == self.translatorsCV {
             let currentTranslator = allTranslators[indexPath.row]
@@ -236,6 +236,15 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
 //        self.delegate?.newLanguageSelected(language: self.selectedLanguage)
 //    }
         
+}
+
+extension UICollectionView {
+    func dequeueReusableCell<T: TTASettingsListCell>(for indexPath: IndexPath) -> T {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else { fatalError("Unable to Dequeue Reusable Table View Cell")}
+        
+        return cell
+    }
+    
 }
 
 //extension TTASettingsList: UICollectionViewDelegateFlowLayout {

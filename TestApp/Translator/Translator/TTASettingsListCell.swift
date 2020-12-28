@@ -9,7 +9,7 @@
 import UIKit
 
 class TTASettingsListCell: UICollectionViewCell {
-    static let reuseID = "TTATranslatorsListCell"
+//    static let reuseID = "TTATranslatorsListCell"
     
 //    ???? collection view cell init???
     
@@ -74,3 +74,5 @@ class TTASettingsListCell: UICollectionViewCell {
 //        cellTitle.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
     }
 }
+
+extension TTASettingsListCell: ReusableCVCell {}
