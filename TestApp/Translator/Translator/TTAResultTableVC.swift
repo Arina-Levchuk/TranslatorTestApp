@@ -49,8 +49,6 @@ class TTAResultTableVC: UIViewController {
     
     var selectedTranslator: TTATranslator? = nil
     var selectedLanguage: TTATranslatorLanguage? = nil
-
-//  MARK: - View lifecycle
     
     var translators: [TTATranslator] = [
                                             TTATranslator(name: "Yoda", url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
@@ -59,7 +57,8 @@ class TTAResultTableVC: UIViewController {
         TTATranslator(name: "Yandex", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
                                             TTATranslator(name: "Valyrian", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))]
 
-    
+//  MARK: - View lifecycle
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 //        print("VIEW DID LOAD")

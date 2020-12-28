@@ -78,9 +78,9 @@ class TTASettingsList: UIViewController {
     
     lazy var translatorsCV: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout())
-        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.delegate = self
         cv.dataSource = self
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .systemPink
@@ -91,7 +91,6 @@ class TTASettingsList: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
-//      TODO: TO REGISTER CELL
         cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
@@ -103,7 +102,6 @@ class TTASettingsList: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
-//      TODO: TO REGISTER CELL
         cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
@@ -122,7 +120,9 @@ class TTASettingsList: UIViewController {
         cv.backgroundColor = .systemGreen
         return cv
     }()
-        
+    
+//  MARK: - View lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Settings"
@@ -131,6 +131,13 @@ class TTASettingsList: UIViewController {
         
 //        setUpCollectionView()
 
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height + flagsCV.frame.height + appearanceModesCV.frame.height + textDirectionCV.frame.height))
+        scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
     }
     
     func setupViewLayout() {
@@ -173,6 +180,7 @@ class TTASettingsList: UIViewController {
         appearanceModesCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
 //        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
         
+
     }
     
     
