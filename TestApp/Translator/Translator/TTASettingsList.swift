@@ -141,26 +141,22 @@ class TTASettingsList: UIViewController {
     }
     
     func setupViewLayout() {
+        
         view.addSubview(scrollView)
-
         scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
-
+    
         scrollView.addSubview(translatorsCV)
         translatorsCV.translatesAutoresizingMaskIntoConstraints = false
         translatorsCV.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor).isActive = true
         translatorsCV.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor).isActive = true
         translatorsCV.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
-//        translatorsCV.heightAnchor.constraint(equalToConstant: translatorsCV.contentSize.height).isActive = true
 //        TODO: SET THE CORRECT HEIGHT CONSTRAINT
         translatorsCV.heightAnchor.constraint(equalToConstant: 400).isActive = true
         translatorsCV.widthAnchor.constraint(equalToConstant: view.bounds.width).isActive = true
-//        translatorsCV.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor).isActive = true
-//        translatorsCV.widthAnchor.constraint(equalToConstant: translatorsCV.contentSize.width).isActive = true
-//
+
         scrollView.addSubview(flagsCV)
         flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
         flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
@@ -179,7 +175,6 @@ class TTASettingsList: UIViewController {
         appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
         appearanceModesCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
 //        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        
 
     }
     
