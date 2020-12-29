@@ -9,18 +9,10 @@
 import UIKit
 
 class TTASettingsListCell: UICollectionViewCell {
-//    static let reuseID = "TTATranslatorsListCell"
-    
-//    ???? collection view cell init???
-    
-    func setup(with translator: TTATranslator) {
-        cellTitle.text = translator.name
-        cellIcon.image = translator.translatorIcon
-    }
-    
+      
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupCellLayout()
+        setupListCellLayout()
         
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
@@ -55,29 +47,26 @@ class TTASettingsListCell: UICollectionViewCell {
         return img
     }()
     
-    func setupCellLayout() {
+    func setupListCellLayout() {
+        
         self.contentView.addSubview(cellView)
         self.cellView.addSubview(cellIcon)
         self.cellView.addSubview(cellTitle)
+        
         cellView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor).isActive = true
         cellView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor).isActive = true
         cellView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor).isActive = true
         cellView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
-//        cellIcon.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
-//        cellIcon.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
+
         cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-//        cellIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         cellIcon.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         cellIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         cellIcon.widthAnchor.constraint(equalToConstant: self.bounds.height).isActive = true
         
         cellTitle.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 16).isActive = true
         cellTitle.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
-        
-//        cellTitle.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
-//        cellTitle.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
     }
+    
 }
 
 extension TTASettingsListCell: ReusableCVCell {}
