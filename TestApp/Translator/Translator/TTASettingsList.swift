@@ -55,7 +55,7 @@ class TTASettingsList: UIViewController {
         TTATranslatorLanguage(language: "Ukrainian", flagImg: UIImage(named: "uk"), languageCode: "uk")
     ]
     
-    var textDirection: [String] = ["L->R", "R->L"]
+    var textDirections: [String] = ["L->R", "R->L"]
     
     init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], delegate: TTASettingsListDelegate?) {
         self.selectedTranslator = selectedTranslator
@@ -129,6 +129,7 @@ class TTASettingsList: UIViewController {
         navigationItem.title = "Settings"
         
         setupViewLayout()
+        setupLayout(with: view.bounds.size)
         
 //        setUpCollectionView()
 
@@ -139,6 +140,16 @@ class TTASettingsList: UIViewController {
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height + flagsCV.frame.height + appearanceModesCV.frame.height + textDirectionCV.frame.height))
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.scrollIndicatorInsets = scrollView.contentInset
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setupLayout(with: size)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setupLayout(with: view.bounds.size)
     }
     
     func setupViewLayout() {
@@ -182,6 +193,25 @@ class TTASettingsList: UIViewController {
 
     }
         
+    private func setupLayout(with containerSize: CGSize) {
+        guard let flowLayout = translatorsCV.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
+        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        
+        if traitCollection.horizontalSizeClass == .regular {
+            let minItemWidth: CGFloat = 300
+            let numberOfCell = containerSize.width / minItemWidth
+            let width = floor((numberOfCell / floor(numberOfCell)) * minItemWidth)
+            flowLayout.itemSize = CGSize(width: width, height: 51)
+        } else {
+            flowLayout.itemSize = CGSize(width: containerSize.width, height: 51)
+        }
+        
+        translatorsCV.reloadData()
+    }
+        
     private func setAppearanceMode(for theme: AppearanceMode) {
         view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
@@ -201,7 +231,7 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         } else if collectionView == self.appearanceModesCV {
             numberOfItems = allModes.count
         } else if collectionView == self.textDirectionCV {
-            numberOfItems = textDirection.count
+            numberOfItems = textDirections.count
         }
         
         return numberOfItems
@@ -223,7 +253,7 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
             cell.cellTitle.text = selectedLanguage.language
             cell.cellIcon.image = selectedLanguage.flagImg
         } else if collectionView == self.textDirectionCV {
-            let selectedDirection = textDirection[indexPath.row]
+            let selectedDirection = textDirections[indexPath.row]
             cell.cellTitle.text = selectedDirection
         }
         

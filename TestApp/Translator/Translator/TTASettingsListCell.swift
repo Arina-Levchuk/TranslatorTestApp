@@ -13,6 +13,11 @@ class TTASettingsListCell: UICollectionViewCell {
     
 //    ???? collection view cell init???
     
+    func setup(with translator: TTATranslator) {
+        cellTitle.text = translator.name
+        cellIcon.image = translator.translatorIcon
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupCellLayout()
