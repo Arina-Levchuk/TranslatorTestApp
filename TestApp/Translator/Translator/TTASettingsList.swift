@@ -55,6 +55,8 @@ class TTASettingsList: UIViewController {
         TTATranslatorLanguage(language: "Ukrainian", flagImg: UIImage(named: "uk"), languageCode: "uk")
     ]
     
+    var textDirection: [String] = ["L->R", "R->L"]
+    
     init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], delegate: TTASettingsListDelegate?) {
         self.selectedTranslator = selectedTranslator
         self.allTranslators = allTranslators
@@ -77,7 +79,7 @@ class TTASettingsList: UIViewController {
     }()
     
     lazy var translatorsCV: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout())
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
         cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
@@ -113,8 +115,7 @@ class TTASettingsList: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
-//      TODO: TO REGISTER CELL
-//        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .systemGreen
@@ -161,33 +162,26 @@ class TTASettingsList: UIViewController {
         flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
         flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
         flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
+//        TODO: SET THE CORRECT HEIGHT CONSTRAINT
         flagsCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
 
         scrollView.addSubview(textDirectionCV)
         textDirectionCV.leadingAnchor.constraint(equalTo: flagsCV.leadingAnchor).isActive = true
         textDirectionCV.trailingAnchor.constraint(equalTo: flagsCV.trailingAnchor).isActive = true
         textDirectionCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
+//        TODO: SET THE CORRECT HEIGHT CONSTRAINT
         textDirectionCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
 
         scrollView.addSubview(appearanceModesCV)
         appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
         appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
         appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
+//        TODO: SET THE CORRECT HEIGHT CONSTRAINT
         appearanceModesCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
 //        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
 
     }
-    
-    
-    func setUpCollectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewFlowLayout()
-        let cellWidthHeightConstant: CGFloat = UIScreen.main.bounds.width * 0.2
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        layout.itemSize = CGSize(width: cellWidthHeightConstant, height: cellWidthHeightConstant)
-        return layout
-    }
-    
-    
+        
     private func setAppearanceMode(for theme: AppearanceMode) {
         view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
@@ -206,8 +200,10 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
             numberOfItems = languages.count
         } else if collectionView == self.appearanceModesCV {
             numberOfItems = allModes.count
+        } else if collectionView == self.textDirectionCV {
+            numberOfItems = textDirection.count
         }
-    
+        
         return numberOfItems
     }
     
@@ -226,6 +222,9 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
             let selectedLanguage = languages[indexPath.row]
             cell.cellTitle.text = selectedLanguage.language
             cell.cellIcon.image = selectedLanguage.flagImg
+        } else if collectionView == self.textDirectionCV {
+            let selectedDirection = textDirection[indexPath.row]
+            cell.cellTitle.text = selectedDirection
         }
         
         return cell
