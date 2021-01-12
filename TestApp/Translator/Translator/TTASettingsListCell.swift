@@ -22,6 +22,13 @@ class TTASettingsListCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cellTitle.text = nil
+        cellIcon.image = nil
+    }
+    
     let cellTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 20)

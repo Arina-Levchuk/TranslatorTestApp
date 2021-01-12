@@ -167,6 +167,7 @@ class TTASettingsList: UIViewController {
         translatorsCV.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
 //        TODO: SET THE CORRECT HEIGHT CONSTRAINT
         translatorsCV.heightAnchor.constraint(equalToConstant: 400).isActive = true
+//        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count))).isActive = true
         translatorsCV.widthAnchor.constraint(equalToConstant: view.bounds.width).isActive = true
 
         scrollView.addSubview(flagsCV)
@@ -198,7 +199,7 @@ class TTASettingsList: UIViewController {
         
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 0
-        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+//        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         
         if traitCollection.horizontalSizeClass == .regular {
             let minItemWidth: CGFloat = 300
@@ -259,6 +260,19 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         
         return cell
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        if collectionView == self.translatorsCV {
+//            if kind == UICollectionView.elementKindSectionHeader {
+//                let header = collectionView.dequeueReusableSupplementaryView(ofKind: "TRANSLATORS", withReuseIdentifier: "translatorsCVHeader", for: indexPath)
+//                return header
+//            } else if kind == UICollectionView.elementKindSectionFooter {
+//                let footer = collectionView.dequeueReusableSupplementaryView(ofKind: "Select translator", withReuseIdentifier: "translatorsCVFooter", for: indexPath)
+//                return footer
+//            }
+//        }
+//        fatalError()
+//    }
     
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        self.selectedTranslator = allTranslators[indexPath.row]
