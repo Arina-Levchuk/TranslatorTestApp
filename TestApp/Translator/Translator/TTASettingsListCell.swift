@@ -65,12 +65,11 @@ class TTASettingsListCell: UICollectionViewCell {
         cellView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor).isActive = true
         cellView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
-        cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        cellIcon.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        cellIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        cellIcon.widthAnchor.constraint(equalToConstant: self.bounds.height).isActive = true
+        cellIcon.leadingAnchor.constraint(equalTo: self.cellView.leadingAnchor).isActive = true
+        cellIcon.centerYAnchor.constraint(equalTo: self.cellView.centerYAnchor).isActive = true
+        cellIcon.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
-        cellTitle.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 16).isActive = true
+        cellTitle.leadingAnchor.constraint(equalTo: self.cellView.leadingAnchor, constant: 50).isActive = true
         cellTitle.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
     }
     

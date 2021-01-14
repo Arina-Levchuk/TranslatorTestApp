@@ -130,21 +130,22 @@ class TTASettingsList: UIViewController {
         
         setupViewLayout()
         setupLayout(with: view.bounds.size)
-        
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height + flagsCV.frame.height + appearanceModesCV.frame.height + textDirectionCV.frame.height))
 //        setUpCollectionView()
 
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height + flagsCV.frame.height + appearanceModesCV.frame.height + textDirectionCV.frame.height))
-        scrollView.contentInset = UIEdgeInsets.zero
-        scrollView.scrollIndicatorInsets = scrollView.contentInset
+        
+//        scrollView.contentInset = UIEdgeInsets.zero
+//        scrollView.scrollIndicatorInsets = scrollView.contentInset
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        setupLayout(with: size)
+        translatorsCV.collectionViewLayout.invalidateLayout()
+//        setupLayout(with: size)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -162,35 +163,36 @@ class TTASettingsList: UIViewController {
     
         scrollView.addSubview(translatorsCV)
         translatorsCV.translatesAutoresizingMaskIntoConstraints = false
-        translatorsCV.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor).isActive = true
-        translatorsCV.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor).isActive = true
+        translatorsCV.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor).isActive = true
+//        translatorsCV.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor).isActive = true
+//        translatorsCV.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor).isActive = true
         translatorsCV.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
 //        TODO: SET THE CORRECT HEIGHT CONSTRAINT
-        translatorsCV.heightAnchor.constraint(equalToConstant: 400).isActive = true
-//        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count))).isActive = true
-        translatorsCV.widthAnchor.constraint(equalToConstant: view.bounds.width).isActive = true
+//        translatorsCV.heightAnchor.constraint(equalToConstant: 400).isActive = true
+        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count))).isActive = true
+//        translatorsCV.widthAnchor.constraint(equalToConstant: view.bounds.width).isActive = true
 
-        scrollView.addSubview(flagsCV)
-        flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
-        flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
-        flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
-//        TODO: SET THE CORRECT HEIGHT CONSTRAINT
-        flagsCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
-
-        scrollView.addSubview(textDirectionCV)
-        textDirectionCV.leadingAnchor.constraint(equalTo: flagsCV.leadingAnchor).isActive = true
-        textDirectionCV.trailingAnchor.constraint(equalTo: flagsCV.trailingAnchor).isActive = true
-        textDirectionCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
-//        TODO: SET THE CORRECT HEIGHT CONSTRAINT
-        textDirectionCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
-
-        scrollView.addSubview(appearanceModesCV)
-        appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
-        appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
-        appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
-//        TODO: SET THE CORRECT HEIGHT CONSTRAINT
-        appearanceModesCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+//        scrollView.addSubview(flagsCV)
+//        flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
+//        flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
+//        flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
+////        TODO: SET THE CORRECT HEIGHT CONSTRAINT
+//        flagsCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
+//
+//        scrollView.addSubview(textDirectionCV)
+//        textDirectionCV.leadingAnchor.constraint(equalTo: flagsCV.leadingAnchor).isActive = true
+//        textDirectionCV.trailingAnchor.constraint(equalTo: flagsCV.trailingAnchor).isActive = true
+//        textDirectionCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
+////        TODO: SET THE CORRECT HEIGHT CONSTRAINT
+//        textDirectionCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
+//
+//        scrollView.addSubview(appearanceModesCV)
+//        appearanceModesCV.leadingAnchor.constraint(equalTo: textDirectionCV.leadingAnchor).isActive = true
+//        appearanceModesCV.trailingAnchor.constraint(equalTo: textDirectionCV.trailingAnchor).isActive = true
+//        appearanceModesCV.topAnchor.constraint(equalTo: textDirectionCV.bottomAnchor).isActive = true
+////        TODO: SET THE CORRECT HEIGHT CONSTRAINT
+//        appearanceModesCV.heightAnchor.constraint(equalToConstant: 100).isActive = true
+////        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
 
     }
         
@@ -202,7 +204,7 @@ class TTASettingsList: UIViewController {
 //        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         
         if traitCollection.horizontalSizeClass == .regular {
-            let minItemWidth: CGFloat = 300
+            let minItemWidth: CGFloat = view.bounds.width/2
             let numberOfCell = containerSize.width / minItemWidth
             let width = floor((numberOfCell / floor(numberOfCell)) * minItemWidth)
             flowLayout.itemSize = CGSize(width: width, height: 51)
@@ -220,7 +222,7 @@ class TTASettingsList: UIViewController {
 
 }
 
-extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource {
+extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var numberOfItems: Int = 0
@@ -236,6 +238,10 @@ extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource 
         }
         
         return numberOfItems
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize.init(width: self.scrollView.contentSize.width, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
