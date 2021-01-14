@@ -14,6 +14,8 @@ class TTASettingsListCell: UICollectionViewCell {
         super.init(frame: frame)
         setupListCellLayout()
         
+        contentView.backgroundColor = .systemGray6
+        
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
     }
@@ -41,7 +43,6 @@ class TTASettingsListCell: UICollectionViewCell {
     let cellView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
-//        view.layer.cornerRadius = 10
         view.layer.borderColor = UIColor.systemGray.cgColor
         view.layer.borderWidth = 1
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -56,21 +57,22 @@ class TTASettingsListCell: UICollectionViewCell {
     
     func setupListCellLayout() {
         
-        self.contentView.addSubview(cellView)
-        self.cellView.addSubview(cellIcon)
-        self.cellView.addSubview(cellTitle)
+//        self.contentView.addSubview(cellView)
+        contentView.addSubview(cellIcon)
+        contentView.addSubview(cellTitle)
         
-        cellView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        cellView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        cellView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor).isActive = true
-        cellView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor).isActive = true
+//        cellView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor).isActive = true
+//        cellView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor).isActive = true
+//        cellView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor).isActive = true
+//        cellView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
-        cellIcon.leadingAnchor.constraint(equalTo: self.cellView.leadingAnchor).isActive = true
-        cellIcon.centerYAnchor.constraint(equalTo: self.cellView.centerYAnchor).isActive = true
-        cellIcon.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        cellIcon.widthAnchor.constraint(equalToConstant: 51).isActive = true
+        cellIcon.heightAnchor.constraint(equalToConstant: 51).isActive = true
         
-        cellTitle.leadingAnchor.constraint(equalTo: self.cellView.leadingAnchor, constant: 50).isActive = true
-        cellTitle.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
+        cellTitle.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 20).isActive = true
+        cellTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
     
 }

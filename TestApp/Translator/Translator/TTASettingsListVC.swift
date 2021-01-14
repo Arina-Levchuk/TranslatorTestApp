@@ -68,9 +68,7 @@ class TTASettingsListVC: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
         translatorsCV.collectionViewLayout.invalidateLayout()
-
     }
     
     func setupViewLayout() {
@@ -107,7 +105,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize.init(width: self.scrollView.contentSize.width, height: 50)
+        return CGSize.init(width: self.scrollView.contentSize.width, height: 51)
     }
     
     

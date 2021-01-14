@@ -63,7 +63,7 @@
 //////        self.selectedLanguage = selectedLanguage
 //////        self.allLanguages = allLanguages
 ////        self.delegate = delegate
-////        
+////
 ////        super.init(nibName: nil, bundle: nil)
 ////    }
 //    
@@ -203,16 +203,16 @@
 //        flowLayout.minimumLineSpacing = 0
 ////        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
 //        
-//        if traitCollection.horizontalSizeClass == .regular {
-//            let minItemWidth: CGFloat = view.bounds.width/2
-//            let numberOfCell = containerSize.width / minItemWidth
-//            let width = floor((numberOfCell / floor(numberOfCell)) * minItemWidth)
-//            flowLayout.itemSize = CGSize(width: width, height: 51)
-//        } else {
-//            flowLayout.itemSize = CGSize(width: containerSize.width, height: 51)
-//        }
-//        
-//        translatorsCV.reloadData()
+////        if traitCollection.horizontalSizeClass == .regular {
+////            let minItemWidth: CGFloat = view.bounds.width/2
+////            let numberOfCell = containerSize.width / minItemWidth
+////            let width = floor((numberOfCell / floor(numberOfCell)) * minItemWidth)
+////            flowLayout.itemSize = CGSize(width: width, height: 51)
+////        } else {
+////            flowLayout.itemSize = CGSize(width: containerSize.width, height: 51)
+////        }
+////
+////        translatorsCV.reloadData()
 //    }
 //        
 //    private func setAppearanceMode(for theme: AppearanceMode) {
@@ -293,10 +293,10 @@
 ////extension UICollectionView {
 ////    func dequeueReusableCell<T: TTASettingsListCell>(for indexPath: IndexPath) -> T {
 ////        guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else { fatalError("Unable to Dequeue Reusable Table View Cell")}
-////        
+////
 ////        return cell
 ////    }
-////    
+////
 ////}
 //
 ////extension TTASettingsList: UICollectionViewDelegateFlowLayout {
