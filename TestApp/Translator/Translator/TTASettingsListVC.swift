@@ -83,6 +83,7 @@ class TTASettingsListVC: UIViewController {
         translatorsCV.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor).isActive = true
         translatorsCV.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
         translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count))).isActive = true
+
     }
     
 
@@ -106,6 +107,14 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize.init(width: self.scrollView.contentSize.width, height: 51)
+        
+//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//            return 0
+//        }
+//
+//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//            return 0
+//        }
     }
     
     

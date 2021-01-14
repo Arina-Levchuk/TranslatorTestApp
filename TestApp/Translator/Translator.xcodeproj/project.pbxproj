@@ -74,7 +74,6 @@
 				846A573A25796EFE00363261 /* ResultVC */,
 				846A573B25796F1100363261 /* SettingsVC */,
 				846A573C25796F5B00363261 /* MapVC */,
-				845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */,
 			);
 			name = VC;
 			sourceTree = "<group>";
@@ -105,7 +104,6 @@
 				84368F3B25B09FFE00A491EF /* TTASettingsListVC.swift */,
 				846A573825702B6500363261 /* TTASettingsListCell.swift */,
 				84370E7F259B7EC600842C2A /* TTASettingsGridCell.swift */,
-				846A57362570260000363261 /* TTASettingsList_DEPRECATED.swift */,
 			);
 			name = SettingsVC;
 			sourceTree = "<group>";
@@ -150,6 +148,8 @@
 				84DE9F9F24016C67007E4239 /* LaunchScreen.storyboard */,
 				84DE9FA224016C67007E4239 /* Info.plist */,
 				84DE9F9A24016C65007E4239 /* Translator.xcdatamodeld */,
+				845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */,
+				846A57362570260000363261 /* TTASettingsList_DEPRECATED.swift */,
 				840035852450CADB00FB3BA1 /* DataSourceProvider.swift */,
 			);
 			path = Translator;
