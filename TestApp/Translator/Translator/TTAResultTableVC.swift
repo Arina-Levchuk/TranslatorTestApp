@@ -300,7 +300,7 @@ class TTAResultTableVC: UIViewController {
             
 //            self.navigationController?.pushViewController(TTASettingsList(selectedTranslator: translator, allTranslators: self.translators, allLanguages: self.languages, delegate: self), animated: true)
             
-            self.navigationController?.pushViewController(TTASettingsList(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
+            self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
         }
     }
     
