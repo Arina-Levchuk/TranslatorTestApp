@@ -13,8 +13,10 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 //        self.backgroundColor = .systemGreen
+        
+        self.backgroundColor = .systemGray6
+        
         setupHeaderView()
-
     }
     
     required init?(coder: NSCoder) {
@@ -23,7 +25,7 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     
     let headerLabel: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 20)
+        lbl.font = UIFont.systemFont(ofSize: 16)
         lbl.textAlignment = .natural
         lbl.textColor = .label
 //        lbl.numberOfLines = 0
@@ -36,11 +38,10 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
         addSubview(headerLabel)
         NSLayoutConstraint.activate([
             headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
+            headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         
-        layer.borderColor = UIColor.systemGray.cgColor
+        layer.borderColor = UIColor.systemGray6.cgColor
         layer.borderWidth = 1
         
     }

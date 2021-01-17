@@ -51,7 +51,7 @@ class TTASettingsListVC: UIViewController {
         cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
-        cv.backgroundColor = .systemPink
+        cv.backgroundColor = .white
         return cv
     }()
     
@@ -85,9 +85,7 @@ class TTASettingsListVC: UIViewController {
         translatorsCV.translatesAutoresizingMaskIntoConstraints = false
         translatorsCV.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor).isActive = true
         translatorsCV.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
-//        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count))).isActive = true
-        translatorsCV.heightAnchor.constraint(equalToConstant: 400).isActive = true
-//        translatorsCV.heightAnchor.constraint(equalToConstant: translatorsCV.collectionViewLayout.collectionViewContentSize.height).isActive = true
+        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count) + (50 * 2))).isActive = true
 
     }
     
@@ -95,6 +93,7 @@ class TTASettingsListVC: UIViewController {
 }
 
 extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return allTranslators.count
     }
@@ -118,14 +117,14 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
-                headerView.backgroundColor = .purple
-                headerView.headerLabel.text = "TRANSLATION SERVICES"
+//                headerView.backgroundColor = .purple
+                headerView.headerLabel.text = "TRANSLATION SERVICE"
                 return headerView
             }
         case UICollectionView.elementKindSectionFooter:
             if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath) as? TTASettingsFooterCollectionReusableView {
-                footerView.backgroundColor = .green
-                footerView.footerLabel.text = "Select the service which will provide you with the translation."
+//                footerView.backgroundColor = .green
+                footerView.footerLabel.text = "Select the service which will provide you with the translation"
                 return footerView
             }
         default:
@@ -142,18 +141,25 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 50)
     }
-        
-//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//            
-//            return 0
-//        }
-//
+    
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+            return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+    }
+
 //        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 //            return 0
 //        }
 
     
 }
+
 
 
 //extension UICollectionView {

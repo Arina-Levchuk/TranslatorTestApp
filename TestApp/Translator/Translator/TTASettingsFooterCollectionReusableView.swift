@@ -13,6 +13,8 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.backgroundColor = .systemGray6
+        
         setupFooterView()
     }
     
@@ -42,7 +44,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
             footerLabel.lastBaselineAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: 0)
         ])
         
-        layer.borderColor = UIColor.systemGray.cgColor
+        layer.borderColor = UIColor.systemGray6.cgColor
         layer.borderWidth = 1
     }
     

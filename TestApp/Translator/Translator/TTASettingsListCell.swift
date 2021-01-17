@@ -14,10 +14,12 @@ class TTASettingsListCell: UICollectionViewCell {
         super.init(frame: frame)
         setupListCellLayout()
         
-        contentView.backgroundColor = .systemGray6
+        self.backgroundColor = .systemBackground
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor.systemGray5.cgColor
         
-        self.layer.cornerRadius = 10
-        self.clipsToBounds = true
+//        self.layer.cornerRadius = 10
+//        self.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
@@ -39,16 +41,7 @@ class TTASettingsListCell: UICollectionViewCell {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
-    
-    let cellView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemBackground
-        view.layer.borderColor = UIColor.systemGray.cgColor
-        view.layer.borderWidth = 1
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
+        
     let cellIcon : UIImageView = {
         let img = UIImageView()
         img.translatesAutoresizingMaskIntoConstraints = false
@@ -57,14 +50,8 @@ class TTASettingsListCell: UICollectionViewCell {
     
     func setupListCellLayout() {
         
-//        self.contentView.addSubview(cellView)
         contentView.addSubview(cellIcon)
         contentView.addSubview(cellTitle)
-        
-//        cellView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor).isActive = true
-//        cellView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor).isActive = true
-//        cellView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor).isActive = true
-//        cellView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
