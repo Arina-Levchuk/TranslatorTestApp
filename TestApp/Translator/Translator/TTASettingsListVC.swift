@@ -47,6 +47,7 @@ class TTASettingsListVC: UIViewController {
         cv.delegate = self
         cv.dataSource = self
         cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .systemPink
@@ -69,6 +70,7 @@ class TTASettingsListVC: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         translatorsCV.collectionViewLayout.invalidateLayout()
+        self.translatorsCV.layoutIfNeeded()
     }
     
     func setupViewLayout() {
@@ -82,7 +84,9 @@ class TTASettingsListVC: UIViewController {
         translatorsCV.translatesAutoresizingMaskIntoConstraints = false
         translatorsCV.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor).isActive = true
         translatorsCV.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
-        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count))).isActive = true
+//        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count))).isActive = true
+        translatorsCV.heightAnchor.constraint(equalToConstant: 400).isActive = true
+//        translatorsCV.heightAnchor.constraint(equalToConstant: translatorsCV.collectionViewLayout.collectionViewContentSize.height).isActive = true
 
     }
     
@@ -107,6 +111,36 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize.init(width: self.scrollView.contentSize.width, height: 51)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        switch kind {
+//        case UICollectionView.elementKindSectionHeader:
+//            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(collectionView)Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
+//                headerView.headerLabel.text = "TRANSLATION SERVICES"
+//                headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
+//                return headerView
+//            }
+//        case UICollectionView.elementKindSectionFooter:
+//            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(collectionView)Footer", for: indexPath) as? TTASettingsFooterCollectionReusableView {
+//                footerView.footerLabel.text = "Select the service which will provide you with the translation."
+//                return footerView
+//            }
+//        default:
+//            return UICollectionReusableView()
+//        }
+//        return UICollectionReusableView()
+        if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
+//            headerView.headerLabel.text = "TRANSLATION SERVICES"
+            headerView.backgroundColor = .purple
+            return headerView
+        }
+        return UICollectionReusableView()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 60)
+    }
         
 //        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
 //            return 0
@@ -115,8 +149,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
 //        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 //            return 0
 //        }
-    }
-    
+
     
 }
 

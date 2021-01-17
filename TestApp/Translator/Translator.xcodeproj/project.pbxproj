@@ -28,6 +28,8 @@
 		84DE9F9424016C65007E4239 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9324016C65007E4239 /* SceneDelegate.swift */; };
 		84DE9F9C24016C65007E4239 /* Translator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9F9A24016C65007E4239 /* Translator.xcdatamodeld */; };
 		84DE9FAD2402BB79007E4239 /* TTAResultTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DE9FAC2402BB79007E4239 /* TTAResultTableVC.swift */; };
+		84E1D87D25B48C61002B96A3 /* TTASettingsHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1D87C25B48C61002B96A3 /* TTASettingsHeaderCollectionReusableView.swift */; };
+		84E1D88125B48C79002B96A3 /* TTASettingsFooterCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E1D88025B48C79002B96A3 /* TTASettingsFooterCollectionReusableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +57,8 @@
 		84DE9FA024016C67007E4239 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84DE9FA224016C67007E4239 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84DE9FAC2402BB79007E4239 /* TTAResultTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTAResultTableVC.swift; sourceTree = "<group>"; };
+		84E1D87C25B48C61002B96A3 /* TTASettingsHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTASettingsHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
+		84E1D88025B48C79002B96A3 /* TTASettingsFooterCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTASettingsFooterCollectionReusableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,8 @@
 				84368F3B25B09FFE00A491EF /* TTASettingsListVC.swift */,
 				846A573825702B6500363261 /* TTASettingsListCell.swift */,
 				84370E7F259B7EC600842C2A /* TTASettingsGridCell.swift */,
+				84E1D87C25B48C61002B96A3 /* TTASettingsHeaderCollectionReusableView.swift */,
+				84E1D88025B48C79002B96A3 /* TTASettingsFooterCollectionReusableView.swift */,
 			);
 			name = SettingsVC;
 			sourceTree = "<group>";
@@ -233,6 +239,7 @@
 				8448DB492582A84B00A4A0B5 /* AppearanceMode.swift in Sources */,
 				84DE9F9224016C65007E4239 /* AppDelegate.swift in Sources */,
 				84DE9F9424016C65007E4239 /* SceneDelegate.swift in Sources */,
+				84E1D88125B48C79002B96A3 /* TTASettingsFooterCollectionReusableView.swift in Sources */,
 				842C1E9D2517A4E70036DF59 /* TTATranslatorResult+CoreDataProperties.swift in Sources */,
 				8403EFBB241D4A1A0061765C /* TTATranslator.swift in Sources */,
 				84DA943F259A3A3B00565CA3 /* ReusableCVCell.swift in Sources */,
@@ -240,6 +247,7 @@
 				84368F3C25B09FFE00A491EF /* TTASettingsListVC.swift in Sources */,
 				841E1AAB24B49E640075CB49 /* URLExtension.swift in Sources */,
 				84DE9FAD2402BB79007E4239 /* TTAResultTableVC.swift in Sources */,
+				84E1D87D25B48C61002B96A3 /* TTASettingsHeaderCollectionReusableView.swift in Sources */,
 				842C1E9C2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift in Sources */,
 				840035862450CADC00FB3BA1 /* DataSourceProvider.swift in Sources */,
 				84370E80259B7EC600842C2A /* TTASettingsGridCell.swift in Sources */,
