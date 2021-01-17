@@ -35,8 +35,9 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     func setupHeaderView() {
         addSubview(headerLabel)
         NSLayoutConstraint.activate([
-            headerLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
         ])
         
         layer.borderColor = UIColor.systemGray.cgColor
