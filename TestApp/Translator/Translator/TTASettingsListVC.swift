@@ -48,6 +48,7 @@ class TTASettingsListVC: UIViewController {
         cv.dataSource = self
         cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
         cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .systemPink
@@ -114,32 +115,32 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        switch kind {
-//        case UICollectionView.elementKindSectionHeader:
-//            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(collectionView)Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
-//                headerView.headerLabel.text = "TRANSLATION SERVICES"
-//                headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
-//                return headerView
-//            }
-//        case UICollectionView.elementKindSectionFooter:
-//            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(collectionView)Footer", for: indexPath) as? TTASettingsFooterCollectionReusableView {
-//                footerView.footerLabel.text = "Select the service which will provide you with the translation."
-//                return footerView
-//            }
-//        default:
-//            return UICollectionReusableView()
-//        }
-//        return UICollectionReusableView()
-        if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
-//            headerView.headerLabel.text = "TRANSLATION SERVICES"
-            headerView.backgroundColor = .purple
-            return headerView
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
+                headerView.backgroundColor = .purple
+                headerView.headerLabel.text = "TRANSLATION SERVICES"
+                return headerView
+            }
+        case UICollectionView.elementKindSectionFooter:
+            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath) as? TTASettingsFooterCollectionReusableView {
+                footerView.backgroundColor = .green
+                footerView.footerLabel.text = "Select the service which will provide you with the translation."
+                return footerView
+            }
+        default:
+            return UICollectionReusableView()
         }
         return UICollectionReusableView()
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 60)
+        return CGSize(width: collectionView.frame.width, height: 50)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 50)
     }
         
 //        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

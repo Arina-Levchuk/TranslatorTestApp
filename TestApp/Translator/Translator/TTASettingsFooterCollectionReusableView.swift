@@ -13,7 +13,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupFooterViewLayout()
+        setupFooterView()
     }
     
     required init?(coder: NSCoder) {
@@ -22,16 +22,26 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     
     let footerLabel: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 30)
+        lbl.font = UIFont.systemFont(ofSize: 16)
         lbl.textAlignment = .natural
         lbl.textColor = .label
+        lbl.numberOfLines = 0
+        lbl.lineBreakMode = .byWordWrapping
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
-    func setupFooterViewLayout() {
+    func setupFooterView() {
+        addSubview(footerLabel)
         
+        NSLayoutConstraint.activate([
+            footerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            footerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
         
+        layer.borderColor = UIColor.systemGray.cgColor
+        layer.borderWidth = 1
     }
     
 }
+
