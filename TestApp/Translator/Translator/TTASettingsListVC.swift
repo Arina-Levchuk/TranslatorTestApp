@@ -106,6 +106,16 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         cell.cellIcon.image = currentTranslator.translatorIcon
         cell.cellTitle.text = currentTranslator.name
         
+        let selectedView = UIView(frame: cell.bounds)
+        selectedView.backgroundColor = .systemYellow
+        
+        cell.selectedBackgroundView = nil
+        if currentTranslator.url == selectedTranslator.url {
+            cell.isSelected = true
+            cell.selectedBackgroundView = selectedView
+        }
+        
+        
         return cell
     }
     
@@ -147,15 +157,19 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
         return UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
     }
 
-//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//            return 0
-//        }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        print("SELECTED")
+        self.selectedTranslator = allTranslators[indexPath.row]
+        self.translatorsCV.reloadData()
+
+        self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
+//        self.delegate?.newLanguageSelected(language: self.selectedLanguage)
+    }
 
     
 }

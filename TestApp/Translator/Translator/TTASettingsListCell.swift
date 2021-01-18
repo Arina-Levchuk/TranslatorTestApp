@@ -18,6 +18,8 @@ class TTASettingsListCell: UICollectionViewCell {
         self.layer.borderWidth = 0.5
         self.layer.borderColor = UIColor.systemGray5.cgColor
         
+        contentView.isUserInteractionEnabled = false
+        
 //        self.layer.cornerRadius = 10
 //        self.clipsToBounds = true
     }
@@ -44,6 +46,7 @@ class TTASettingsListCell: UICollectionViewCell {
         
     let cellIcon : UIImageView = {
         let img = UIImageView()
+//        img.isUserInteractionEnabled = false
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
