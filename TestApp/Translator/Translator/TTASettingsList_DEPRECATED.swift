@@ -15,7 +15,7 @@
 ////}
 //
 //class TTASettingsList: UIViewController {
-//    
+//
 //    var defaults = UserDefaults.standard
 //    private var appearanceMode: AppearanceMode {
 //        get {
@@ -33,19 +33,19 @@
 ////        case flagModes
 ////        case textDirectionMode
 ////    }
-//    
+//
 ////    weak var delegate: TTASettingsListDelegate? = nil
 //    var allTranslators: [TTATranslator] = []
 //    var selectedTranslator: TTATranslator!
-//    
+//
 //    var allLanguages: [TTATranslatorLanguage] = []
 //    var selectedLanguage: TTATranslatorLanguage!
-//    
+//
 //    var allModes: [TTAAppearanceMode] = [
 //        TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light")),
 //        TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"))
 //    ]
-//    
+//
 //    var languages: [TTATranslatorLanguage] = [
 //        TTATranslatorLanguage(language: "Russian", flagImg: UIImage(named: "ru"), languageCode: "ru"),
 //        TTATranslatorLanguage(language: "Hebrew", flagImg: UIImage(named: "he"), languageCode: "he"),
@@ -54,9 +54,9 @@
 //        TTATranslatorLanguage(language: "Spanish", flagImg: UIImage(named: "es"), languageCode: "es"),
 //        TTATranslatorLanguage(language: "Ukrainian", flagImg: UIImage(named: "uk"), languageCode: "uk")
 //    ]
-//    
+//
 //    var textDirections: [String] = ["L->R", "R->L"]
-//    
+//
 ////    init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], delegate: TTASettingsListDelegate?) {
 ////        self.selectedTranslator = selectedTranslator
 ////        self.allTranslators = allTranslators
@@ -66,18 +66,18 @@
 ////
 ////        super.init(nibName: nil, bundle: nil)
 ////    }
-//    
+//
 //    required init?(coder: NSCoder) {
 //        fatalError("init(coder:) has not been implemented")
 //    }
-//    
+//
 //    var scrollView: UIScrollView = {
 //        var sv = UIScrollView()
 //        sv.translatesAutoresizingMaskIntoConstraints = false
 //        sv.backgroundColor = .systemYellow
 //        return sv
 //    }()
-//    
+//
 //    lazy var translatorsCV: UICollectionView = {
 //        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 //        cv.delegate = self
@@ -88,7 +88,7 @@
 //        cv.backgroundColor = .systemPink
 //        return cv
 //    }()
-// 
+//
 //    lazy var flagsCV: UICollectionView = {
 //        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 //        cv.delegate = self
@@ -99,7 +99,7 @@
 //        cv.backgroundColor = .systemGray
 //        return cv
 //    }()
-//    
+//
 //    lazy var appearanceModesCV: UICollectionView = {
 //        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 //        cv.delegate = self
@@ -110,7 +110,7 @@
 //        cv.backgroundColor = .systemPurple
 //        return cv
 //    }()
-//    
+//
 //    lazy var textDirectionCV: UICollectionView = {
 //        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 //        cv.delegate = self
@@ -121,46 +121,46 @@
 //        cv.backgroundColor = .systemGreen
 //        return cv
 //    }()
-//    
+//
 ////  MARK: - View lifecycle
-//    
+//
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
 //        navigationItem.title = "Settings"
-//        
+//
 //        setupViewLayout()
 ////        setupLayout(with: view.bounds.size)
 //        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height + flagsCV.frame.height + appearanceModesCV.frame.height + textDirectionCV.frame.height))
 ////        setUpCollectionView()
 //
 //    }
-//    
+//
 //    override func viewDidLayoutSubviews() {
 //        super.viewDidLayoutSubviews()
-//        
+//
 ////        scrollView.contentInset = UIEdgeInsets.zero
 ////        scrollView.scrollIndicatorInsets = scrollView.contentInset
 //    }
-//    
+//
 //    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 //        super.viewWillTransition(to: size, with: coordinator)
 //        translatorsCV.collectionViewLayout.invalidateLayout()
 ////        setupLayout(with: size)
 //    }
-//    
+//
 //    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 //        super.traitCollectionDidChange(previousTraitCollection)
 //        setupLayout(with: view.bounds.size)
 //    }
-//    
+//
 //    func setupViewLayout() {
-//        
+//
 //        view.addSubview(scrollView)
 //        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
 //        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
 //        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
 //        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-//    
+//
 //        scrollView.addSubview(translatorsCV)
 //        translatorsCV.translatesAutoresizingMaskIntoConstraints = false
 //        translatorsCV.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor).isActive = true
@@ -195,14 +195,14 @@
 //////        appearanceModesCV.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
 //
 //    }
-//        
+//
 //    private func setupLayout(with containerSize: CGSize) {
 //        guard let flowLayout = translatorsCV.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-//        
+//
 //        flowLayout.minimumInteritemSpacing = 0
 //        flowLayout.minimumLineSpacing = 0
 ////        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-//        
+//
 ////        if traitCollection.horizontalSizeClass == .regular {
 ////            let minItemWidth: CGFloat = view.bounds.width/2
 ////            let numberOfCell = containerSize.width / minItemWidth
@@ -214,7 +214,7 @@
 ////
 ////        translatorsCV.reloadData()
 //    }
-//        
+//
 //    private func setAppearanceMode(for theme: AppearanceMode) {
 //        view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
 //    }
@@ -223,10 +223,10 @@
 //}
 //
 //extension TTASettingsList: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        var numberOfItems: Int = 0
-//        
+//
 //        if collectionView == self.translatorsCV {
 //            numberOfItems = allTranslators.count
 //        } else if collectionView == self.flagsCV {
@@ -236,17 +236,17 @@
 //        } else if collectionView == self.textDirectionCV {
 //            numberOfItems = textDirections.count
 //        }
-//        
+//
 //        return numberOfItems
 //    }
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        return CGSize.init(width: self.scrollView.contentSize.width, height: 50)
 //    }
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        let cell: TTASettingsListCell = collectionView.dequeueReusableCell(for: indexPath)
-//        
+//
 //        if collectionView == self.translatorsCV {
 //            let currentTranslator = allTranslators[indexPath.row]
 //            cell.cellTitle.text = currentTranslator.name
@@ -263,10 +263,10 @@
 //            let selectedDirection = textDirections[indexPath.row]
 //            cell.cellTitle.text = selectedDirection
 //        }
-//        
+//
 //        return cell
 //    }
-//    
+//
 ////    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 ////        if collectionView == self.translatorsCV {
 ////            if kind == UICollectionView.elementKindSectionHeader {
@@ -279,7 +279,7 @@
 ////        }
 ////        fatalError()
 ////    }
-//    
+//
 ////    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 ////        self.selectedTranslator = allTranslators[indexPath.row]
 ////        self.translatorsCollectionView.reloadData()
@@ -287,7 +287,7 @@
 ////        self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
 ////        self.delegate?.newLanguageSelected(language: self.selectedLanguage)
 ////    }
-//        
+//
 //}
 //
 ////extension UICollectionView {
@@ -311,5 +311,3 @@
 ////    }
 ////}
 //
-//
-//// Supplementary View for headers and footers

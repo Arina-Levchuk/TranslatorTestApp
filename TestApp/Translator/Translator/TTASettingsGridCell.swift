@@ -37,14 +37,19 @@ class TTASettingsGridCell: UICollectionViewCell {
     
     func setupGridCellLayout() {
         
-        self.contentView.addSubview(cellTitle)
+//        self.contentView.addSubview(cellTitle)
         self.contentView.addSubview(cellIcon)
         
-        cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        cellIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        cellIcon.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        cellIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        cellIcon.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        
+//        cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+//        cellIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+//        cellIcon.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+//        cellIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         
     }
     
 }
+
+extension TTASettingsGridCell: ReusableCVCell {}

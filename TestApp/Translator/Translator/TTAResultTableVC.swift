@@ -56,6 +56,15 @@ class TTAResultTableVC: UIViewController {
                                             TTATranslator(name: "Shakespeare", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
         TTATranslator(name: "Yandex", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
                                             TTATranslator(name: "Valyrian", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))]
+    
+    var languages: [TTATranslatorLanguage] = [
+        TTATranslatorLanguage(language: "Russian", flagImg: UIImage(named: "ru"), langCode: "ru"),
+        TTATranslatorLanguage(language: "Hebrew", flagImg: UIImage(named: "he"), langCode: "he"),
+        TTATranslatorLanguage(language: "Polish", flagImg: UIImage(named: "pl"), langCode: "pl"),
+        TTATranslatorLanguage(language: "Chinese", flagImg: UIImage(named: "zh"), langCode: "zh"),
+        TTATranslatorLanguage(language: "Spanish", flagImg: UIImage(named: "es"), langCode: "es"),
+        TTATranslatorLanguage(language: "Ukrainian", flagImg: UIImage(named: "uk"), langCode: "uk")
+    ]
 
 //  MARK: - View lifecycle
         
@@ -172,6 +181,7 @@ class TTAResultTableVC: UIViewController {
         view.addConstraint(inputViewBottomConstraint!)
         
         inputContainerView.backgroundColor = .purple
+//      Blur container view
 //        inputContainerView.backgroundColor = .clear
 //        let blurEffect = UIBlurEffect(style: .light)
 //        let blurView = UIVisualEffectView(effect: blurEffect)
@@ -294,13 +304,11 @@ class TTAResultTableVC: UIViewController {
     
     @objc func moveToTranslatorsList() {
         if let translator = self.selectedTranslator {
-//            guard let language = self.selectedLanguage else { return }
+            guard let language = self.selectedLanguage else { return }
             
-//            self.navigationController?.pushViewController(TTATranslatorsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
+//            self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
             
-//            self.navigationController?.pushViewController(TTASettingsList(selectedTranslator: translator, allTranslators: self.translators, allLanguages: self.languages, delegate: self), animated: true)
-            
-            self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
+            self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, allTranslators: self.translators, selectedLanguage: language, allLanguages: self.languages, delegate: self), animated: true)
         }
     }
     
@@ -339,7 +347,7 @@ class TTAResultTableVC: UIViewController {
             if let queryArray = selectedTranslator?.queryDict {
                 for (key, value) in queryArray {
                     url = url.append(key, value: value)
-                    url = url.append("lang", value: "en-\(selectedLanguage!.languageCode)")
+                    url = url.append("lang", value: "en-\(selectedLanguage!.langCode)")
                 }
             }
 
@@ -535,20 +543,15 @@ extension TTAResultTableVC: UITextViewDelegate {
     
 }
 
-extension TTAResultTableVC: TranslatorsListVCDelegate {
-    func newTranslatorSelected(translator: TTATranslator) {
-        self.selectedTranslator = translator
-    }
-}
-
 extension TTAResultTableVC: TTASettingsListDelegate {
+    func newLanguageSelected(language: TTATranslatorLanguage) {
+        self.selectedLanguage = language
+    }
+    
     func newTranslatorIsSelected(translator: TTATranslator) {
         self.selectedTranslator = translator
     }
     
-    func newLanguageSelected(language: TTATranslatorLanguage) {
-        self.selectedLanguage = language
-    }
 }
 
 //extension TTAResultTableVC: TTAUserLocationVCDelegate {

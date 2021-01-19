@@ -20,7 +20,7 @@ struct TTATranslator {
 struct TTATranslatorLanguage {
     let language: String
     var flagImg: UIImage? = nil
-    let languageCode: String
+    let langCode: String
 }
 
 struct TTAAppearanceMode {

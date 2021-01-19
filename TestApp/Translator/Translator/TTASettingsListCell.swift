@@ -46,7 +46,6 @@ class TTASettingsListCell: UICollectionViewCell {
         
     let cellIcon : UIImageView = {
         let img = UIImageView()
-//        img.isUserInteractionEnabled = false
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
