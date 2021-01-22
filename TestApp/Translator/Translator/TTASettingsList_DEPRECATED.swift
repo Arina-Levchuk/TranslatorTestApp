@@ -47,12 +47,12 @@
 //    ]
 //
 //    var languages: [TTATranslatorLanguage] = [
-//        TTATranslatorLanguage(language: "Russian", flagImg: UIImage(named: "ru"), languageCode: "ru"),
-//        TTATranslatorLanguage(language: "Hebrew", flagImg: UIImage(named: "he"), languageCode: "he"),
-//        TTATranslatorLanguage(language: "Polish", flagImg: UIImage(named: "pl"), languageCode: "pl"),
-//        TTATranslatorLanguage(language: "Chinese", flagImg: UIImage(named: "zh"), languageCode: "zh"),
-//        TTATranslatorLanguage(language: "Spanish", flagImg: UIImage(named: "es"), languageCode: "es"),
-//        TTATranslatorLanguage(language: "Ukrainian", flagImg: UIImage(named: "uk"), languageCode: "uk")
+//        TTATranslatorLanguage(language: "Russian", flagImg: UIImage(named: "ru"), langCode: "ru"),
+//        TTATranslatorLanguage(language: "Hebrew", flagImg: UIImage(named: "he"), langCode: "he"),
+//        TTATranslatorLanguage(language: "Polish", flagImg: UIImage(named: "pl"), langCode: "pl"),
+//        TTATranslatorLanguage(language: "Chinese", flagImg: UIImage(named: "zh"), langCode: "zh"),
+//        TTATranslatorLanguage(language: "Spanish", flagImg: UIImage(named: "es"), langCode: "es"),
+//        TTATranslatorLanguage(language: "Ukrainian", flagImg: UIImage(named: "uk"), langCode: "uk")
 //    ]
 //
 //    var textDirections: [String] = ["L->R", "R->L"]
