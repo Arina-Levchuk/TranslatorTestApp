@@ -51,11 +51,11 @@ class TTAResultTableVC: UIViewController {
     var selectedLanguage: TTATranslatorLanguage? = nil
     
     var translators: [TTATranslator] = [
-                                            TTATranslator(name: "Yoda", url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
-                                            TTATranslator(name: "Klingon", url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
-                                            TTATranslator(name: "Shakespeare", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
+        TTATranslator(name: "Yoda", url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
+        TTATranslator(name: "Klingon", url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
+        TTATranslator(name: "Shakespeare", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
         TTATranslator(name: "Yandex", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
-                                            TTATranslator(name: "Valyrian", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))]
+        TTATranslator(name: "Valyrian", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))]
     
     var languages: [TTATranslatorLanguage] = [
         TTATranslatorLanguage(language: "Russian", flagImg: UIImage(named: "ru"), langCode: "ru"),
@@ -79,6 +79,7 @@ class TTAResultTableVC: UIViewController {
         }
         
         self.selectedTranslator = translators.first
+        self.selectedLanguage = languages.first
         
         setUpNavBarAppearance()
         setUpTableView()
