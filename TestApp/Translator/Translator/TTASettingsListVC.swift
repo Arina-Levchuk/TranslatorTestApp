@@ -117,8 +117,8 @@ class TTASettingsListVC: UIViewController {
         flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
         flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
         flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
-        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
-      
+//        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
+        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((allLanguages.count > 3 ? (90 * allLanguages.count/3) : 90) + (8 * 3) + (50 * 2))).isActive = true
     }
     
 
@@ -189,7 +189,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         if collectionView == translatorsCV {
             itemSize = CGSize.init(width: self.scrollView.contentSize.width, height: 51)
         } else if collectionView == flagsCV {
-            itemSize = CGSize.init(width: 100, height: 90)
+            itemSize = CGSize.init(width: ((self.scrollView.contentSize.width - 16 - 16)/3), height: 90)
         }
         
         return itemSize
@@ -247,7 +247,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         
         return sectionInset
     }
-    
+        
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var edgeInsets: UIEdgeInsets = UIEdgeInsets.zero
         
@@ -257,6 +257,17 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             edgeInsets = UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
         }
         return edgeInsets
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        var itemInset: CGFloat = CGFloat.zero
+        
+        if collectionView == flagsCV {
+            itemInset = CGFloat.init(8)
+        } else {
+            return itemInset
+        }
+        return itemInset
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
