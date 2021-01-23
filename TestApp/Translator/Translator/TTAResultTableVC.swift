@@ -59,7 +59,7 @@ class TTAResultTableVC: UIViewController {
     
     var languages: [TTATranslatorLanguage] = [
         TTATranslatorLanguage(language: "Russian", flagImg: UIImage(named: "ru"), langCode: "ru"),
-        TTATranslatorLanguage(language: "Hebrew", flagImg: UIImage(named: "he"), langCode: "he")
+        TTATranslatorLanguage(language: "Hebrew", flagImg: UIImage(named: "he"), langCode: "he"),
         TTATranslatorLanguage(language: "Polish", flagImg: UIImage(named: "pl"), langCode: "pl"),
         TTATranslatorLanguage(language: "Chinese", flagImg: UIImage(named: "zh"), langCode: "zh"),
         TTATranslatorLanguage(language: "Spanish", flagImg: UIImage(named: "es"), langCode: "es"),

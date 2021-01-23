@@ -10,10 +10,25 @@ import UIKit
 
 class TTASettingsGridCell: UICollectionViewCell {
     
+    enum CellView: String {
+        case roundCell, squareCell
+        
+        var description: String {
+            return self.rawValue
+        }
+    }
+
+    var setupGridCellView: ((_ cellView: CellView?) -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupGridCellLayout()
+        setupGridCellView = { [weak self] cellView in
+            if let cellView = cellView {
+                self?.setupGridCellLayout(for: cellView)
+            }
+            
+        }
         
         self.backgroundColor = .systemGray6
         self.layer.borderWidth = 1
@@ -51,27 +66,35 @@ class TTASettingsGridCell: UICollectionViewCell {
         return lbl
     }()
     
-    func setupGridCellLayout() {
+    func setupGridCellLayout(for cellType: CellView) {
         
-        self.contentView.addSubview(cellIcon)
-        self.contentView.addSubview(cellTitle)
-
-        cellIcon.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-//        cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        cellIcon.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
-        cellIcon.heightAnchor.constraint(equalToConstant: contentView.frame.height * (2/3)).isActive = true
-//        cellTitle.topAnchor.constraint(equalTo: cellIcon.bottomAnchor).isActive = true
+        switch cellType {
+        case .roundCell:
+            self.contentView.addSubview(cellIcon)
+            cellIcon.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+            cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+            cellIcon.widthAnchor.constraint(equalToConstant: 70).isActive = true
+            cellIcon.heightAnchor.constraint(equalToConstant: 70).isActive = true
+            self.layer.cornerRadius = 45
+            self.clipsToBounds = true
+            
+        case .squareCell:
+            self.contentView.addSubview(cellIcon)
+            self.contentView.addSubview(cellTitle)
+            cellIcon.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+    //        cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+            cellIcon.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
+            cellIcon.heightAnchor.constraint(equalToConstant: contentView.frame.height * (2/3)).isActive = true
+    //        cellTitle.topAnchor.constraint(equalTo: cellIcon.bottomAnchor).isActive = true
         
+            cellTitle.topAnchor.constraint(equalTo: cellIcon.bottomAnchor).isActive = true
+            cellTitle.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+            cellTitle.heightAnchor.constraint(equalToConstant: contentView.frame.height * (1/3)).isActive = true
+            self.layer.cornerRadius = 10
+            self.clipsToBounds = true
+        }
         
-        cellTitle.topAnchor.constraint(equalTo: cellIcon.bottomAnchor).isActive = true
-        cellTitle.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        cellTitle.heightAnchor.constraint(equalToConstant: contentView.frame.height * (1/3)).isActive = true
-        
-//        cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-//        cellIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-//        cellIcon.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-//        cellIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        
+    
     }
     
 }

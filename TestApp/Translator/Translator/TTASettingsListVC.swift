@@ -163,7 +163,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             
         } else if collectionView == flagsCV {
             let flagCell = flagsCV.dequeueReusableCell(withReuseIdentifier: "flagCVCell", for: indexPath) as! TTASettingsGridCell
+
             let currentLang = allLanguages[indexPath.row]
+            flagCell.setupGridCellLayout(for: .squareCell)
             
             flagCell.cellIcon.image = currentLang.flagImg
             flagCell.cellTitle.text = currentLang.language
