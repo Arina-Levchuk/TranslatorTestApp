@@ -65,7 +65,7 @@ class TTASettingsListVC: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
-        cv.register(TTASettingsGridCell.self, forCellWithReuseIdentifier: "flagCVCell")
+        cv.register(TTASettingsGridCell.self, forCellWithReuseIdentifier: TTASettingsGridCell.ReuseID.flagsCVCell.description)
         cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TranslatorHeader")
         cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TranslatorFooter")
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -162,7 +162,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             return cell
             
         } else if collectionView == flagsCV {
-            let flagCell = flagsCV.dequeueReusableCell(withReuseIdentifier: "flagCVCell", for: indexPath) as! TTASettingsGridCell
+            let flagCell = flagsCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.flagsCVCell.description, for: indexPath) as! TTASettingsGridCell
 
             let currentLang = allLanguages[indexPath.row]
             flagCell.setupGridCellLayout(for: .squareCell)

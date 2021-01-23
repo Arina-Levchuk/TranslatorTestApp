@@ -17,6 +17,14 @@ class TTASettingsGridCell: UICollectionViewCell {
             return self.rawValue
         }
     }
+    
+    enum ReuseID: String {
+        case flagsCVCell, appearanceModeCVCell
+        
+        var description: String {
+            return self.rawValue
+        }
+    }
 
     var setupGridCellView: ((_ cellView: CellView?) -> Void)?
     
