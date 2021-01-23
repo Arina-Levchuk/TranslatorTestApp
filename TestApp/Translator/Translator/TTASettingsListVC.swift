@@ -150,22 +150,32 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             cell.cellIcon.image = currentTranslator.translatorIcon
             cell.cellTitle.text = currentTranslator.name
             
-            let selectedView = UIView(frame: cell.bounds)
-            selectedView.backgroundColor = .systemYellow
+            let selectedTranslatorCell = UIView(frame: cell.bounds)
+            selectedTranslatorCell.backgroundColor = .systemYellow
             
             cell.selectedBackgroundView = nil
             if currentTranslator.url == selectedTranslator.url {
                 cell.isSelected = true
-                cell.selectedBackgroundView = selectedView
+                cell.selectedBackgroundView = selectedTranslatorCell
             }
             
             return cell
+            
         } else if collectionView == flagsCV {
             let flagCell = flagsCV.dequeueReusableCell(withReuseIdentifier: "flagCVCell", for: indexPath) as! TTASettingsGridCell
             let currentLang = allLanguages[indexPath.row]
             
             flagCell.cellIcon.image = currentLang.flagImg
             flagCell.cellTitle.text = currentLang.language
+            
+            let selectedLangCell = UIView(frame: flagCell.bounds)
+            selectedLangCell.backgroundColor = .systemPink
+            
+            flagCell.selectedBackgroundView = nil
+            if currentLang.langCode == selectedLanguage.langCode {
+                flagCell.isSelected = true
+                flagCell.selectedBackgroundView = selectedLangCell
+            }
             
             return flagCell
         }

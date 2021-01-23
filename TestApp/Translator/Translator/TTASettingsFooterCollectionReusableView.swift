@@ -13,7 +13,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .systemGray6
+        self.backgroundColor = .systemGray5
         
         setupFooterView()
     }
@@ -24,7 +24,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     
     let footerLabel: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 16)
+        lbl.font = UIFont.systemFont(ofSize: 14)
         lbl.textAlignment = .natural
         lbl.textColor = .label
         lbl.numberOfLines = 0
@@ -44,7 +44,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
             footerLabel.lastBaselineAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: 0)
         ])
         
-        layer.borderColor = UIColor.systemGray6.cgColor
+        layer.borderColor = UIColor.systemGray5.cgColor
         layer.borderWidth = 1
     }
     
