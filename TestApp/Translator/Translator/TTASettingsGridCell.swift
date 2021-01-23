@@ -14,10 +14,26 @@ class TTASettingsGridCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setupGridCellLayout()
+        
+        self.backgroundColor = .systemGray6
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.systemGray4.cgColor
+        
+        contentView.isUserInteractionEnabled = false
+        
+        self.layer.cornerRadius = 10
+        self.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cellTitle.text = nil
+        cellIcon.image = nil
     }
     
     let cellIcon: UIImageView = {
@@ -37,11 +53,19 @@ class TTASettingsGridCell: UICollectionViewCell {
     
     func setupGridCellLayout() {
         
-//        self.contentView.addSubview(cellTitle)
         self.contentView.addSubview(cellIcon)
+        self.contentView.addSubview(cellTitle)
+
+        cellIcon.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+//        cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        cellIcon.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
+        cellIcon.heightAnchor.constraint(equalToConstant: contentView.frame.height * (2/3)).isActive = true
+//        cellTitle.topAnchor.constraint(equalTo: cellIcon.bottomAnchor).isActive = true
         
-        cellIcon.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        
+        cellTitle.topAnchor.constraint(equalTo: cellIcon.bottomAnchor).isActive = true
+        cellTitle.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        cellTitle.heightAnchor.constraint(equalToConstant: contentView.frame.height * (1/3)).isActive = true
         
 //        cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
 //        cellIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
@@ -52,4 +76,4 @@ class TTASettingsGridCell: UICollectionViewCell {
     
 }
 
-extension TTASettingsGridCell: ReusableCVCell {}
+//extension TTASettingsGridCell: ReusableCVCell {}

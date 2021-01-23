@@ -19,9 +19,7 @@ class TTASettingsListCell: UICollectionViewCell {
         self.layer.borderColor = UIColor.systemGray5.cgColor
         
         contentView.isUserInteractionEnabled = false
-        
-//        self.layer.cornerRadius = 10
-//        self.clipsToBounds = true
+    
     }
     
     required init?(coder: NSCoder) {

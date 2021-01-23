@@ -52,9 +52,9 @@ class TTASettingsListVC: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
-        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
-        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
-        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: "translatorsCVCell")
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TranslatorHeader")
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TranslatorFooter")
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .white
@@ -65,12 +65,12 @@ class TTASettingsListVC: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
-        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.reuseIdentifier)
-//        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
-//        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
+        cv.register(TTASettingsGridCell.self, forCellWithReuseIdentifier: "flagCVCell")
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TranslatorHeader")
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TranslatorFooter")
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
-        cv.backgroundColor = .systemPink
+        cv.backgroundColor = .white
         return cv
     }()
     
@@ -82,7 +82,7 @@ class TTASettingsListVC: UIViewController {
         
         setupViewLayout()
         
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height))
+//        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height))
         
         print(allLanguages)
         
@@ -92,6 +92,13 @@ class TTASettingsListVC: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         translatorsCV.collectionViewLayout.invalidateLayout()
         self.translatorsCV.layoutIfNeeded()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+//      makes scrollView with multiple CVs scrollable
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height))
     }
     
     func setupViewLayout() {
@@ -107,10 +114,11 @@ class TTASettingsListVC: UIViewController {
         translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count) + (50 * 2))).isActive = true
         
         scrollView.addSubview(flagsCV)
+        flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
+        flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
         flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
-//        flagsCV.widthAnchor.constraint(equalTo: self.translatorsCV.widthAnchor).isActive = true
-        flagsCV.heightAnchor.constraint(equalToConstant: 200).isActive = true
-
+        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
+      
     }
     
 
@@ -131,62 +139,75 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let reusableCell: TTASettingsListCell = collectionView.dequeueReusableCell(for: indexPath)
+//        let reusableCell: TTASettingsListCell = collectionView.dequeueReusableCell(for: indexPath)
         
-//        let cell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: "TTASettingsListCell", for: indexPath) as! TTASettingsListCell
-        
-//        switch collectionView {
-//        case self.translatorsCV:
-//            let currentTranslator = allTranslators[indexPath.row]
-//            
-//            reusableCell.cellIcon.image = currentTranslator.translatorIcon
-//            reusableCell.cellTitle.text = currentTranslator.name
-//            
-//            let selectedView = UIView(frame: reusableCell.bounds)
-//            selectedView.backgroundColor = .systemYellow
-//            
-//            reusableCell.selectedBackgroundView = nil
-//            if currentTranslator.url == selectedTranslator.url {
-//                reusableCell.isSelected = true
-//                reusableCell.selectedBackgroundView = selectedView
-//            }
-//        case self.flagsCV:
-//            let currentFlag = allFlags[indexPath.row]
-//            
-//        }
-        let currentTranslator = allTranslators[indexPath.row]
-        
-        reusableCell.cellIcon.image = currentTranslator.translatorIcon
-        reusableCell.cellTitle.text = currentTranslator.name
-        
-        let selectedView = UIView(frame: reusableCell.bounds)
-        selectedView.backgroundColor = .systemYellow
-        
-        reusableCell.selectedBackgroundView = nil
-        if currentTranslator.url == selectedTranslator.url {
-            reusableCell.isSelected = true
-            reusableCell.selectedBackgroundView = selectedView
+        if collectionView == translatorsCV {
+            
+            let cell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: "translatorsCVCell", for: indexPath) as! TTASettingsListCell
+            
+            let currentTranslator = allTranslators[indexPath.row]
+
+            cell.cellIcon.image = currentTranslator.translatorIcon
+            cell.cellTitle.text = currentTranslator.name
+            
+            let selectedView = UIView(frame: cell.bounds)
+            selectedView.backgroundColor = .systemYellow
+            
+            cell.selectedBackgroundView = nil
+            if currentTranslator.url == selectedTranslator.url {
+                cell.isSelected = true
+                cell.selectedBackgroundView = selectedView
+            }
+            
+            return cell
+        } else if collectionView == flagsCV {
+            let flagCell = flagsCV.dequeueReusableCell(withReuseIdentifier: "flagCVCell", for: indexPath) as! TTASettingsGridCell
+            let currentLang = allLanguages[indexPath.row]
+            
+            flagCell.cellIcon.image = currentLang.flagImg
+            flagCell.cellTitle.text = currentLang.language
+            
+            return flagCell
         }
         
-        return reusableCell
+        return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize.init(width: self.scrollView.contentSize.width, height: 51)
+        var itemSize: CGSize = CGSize.zero
+        
+        if collectionView == translatorsCV {
+            itemSize = CGSize.init(width: self.scrollView.contentSize.width, height: 51)
+        } else if collectionView == flagsCV {
+            itemSize = CGSize.init(width: 100, height: 90)
+        }
+        
+        return itemSize
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
+            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TranslatorHeader", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
 //                headerView.backgroundColor = .purple
-                headerView.headerLabel.text = "TRANSLATION SERVICE"
+                
+                if collectionView == translatorsCV {
+                    headerView.headerLabel.text = "TRANSLATION SERVICE"
+                } else if collectionView == flagsCV {
+                    headerView.headerLabel.text = "TRANSLATION LANGUAGE"
+                }
+                
                 return headerView
             }
         case UICollectionView.elementKindSectionFooter:
-            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath) as? TTASettingsFooterCollectionReusableView {
+            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TranslatorFooter", for: indexPath) as? TTASettingsFooterCollectionReusableView {
 //                footerView.backgroundColor = .green
-                footerView.footerLabel.text = "Select the service which will provide you with the translation"
+                
+                if collectionView == translatorsCV {
+                    footerView.footerLabel.text = "Select the service which will provide you with the translation"
+                } else if collectionView == flagsCV {
+                    footerView.footerLabel.text = "Select the language of translation"
+                }
                 return footerView
             }
         default:
@@ -206,23 +227,41 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            return 0
+        var sectionInset: CGFloat = CGFloat.zero
+        
+        if collectionView == translatorsCV {
+            sectionInset = 0
+        } else if collectionView == flagsCV {
+            sectionInset = 8
+        }
+        
+        return sectionInset
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        var edgeInsets: UIEdgeInsets = UIEdgeInsets.zero
         
-        return UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+        if collectionView == translatorsCV {
+            edgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+        } else if collectionView == flagsCV {
+            edgeInsets = UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
+        }
+        return edgeInsets
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        print("SELECTED")
-        self.selectedTranslator = allTranslators[indexPath.row]
-        self.translatorsCV.reloadData()
-        self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
+        print("SELECTED")
         
-        self.selectedLanguage = allLanguages[indexPath.row]
-        self.flagsCV.reloadData()
-        self.delegate?.newLanguageSelected(language: self.selectedLanguage)
+        if collectionView == translatorsCV {
+            self.selectedTranslator = allTranslators[indexPath.row]
+            self.translatorsCV.reloadData()
+            self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
+        } else if collectionView == flagsCV {
+            self.selectedLanguage = allLanguages[indexPath.row]
+            self.flagsCV.reloadData()
+            self.delegate?.newLanguageSelected(language: self.selectedLanguage)
+        }
+
     }
 
     
