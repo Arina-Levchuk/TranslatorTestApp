@@ -22,6 +22,9 @@ class TTASettingsListVC: UIViewController {
     var allLanguages: [TTATranslatorLanguage] = []
     var selectedLanguage: TTATranslatorLanguage!
     
+    var appModes: [AppearanceMode] = []
+    var selectedAppMode: AppearanceMode!
+    
     weak var delegate: TTASettingsListDelegate? = nil
     
     init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], selectedLanguage: TTATranslatorLanguage, allLanguages: [TTATranslatorLanguage], delegate: TTASettingsListDelegate?) {
@@ -53,8 +56,8 @@ class TTASettingsListVC: UIViewController {
         cv.delegate = self
         cv.dataSource = self
         cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: "translatorsCVCell")
-        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TranslatorHeader")
-        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TranslatorFooter")
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .white
@@ -66,11 +69,24 @@ class TTASettingsListVC: UIViewController {
         cv.delegate = self
         cv.dataSource = self
         cv.register(TTASettingsGridCell.self, forCellWithReuseIdentifier: TTASettingsGridCell.ReuseID.flagsCVCell.description)
-        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TranslatorHeader")
-        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "TranslatorFooter")
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .white
+        return cv
+    }()
+    
+    lazy var appearanceModesCV: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        cv.delegate = self
+        cv.dataSource = self
+        cv.register(TTASettingsGridCell.self, forCellWithReuseIdentifier: "appearanceModeCVCell")
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.isScrollEnabled = false
+        cv.backgroundColor = .systemPurple
         return cv
     }()
     
@@ -119,6 +135,15 @@ class TTASettingsListVC: UIViewController {
         flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
 //        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
         flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((allLanguages.count > 3 ? (90 * allLanguages.count/3) : 90) + (8 * 3) + (50 * 2))).isActive = true
+        
+        scrollView.addSubview(appearanceModesCV)
+        appearanceModesCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
+        appearanceModesCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
+        appearanceModesCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
+//        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
+        appearanceModesCV.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        
+        
     }
     
 
@@ -132,6 +157,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             return allTranslators.count
         case self.flagsCV:
             return allLanguages.count
+        case self.appearanceModesCV:
+            return 2
         default:
             return 0
         }
@@ -180,6 +207,25 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             }
             
             return flagCell
+        } else if collectionView == appearanceModesCV {
+            let appModeCell = appearanceModesCV.dequeueReusableCell(withReuseIdentifier: "appearanceModeCVCell", for: indexPath) as! TTASettingsGridCell
+
+            appModeCell.setupGridCellLayout(for: .roundCell)
+            
+            appModeCell.cellIcon.image = UIImage(named: "dark")
+            appModeCell.cellTitle.text = "AppMode"
+            
+//            let selectedLangCell = UIView(frame: appModeCell.bounds)
+//            selectedLangCell.backgroundColor = .systemPink
+            
+//            appModeCell.selectedBackgroundView = nil
+//            if currentLang.langCode == selectedLanguage.langCode {
+//                appModeCell.isSelected = true
+//                appModeCell.selectedBackgroundView = selectedLangCell
+//            }
+            
+            return appModeCell
+            
         }
         
         return UICollectionViewCell()
@@ -192,6 +238,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             itemSize = CGSize.init(width: self.scrollView.contentSize.width, height: 51)
         } else if collectionView == flagsCV {
             itemSize = CGSize.init(width: ((self.scrollView.contentSize.width - 16 - 16)/3), height: 90)
+        } else if collectionView == appearanceModesCV {
+            itemSize = CGSize.init(width: 60, height: 60)
         }
         
         return itemSize
@@ -200,25 +248,29 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TranslatorHeader", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
+            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
 //                headerView.backgroundColor = .purple
                 
                 if collectionView == translatorsCV {
                     headerView.headerLabel.text = "TRANSLATION SERVICE"
                 } else if collectionView == flagsCV {
                     headerView.headerLabel.text = "TRANSLATION LANGUAGE"
+                } else if collectionView == appearanceModesCV {
+                    headerView.headerLabel.text = "APPEARANCE MODE"
                 }
                 
                 return headerView
             }
         case UICollectionView.elementKindSectionFooter:
-            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TranslatorFooter", for: indexPath) as? TTASettingsFooterCollectionReusableView {
+            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath) as? TTASettingsFooterCollectionReusableView {
 //                footerView.backgroundColor = .green
                 
                 if collectionView == translatorsCV {
                     footerView.footerLabel.text = "Select the service which will provide you with the translation"
                 } else if collectionView == flagsCV {
                     footerView.footerLabel.text = "Select the language of translation"
+                } else if collectionView == appearanceModesCV {
+                    footerView.footerLabel.text = "Select appearance mode which will be applied to the whole app"
                 }
                 return footerView
             }
@@ -245,6 +297,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             sectionInset = 0
         } else if collectionView == flagsCV {
             sectionInset = 8
+        } else if collectionView == appearanceModesCV {
+            sectionInset = 0
         }
         
         return sectionInset
@@ -257,6 +311,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             edgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         } else if collectionView == flagsCV {
             edgeInsets = UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
+        } else if collectionView == appearanceModesCV {
+            edgeInsets = UIEdgeInsets.init(top: 8, left: 20, bottom: 8, right: 20)
         }
         return edgeInsets
     }
@@ -264,7 +320,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         var itemInset: CGFloat = CGFloat.zero
         
-        if collectionView == flagsCV {
+        if collectionView == flagsCV || collectionView == appearanceModesCV {
             itemInset = CGFloat.init(8)
         } else {
             return itemInset
