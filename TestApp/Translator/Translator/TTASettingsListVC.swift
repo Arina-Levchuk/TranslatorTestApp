@@ -22,8 +22,22 @@ class TTASettingsListVC: UIViewController {
     var allLanguages: [TTATranslatorLanguage] = []
     var selectedLanguage: TTATranslatorLanguage!
     
-    var appModes: [AppearanceMode] = []
-    var selectedAppMode: AppearanceMode!
+//    var appModes: [AppearanceMode] = []
+    var selectedAppMode: TTAAppearanceMode!
+    var allAppModes: [TTAAppearanceMode] = [
+        TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light")),
+        TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"))
+    ]
+    
+    var defaults = UserDefaults.standard
+    private var appearanceMode: AppearanceMode {
+        get {
+            return defaults.appearanceMode
+        } set {
+            defaults.appearanceMode = newValue
+            setAppearanceMode(for: newValue)
+        }
+    }
     
     weak var delegate: TTASettingsListDelegate? = nil
     
@@ -102,6 +116,8 @@ class TTASettingsListVC: UIViewController {
         
         print(allLanguages)
         
+        self.selectedAppMode = allAppModes.first
+        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -146,6 +162,10 @@ class TTASettingsListVC: UIViewController {
         
     }
     
+    private func setAppearanceMode(for theme: AppearanceMode) {
+        view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
+    }
+    
 
 }
 
@@ -158,7 +178,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         case self.flagsCV:
             return allLanguages.count
         case self.appearanceModesCV:
-            return 2
+            return allAppModes.count
         default:
             return 0
         }
@@ -211,18 +231,19 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let appModeCell = appearanceModesCV.dequeueReusableCell(withReuseIdentifier: "appearanceModeCVCell", for: indexPath) as! TTASettingsGridCell
 
             appModeCell.setupGridCellLayout(for: .roundCell)
+            let selectedMode = allAppModes[indexPath.row]
             
-            appModeCell.cellIcon.image = UIImage(named: "dark")
-            appModeCell.cellTitle.text = "AppMode"
+            appModeCell.cellIcon.image = selectedMode.modeImg
+//            appModeCell.cellTitle.text = "AppMode"
             
-//            let selectedLangCell = UIView(frame: appModeCell.bounds)
-//            selectedLangCell.backgroundColor = .systemPink
+            let selectedModeCell = UIView(frame: appModeCell.bounds)
+            selectedModeCell.backgroundColor = .systemYellow
             
-//            appModeCell.selectedBackgroundView = nil
-//            if currentLang.langCode == selectedLanguage.langCode {
-//                appModeCell.isSelected = true
-//                appModeCell.selectedBackgroundView = selectedLangCell
-//            }
+            appModeCell.selectedBackgroundView = nil
+            if selectedMode.mode == selectedAppMode.mode {
+                appModeCell.isSelected = true
+                appModeCell.selectedBackgroundView = selectedModeCell
+            }
             
             return appModeCell
             
@@ -339,6 +360,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             self.selectedLanguage = allLanguages[indexPath.row]
             self.flagsCV.reloadData()
             self.delegate?.newLanguageSelected(language: self.selectedLanguage)
+        } else if collectionView == appearanceModesCV {
+            self.selectedAppMode = allAppModes[indexPath.row]
+            self.appearanceModesCV.reloadData()
         }
 
     }

@@ -24,6 +24,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationBar = UINavigationController(rootViewController: TTAResultTableVC())
         window?.rootViewController = navigationBar
         window?.makeKeyAndVisible()
+        
+        let defaults = UserDefaults.standard
+        window?.overrideUserInterfaceStyle = defaults.appearanceMode.userInterfaceStyle
     
     }
     
