@@ -239,7 +239,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         } else if collectionView == flagsCV {
             itemSize = CGSize.init(width: ((self.scrollView.contentSize.width - 16 - 16)/3), height: 90)
         } else if collectionView == appearanceModesCV {
-            itemSize = CGSize.init(width: 60, height: 60)
+            itemSize = CGSize.init(width: 80, height: 80)
         }
         
         return itemSize

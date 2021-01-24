@@ -83,7 +83,7 @@ class TTASettingsGridCell: UICollectionViewCell {
             cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
             cellIcon.widthAnchor.constraint(equalToConstant: 70).isActive = true
             cellIcon.heightAnchor.constraint(equalToConstant: 70).isActive = true
-            self.layer.cornerRadius = 30
+            self.layer.cornerRadius = 40
             self.clipsToBounds = true
             
         case .squareCell:
