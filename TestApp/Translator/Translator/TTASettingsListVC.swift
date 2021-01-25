@@ -130,7 +130,7 @@ class TTASettingsListVC: UIViewController {
         super.viewDidLayoutSubviews()
         
 //      makes scrollView with multiple CVs scrollable
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height))
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height) + (appearanceModesCV.frame.height))
     }
     
     func setupViewLayout() {
@@ -150,14 +150,15 @@ class TTASettingsListVC: UIViewController {
         flagsCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
         flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
 //        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
-        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((allLanguages.count > 3 ? (90 * allLanguages.count/3) : 90) + (8 * 3) + (50 * 2))).isActive = true
+//        TODO: (8 * n) should be calculated as if n = 2 or any other value
+        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((allLanguages.count > 3 ? (90 * allLanguages.count/3) : 90) + (8 * 2) + (50 * 2))).isActive = true
         
         scrollView.addSubview(appearanceModesCV)
         appearanceModesCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
         appearanceModesCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
         appearanceModesCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
 //        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
-        appearanceModesCV.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        appearanceModesCV.heightAnchor.constraint(equalToConstant: CGFloat(100 + 16 + (50 * 2))).isActive = true
         
         
     }
