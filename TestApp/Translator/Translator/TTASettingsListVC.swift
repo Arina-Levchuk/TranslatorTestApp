@@ -15,7 +15,9 @@ protocol TTASettingsListDelegate: class {
 }
 
 class TTASettingsListVC: UIViewController {
-
+    
+//  MARK: - Properties
+    
     var allTranslators: [TTATranslator] = []
     var selectedTranslator: TTATranslator!
     
@@ -104,6 +106,7 @@ class TTASettingsListVC: UIViewController {
         return cv
     }()
     
+//  MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,7 +118,11 @@ class TTASettingsListVC: UIViewController {
         
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height))
         
-        print(allLanguages)
+        self.selectedAppMode = self.selectedAppMode ?? self.allAppModes.last
+        appearanceMode = self.selectedAppMode.appMode
+        self.appearanceModesCV.reloadData()
+        
+//        print(allLanguages)
                 
     }
     
@@ -132,6 +139,7 @@ class TTASettingsListVC: UIViewController {
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height) + (appearanceModesCV.frame.height))
     }
     
+//  MARK: - Methods
     func setupViewLayout() {
         view.addSubview(scrollView)
         scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -174,6 +182,8 @@ class TTASettingsListVC: UIViewController {
     
 
 }
+
+//  MARK: - Extensions
 
 extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -233,24 +243,26 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             return flagCell
             
         } else if collectionView == appearanceModesCV {
-            let appModeCell = appearanceModesCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.appearanceModeCVCell.description, for: indexPath) as! TTASettingsGridCell
+            let appearanceModeCell = appearanceModesCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.appearanceModeCVCell.description, for: indexPath) as! TTASettingsGridCell
 
-            appModeCell.setupGridCellLayout(for: .roundCell)
-            let selectedMode = allAppModes[indexPath.row]
+            appearanceModeCell.setupGridCellLayout(for: .roundCell)
+            let currentAppearanceMode = allAppModes[indexPath.row]
             
-            appModeCell.cellIcon.image = selectedMode.modeImg
+            appearanceModeCell.cellIcon.image = currentAppearanceMode.modeImg
 //            appModeCell.cellTitle.text = "AppMode"
             
-            let selectedModeCell = UIView(frame: appModeCell.bounds)
-            selectedModeCell.backgroundColor = .systemPurple
+            let selectedAppModeCell = UIView(frame: appearanceModeCell.bounds)
+            selectedAppModeCell.backgroundColor = .systemRed
             
-            appModeCell.selectedBackgroundView = nil
-            if selectedMode.mode == self.appearanceMode.rawValue {
-                appModeCell.isSelected = true
-                appModeCell.selectedBackgroundView = selectedModeCell
+            appearanceModeCell.selectedBackgroundView = nil
+            if selectedAppMode != nil {
+                if currentAppearanceMode.mode == self.selectedAppMode.mode {
+                    appearanceModeCell.isSelected = true
+                    appearanceModeCell.selectedBackgroundView = selectedAppModeCell
+                }
             }
             
-            return appModeCell
+            return appearanceModeCell
         }
         
         return UICollectionViewCell()
@@ -370,7 +382,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             self.delegate?.newLanguageSelected(language: self.selectedLanguage)
         } else if collectionView == appearanceModesCV {
             self.selectedAppMode = self.allAppModes[indexPath.row]
-//            self.appearanceMode = selectedAppMode.appMode
+            self.appearanceMode = selectedAppMode.appMode
             self.appearanceModesCV.reloadData()
         }
 
@@ -379,12 +391,10 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
 }
 
-
-
-extension UICollectionView {
-    func dequeueReusableCell<T: TTASettingsListCell>(for indexPath: IndexPath) -> T {
-        guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else { fatalError("Unable to Dequeue Reusable Table View Cell")}
-        
-        return cell
-    }
-}
+//extension UICollectionView {
+//    func dequeueReusableCell<T: TTASettingsListCell>(for indexPath: IndexPath) -> T {
+//        guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else { fatalError("Unable to Dequeue Reusable Table View Cell")}
+//
+//        return cell
+//    }
+//}
