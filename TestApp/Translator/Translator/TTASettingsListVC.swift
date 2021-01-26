@@ -237,7 +237,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             flagCell.cellTitle.text = currentLang.language
             
             let selectedLangCell = UIView(frame: flagCell.bounds)
-            selectedLangCell.backgroundColor = .systemPink
+            selectedLangCell.backgroundColor = .systemIndigo
             
             flagCell.selectedBackgroundView = nil
             if currentLang.langCode == selectedLanguage.langCode {
@@ -354,6 +354,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         } else if collectionView == flagsCV {
             edgeInsets = UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
         } else if collectionView == appearanceModesCV {
+//            let horizontalInset = Int((self.scrollView.contentSize.width)) - (100 * self.allAppModes.count) - (8 * 2)
+            
             edgeInsets = UIEdgeInsets.init(top: 8, left: 20, bottom: 8, right: 20)
         }
         return edgeInsets
