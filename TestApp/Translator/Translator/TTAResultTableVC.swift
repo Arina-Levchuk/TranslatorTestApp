@@ -197,14 +197,14 @@ class TTAResultTableVC: UIViewController {
     }
     
     func setUpInputField() {
-        inputField.backgroundColor = .white
+        inputField.backgroundColor = .systemBackground
         inputField.layer.cornerRadius = 15
         inputField.layer.borderWidth = 1
-        inputField.layer.borderColor = UIColor.darkGray.cgColor
-        inputField.keyboardAppearance = .light
+        inputField.layer.borderColor = UIColor.systemGray5.cgColor
+        inputField.keyboardAppearance = .default
         inputField.keyboardType = .default
         
-        inputField.textColor = .black
+        inputField.textColor = .label
 
         inputField.font = UIFont.systemFont(ofSize: 17.0)
         inputField.textContainerInset.left = 10

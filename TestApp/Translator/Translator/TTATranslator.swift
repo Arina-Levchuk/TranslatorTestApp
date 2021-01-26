@@ -16,14 +16,3 @@ struct TTATranslator {
     var queryDict: [String: String]?
 
 }
-
-struct TTATranslatorLanguage {
-    let language: String
-    var flagImg: UIImage? = nil
-    let langCode: String
-}
-
-struct TTAAppearanceMode {
-    let mode: String
-    var modeImg: UIImage? = nil
-}

@@ -39,7 +39,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
         NSLayoutConstraint.activate([
             footerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             footerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            footerLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+//            footerLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             footerLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 0),
             footerLabel.lastBaselineAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: 0)
         ])

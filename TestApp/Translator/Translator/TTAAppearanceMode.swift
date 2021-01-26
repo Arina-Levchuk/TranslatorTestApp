@@ -9,6 +9,13 @@
 import Foundation
 import UIKit
 
+
+struct TTAAppearanceMode {
+    let mode: String
+    var modeImg: UIImage? = nil
+    let appMode: AppearanceMode!
+}
+
 enum AppearanceMode: String {
     case device
     case light
@@ -29,6 +36,7 @@ enum AppearanceMode: String {
         }
     }
 }
+
 
 extension UserDefaults {
     var appearanceMode: AppearanceMode {

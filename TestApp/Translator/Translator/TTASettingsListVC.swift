@@ -25,8 +25,9 @@ class TTASettingsListVC: UIViewController {
 //    var appModes: [AppearanceMode] = []
     var selectedAppMode: TTAAppearanceMode!
     var allAppModes: [TTAAppearanceMode] = [
-        TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light")),
-        TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"))
+        TTAAppearanceMode(mode: "Device's Mode", modeImg: UIImage(named: "device"), appMode: .device),
+        TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light"), appMode: .light),
+        TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"), appMode: .dark)
     ]
     
     var defaults = UserDefaults.standard
@@ -87,7 +88,7 @@ class TTASettingsListVC: UIViewController {
         cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
-        cv.backgroundColor = .white
+        cv.backgroundColor = .systemBackground
         return cv
     }()
     
@@ -111,13 +112,12 @@ class TTASettingsListVC: UIViewController {
         navigationItem.title = "Settings"
         
         setupViewLayout()
+//        overrideUserInterfaceStyle = .dark
         
-//        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height))
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height))
         
         print(allLanguages)
-        
-        self.selectedAppMode = allAppModes.first
-        
+                
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -158,7 +158,13 @@ class TTASettingsListVC: UIViewController {
         appearanceModesCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
         appearanceModesCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
 //        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
-        appearanceModesCV.heightAnchor.constraint(equalToConstant: CGFloat(100 + 16 + (50 * 2))).isActive = true
+        
+        let itemHeight: CGFloat = 100
+        let verticalInset: CGFloat = 8
+        let headerFooterHeight: CGFloat = 50
+        
+        appearanceModesCV.heightAnchor.constraint(equalToConstant: CGFloat(itemHeight + (verticalInset * 2) + (headerFooterHeight * 2))).isActive = true
+//        print(appearanceModesCV.bounds.height)
         
         
     }
@@ -241,7 +247,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             selectedModeCell.backgroundColor = .systemYellow
             
             appModeCell.selectedBackgroundView = nil
-            if selectedMode.mode == selectedAppMode.mode {
+            if selectedMode.mode == self.appearanceMode.rawValue {
                 appModeCell.isSelected = true
                 appModeCell.selectedBackgroundView = selectedModeCell
             }
@@ -261,7 +267,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         } else if collectionView == flagsCV {
             itemSize = CGSize.init(width: ((self.scrollView.contentSize.width - 16 - 16)/3), height: 90)
         } else if collectionView == appearanceModesCV {
-            itemSize = CGSize.init(width: 80, height: 80)
+            itemSize = CGSize.init(width: 100 , height: 100)
+
+//            print("HEIGHT: \(self.scrollView.contentSize.width - (20 * 2) - (20 * 2)/3)")
         }
         
         return itemSize
@@ -342,8 +350,10 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         var itemInset: CGFloat = CGFloat.zero
         
-        if collectionView == flagsCV || collectionView == appearanceModesCV {
+        if collectionView == flagsCV {
             itemInset = CGFloat.init(8)
+        } else if collectionView == appearanceModesCV {
+            itemInset = CGFloat.init(16)
         } else {
             return itemInset
         }
@@ -362,7 +372,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             self.flagsCV.reloadData()
             self.delegate?.newLanguageSelected(language: self.selectedLanguage)
         } else if collectionView == appearanceModesCV {
-            self.selectedAppMode = allAppModes[indexPath.row]
+            self.selectedAppMode = self.allAppModes[indexPath.row]
+            self.appearanceMode = selectedAppMode.appMode
             self.appearanceModesCV.reloadData()
         }
 
