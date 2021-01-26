@@ -169,13 +169,11 @@ class TTASettingsListVC: UIViewController {
         appearanceModesCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
         appearanceModesCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
         appearanceModesCV.topAnchor.constraint(equalTo: flagsCV.bottomAnchor).isActive = true
-//        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
         
-        let itemHeight: CGFloat = 100
+        let modeItemHeight: CGFloat = 100
         let verticalInset: CGFloat = 8
         let headerFooterHeight: CGFloat = 50
-        
-        appearanceModesCV.heightAnchor.constraint(equalToConstant: CGFloat(itemHeight + (verticalInset * 2) + (headerFooterHeight * 2))).isActive = true
+        appearanceModesCV.heightAnchor.constraint(equalToConstant: CGFloat(modeItemHeight + (verticalInset * 2) + (headerFooterHeight * 2))).isActive = true
 //        print(appearanceModesCV.bounds.height)
         
         
