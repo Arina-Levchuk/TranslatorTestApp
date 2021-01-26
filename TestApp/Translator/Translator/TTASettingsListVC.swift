@@ -22,13 +22,12 @@ class TTASettingsListVC: UIViewController {
     var allLanguages: [TTATranslatorLanguage] = []
     var selectedLanguage: TTATranslatorLanguage!
     
-//    var appModes: [AppearanceMode] = []
-    var selectedAppMode: TTAAppearanceMode!
     var allAppModes: [TTAAppearanceMode] = [
         TTAAppearanceMode(mode: "Device's Mode", modeImg: UIImage(named: "device"), appMode: .device),
         TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light"), appMode: .light),
         TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"), appMode: .dark)
     ]
+    var selectedAppMode: TTAAppearanceMode!
     
     var defaults = UserDefaults.standard
     private var appearanceMode: AppearanceMode {
@@ -70,9 +69,9 @@ class TTASettingsListVC: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
-        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: "translatorsCVCell")
-        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
-        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description)
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TTASettingsHeaderCollectionReusableView.reuseID)
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .white
@@ -84,8 +83,8 @@ class TTASettingsListVC: UIViewController {
         cv.delegate = self
         cv.dataSource = self
         cv.register(TTASettingsGridCell.self, forCellWithReuseIdentifier: TTASettingsGridCell.ReuseID.flagsCVCell.description)
-        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
-        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TTASettingsHeaderCollectionReusableView.reuseID)
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
         cv.backgroundColor = .systemBackground
@@ -96,12 +95,12 @@ class TTASettingsListVC: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
         cv.dataSource = self
-        cv.register(TTASettingsGridCell.self, forCellWithReuseIdentifier: "appearanceModeCVCell")
-        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
-        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
+        cv.register(TTASettingsGridCell.self, forCellWithReuseIdentifier: TTASettingsGridCell.ReuseID.appearanceModeCVCell.description)
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TTASettingsHeaderCollectionReusableView.reuseID)
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
-        cv.backgroundColor = .systemPurple
+        cv.backgroundColor = .systemBackground
         return cv
     }()
     
@@ -197,7 +196,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         
         if collectionView == translatorsCV {
             
-            let cell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: "translatorsCVCell", for: indexPath) as! TTASettingsListCell
+            let cell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
             
             let currentTranslator = allTranslators[indexPath.row]
 
@@ -211,8 +210,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             if currentTranslator.url == selectedTranslator.url {
                 cell.isSelected = true
                 cell.selectedBackgroundView = selectedTranslatorCell
-            }
-            
+            }            
             return cell
             
         } else if collectionView == flagsCV {
@@ -232,10 +230,10 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 flagCell.isSelected = true
                 flagCell.selectedBackgroundView = selectedLangCell
             }
-            
             return flagCell
+            
         } else if collectionView == appearanceModesCV {
-            let appModeCell = appearanceModesCV.dequeueReusableCell(withReuseIdentifier: "appearanceModeCVCell", for: indexPath) as! TTASettingsGridCell
+            let appModeCell = appearanceModesCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.appearanceModeCVCell.description, for: indexPath) as! TTASettingsGridCell
 
             appModeCell.setupGridCellLayout(for: .roundCell)
             let selectedMode = allAppModes[indexPath.row]
@@ -244,7 +242,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
 //            appModeCell.cellTitle.text = "AppMode"
             
             let selectedModeCell = UIView(frame: appModeCell.bounds)
-            selectedModeCell.backgroundColor = .systemYellow
+            selectedModeCell.backgroundColor = .systemPurple
             
             appModeCell.selectedBackgroundView = nil
             if selectedMode.mode == self.appearanceMode.rawValue {
@@ -253,7 +251,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             }
             
             return appModeCell
-            
         }
         
         return UICollectionViewCell()
@@ -278,7 +275,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? TTASettingsHeaderCollectionReusableView {
+            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TTASettingsHeaderCollectionReusableView.reuseID, for: indexPath) as? TTASettingsHeaderCollectionReusableView {
 //                headerView.backgroundColor = .purple
                 
                 if collectionView == translatorsCV {
@@ -292,7 +289,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 return headerView
             }
         case UICollectionView.elementKindSectionFooter:
-            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath) as? TTASettingsFooterCollectionReusableView {
+            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID, for: indexPath) as? TTASettingsFooterCollectionReusableView {
 //                footerView.backgroundColor = .green
                 
                 if collectionView == translatorsCV {
@@ -373,7 +370,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             self.delegate?.newLanguageSelected(language: self.selectedLanguage)
         } else if collectionView == appearanceModesCV {
             self.selectedAppMode = self.allAppModes[indexPath.row]
-            self.appearanceMode = selectedAppMode.appMode
+//            self.appearanceMode = selectedAppMode.appMode
             self.appearanceModesCV.reloadData()
         }
 

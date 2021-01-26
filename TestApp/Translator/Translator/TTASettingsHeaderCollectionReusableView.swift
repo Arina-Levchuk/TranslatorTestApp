@@ -10,11 +10,15 @@ import UIKit
 
 final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     
+    static let reuseID = "TTACVHeader"
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
 //        self.backgroundColor = .systemGreen
         
         self.backgroundColor = .systemGray5
+        layer.borderColor = UIColor.systemGray5.cgColor
+        layer.borderWidth = 0.5
         
         setupHeaderView()
     }
@@ -43,10 +47,7 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
             headerLabel.lastBaselineAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: 0),
             headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
-        
-        layer.borderColor = UIColor.systemGray5.cgColor
-        layer.borderWidth = 1
-        
+                
     }
         
 }

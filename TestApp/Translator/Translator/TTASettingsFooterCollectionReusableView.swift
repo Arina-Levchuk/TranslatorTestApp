@@ -10,10 +10,14 @@ import UIKit
 
 final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     
+    static let reuseID = "TTACVFooter"
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.backgroundColor = .systemGray5
+        layer.borderColor = UIColor.systemGray5.cgColor
+        layer.borderWidth = 0.5
         
         setupFooterView()
     }
@@ -43,9 +47,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
             footerLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 0),
             footerLabel.lastBaselineAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: 0)
         ])
-        
-        layer.borderColor = UIColor.systemGray5.cgColor
-        layer.borderWidth = 1
+ 
     }
     
 }

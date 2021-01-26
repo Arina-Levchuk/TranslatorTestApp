@@ -13,9 +13,9 @@ class TTASettingsGridCell: UICollectionViewCell {
     enum CellView: String {
         case roundCell, squareCell
         
-        var description: String {
-            return self.rawValue
-        }
+//        var description: String {
+//            return self.rawValue
+//        }
     }
     
     enum ReuseID: String {

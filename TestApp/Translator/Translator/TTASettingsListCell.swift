@@ -9,7 +9,15 @@
 import UIKit
 
 class TTASettingsListCell: UICollectionViewCell {
-      
+    
+    enum ReuseID: String {
+        case translatorsCVCell, textAppearanceCVCell
+        
+        var description: String {
+            return self.rawValue
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupListCellLayout()
