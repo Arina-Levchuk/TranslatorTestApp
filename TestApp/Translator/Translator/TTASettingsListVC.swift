@@ -29,7 +29,7 @@ class TTASettingsListVC: UIViewController {
         TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light"), appMode: .light),
         TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"), appMode: .dark)
     ]
-    var selectedAppMode: TTAAppearanceMode!
+    var selectedAppMode: TTAAppearanceMode! 
     
     var defaults = UserDefaults.standard
     private var appearanceMode: AppearanceMode {
@@ -114,13 +114,18 @@ class TTASettingsListVC: UIViewController {
         navigationItem.title = "Settings"
         
         setupViewLayout()
-//        overrideUserInterfaceStyle = .dark
-        
+
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height))
         
-        self.selectedAppMode = self.selectedAppMode ?? self.allAppModes.last
-        appearanceMode = self.selectedAppMode.appMode
-        self.appearanceModesCV.reloadData()
+        self.selectedAppMode = {
+            var initialMode: TTAAppearanceMode? = nil
+            for mode in self.allAppModes {
+                if mode.appMode == appearanceMode {
+                    initialMode = mode
+                }
+            }
+            return initialMode
+        }()
         
 //        print(allLanguages)
                 
@@ -249,7 +254,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let currentAppearanceMode = allAppModes[indexPath.row]
             
             appearanceModeCell.cellIcon.image = currentAppearanceMode.modeImg
-//            appModeCell.cellTitle.text = "AppMode"
             
             let selectedAppModeCell = UIView(frame: appearanceModeCell.bounds)
             selectedAppModeCell.backgroundColor = .systemRed
