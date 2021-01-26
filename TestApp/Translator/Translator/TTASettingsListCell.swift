@@ -72,4 +72,4 @@ class TTASettingsListCell: UICollectionViewCell {
     
 }
 
-extension TTASettingsListCell: ReusableCVCell {}
+//extension TTASettingsListCell: ReusableCVCell {}

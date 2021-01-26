@@ -134,7 +134,8 @@ class TTASettingsListVC: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         translatorsCV.collectionViewLayout.invalidateLayout()
-        self.translatorsCV.layoutIfNeeded()
+        flagsCV.collectionViewLayout.invalidateLayout()
+//        self.translatorsCV.layoutIfNeeded()
     }
     
     override func viewDidLayoutSubviews() {
@@ -282,7 +283,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
 
 //            print("HEIGHT: \(self.scrollView.contentSize.width - (20 * 2) - (20 * 2)/3)")
         }
-        
+
         return itemSize
     }
     
