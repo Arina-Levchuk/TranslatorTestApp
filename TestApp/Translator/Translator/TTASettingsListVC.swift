@@ -277,7 +277,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         if collectionView == translatorsCV {
             itemSize = CGSize.init(width: self.scrollView.contentSize.width, height: 51)
         } else if collectionView == flagsCV {
-            itemSize = CGSize.init(width: ((self.scrollView.contentSize.width - 16 - 16)/3), height: 90)
+            itemSize = CGSize.init(width: 110, height: 90)
+//            itemSize = CGSize.init(width: ((self.scrollView.contentSize.width - 16 - 16)/3), height: 90)
+//            print("WIDTH: \((self.scrollView.contentSize.width - 16 - 16)/3)")
         } else if collectionView == appearanceModesCV {
             itemSize = CGSize.init(width: 100 , height: 100)
 
@@ -365,7 +367,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         var itemInset: CGFloat = CGFloat.zero
         
         if collectionView == flagsCV {
-            itemInset = CGFloat.init(8)
+            itemInset = CGFloat.init(10)
         } else if collectionView == appearanceModesCV {
             itemInset = CGFloat.init(16)
         } else {
