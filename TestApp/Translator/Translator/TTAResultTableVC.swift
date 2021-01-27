@@ -35,7 +35,7 @@ class TTAResultTableVC: UIViewController {
     let textViewPlaceholder: UILabel = {
         let tvPlaceholder = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         tvPlaceholder.text = "Enter a word..."
-        tvPlaceholder.textColor = .lightGray
+        tvPlaceholder.textColor = .systemGray4
         tvPlaceholder.font = UIFont.systemFont(ofSize: 17.0)
         return tvPlaceholder
     }()
@@ -146,7 +146,7 @@ class TTAResultTableVC: UIViewController {
     }
     
     func setUpNavBarAppearance() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         navigationItem.title = "Results"
         navigationController?.navigationBar.prefersLargeTitles = false
         
