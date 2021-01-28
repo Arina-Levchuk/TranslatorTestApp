@@ -46,7 +46,7 @@ class TTAUserLocationVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
 
-        getUserLocation()
+//        getUserLocation()
     }
     
     override func viewDidLoad() {
@@ -69,27 +69,6 @@ class TTAUserLocationVC: UIViewController {
         mapView.showsUserLocation = true
     }
     
-    func retrieveLocation() {
-
-        let status = CLLocationManager.authorizationStatus()
-
-        if status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled() {
-            return
-        }
-
-// if haven't show location permission dialog before, show it to user
-        if status == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-            return
-        }
-// request location data once
-        locationManager.requestLocation()
-
-// start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
-//        locationManager.startUpdatingLocation()
-    }
-    
-    
     func render(latitude ltd: Double?, longitude lgd: Double) {
         
         let coordinate = CLLocationCoordinate2D(latitude: ltd!, longitude: lgd)
@@ -106,21 +85,7 @@ class TTAUserLocationVC: UIViewController {
 
 extension TTAUserLocationVC: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("localizationManager error: \(error.localizedDescription)")
-    }
-    
-    func getUserLocation() {
-        locationManager.delegate = self
-//        locationManager.requestWhenInUseAuthorization()
-        
-        if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
-            locationManager.requestLocation()
-        }
-        
-        retrieveLocation()
-    }
-    
+//  ????
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             locationManager.stopUpdatingLocation()
@@ -128,24 +93,6 @@ extension TTAUserLocationVC: CLLocationManagerDelegate {
         }
         
         render(latitude: self.latitude, longitude: self.longitude!)
-    }
-    
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
-        switch status {
-        case .authorizedAlways:
-            print("user allow app to get location data when app is active or in background")
-        case .authorizedWhenInUse:
-            print("user allow app to get location data only when app is active")
-        case .denied:
-            print("user tap 'disallow' on the permission dialog, cant get location data")
-        case .notDetermined:
-            print("the location permission dialog haven't shown before, user haven't tap allow/disallow")
-        case .restricted:
-            print("parental control setting disallow location data")
-        }
-
     }
     
 }

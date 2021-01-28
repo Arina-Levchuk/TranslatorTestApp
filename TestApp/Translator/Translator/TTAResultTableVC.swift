@@ -183,6 +183,7 @@ class TTAResultTableVC: UIViewController {
         
         inputContainerView.backgroundColor = .purple
 //      Blur container view
+        
 //        inputContainerView.backgroundColor = .clear
 //        let blurEffect = UIBlurEffect(style: .light)
 //        let blurView = UIVisualEffectView(effect: blurEffect)
@@ -307,8 +308,6 @@ class TTAResultTableVC: UIViewController {
         if let translator = self.selectedTranslator {
             guard let language = self.selectedLanguage else { return }
             
-//            self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, allTranslators: self.translators, delegate: self), animated: true)
-            
             self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, allTranslators: self.translators, selectedLanguage: language, allLanguages: self.languages, delegate: self), animated: true)
         }
     }
@@ -431,14 +430,14 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func didTapLocationButton(_ sender: UIButton) {
-        
-        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
-            if let cellIndexPath = self.tableView.indexPath(for: cell) {
-                let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
-                
-//                self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
-            }
-        }
+//
+//        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
+//            if let cellIndexPath = self.tableView.indexPath(for: cell) {
+//                let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
+//
+////                self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
+//            }
+//        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -526,9 +525,7 @@ extension TTAResultTableVC: UITextViewDelegate {
     }
         
 //    func textViewDidChange(_ textView: UITextView) {
-//
 //        self.inputFieldTopConstraint?.constant = textView.contentSize.height
-//
 //    }
     
 //  [Return] button closes the keyboard
@@ -540,8 +537,7 @@ extension TTAResultTableVC: UITextViewDelegate {
             inputField.resignFirstResponder()
             return false
         }
-    }
-    
+    }    
 }
 
 extension TTAResultTableVC: TTASettingsListDelegate {
