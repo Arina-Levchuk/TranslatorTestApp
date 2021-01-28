@@ -430,12 +430,13 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func didTapLocationButton(_ sender: UIButton) {
-//
+        
+        self.navigationController?.pushViewController(TTAUserLocationVC(), animated: true)
 //        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
 //            if let cellIndexPath = self.tableView.indexPath(for: cell) {
 //                let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
 //
-////                self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
+//                self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
 //            }
 //        }
     }
@@ -537,7 +538,7 @@ extension TTAResultTableVC: UITextViewDelegate {
             inputField.resignFirstResponder()
             return false
         }
-    }    
+    }
 }
 
 extension TTAResultTableVC: TTASettingsListDelegate {

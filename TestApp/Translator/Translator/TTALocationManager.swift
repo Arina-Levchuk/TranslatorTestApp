@@ -6,6 +6,7 @@
 //  Copyright © 2021 admin. All rights reserved.
 //
 
+
 import CoreLocation
 
 final class TTALocationManager: NSObject {
@@ -36,15 +37,15 @@ final class TTALocationManager: NSObject {
             return
         }
 
-// if haven't show location permission dialog before, show it to user
+        // if haven't show location permission dialog before, show it to user
         if status == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
             return
         }
-// request location data once
+        // request location data once
         locationManager.requestLocation()
 
-// start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
+        // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
 //        locationManager.startUpdatingLocation()
     }
     
@@ -62,6 +63,7 @@ final class TTALocationManager: NSObject {
 }
 
 //   MARK:- Extensions
+
 extension TTALocationManager: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -69,12 +71,12 @@ extension TTALocationManager: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    //        if let location = locations.last {
-    //            locationManager.stopUpdatingLocation()
-    //            self.delegate?.passUserCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-    //        }
-        
-    //        render(latitude: self.latitude, longitude: self.longitude!)
+//        if let location = locations.last {
+//            locationManager.stopUpdatingLocation()
+//            self.delegate?.passUserCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+//        }
+    
+//        render(latitude: self.latitude, longitude: self.longitude!)
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
