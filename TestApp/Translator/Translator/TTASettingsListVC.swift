@@ -135,6 +135,7 @@ class TTASettingsListVC: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         translatorsCV.collectionViewLayout.invalidateLayout()
         flagsCV.collectionViewLayout.invalidateLayout()
+        appearanceModesCV.collectionViewLayout.invalidateLayout()
 //        self.translatorsCV.layoutIfNeeded()
     }
     
@@ -207,8 +208,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
 //        let reusableCell: TTASettingsListCell = collectionView.dequeueReusableCell(for: indexPath)
-        
-        if collectionView == translatorsCV {
+        switch collectionView {
+        case translatorsCV:
+//        if collectionView == translatorsCV {
             
             let cell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
             
@@ -227,7 +229,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             }            
             return cell
             
-        } else if collectionView == flagsCV {
+        case flagsCV:
             let flagCell = flagsCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.flagsCVCell.description, for: indexPath) as! TTASettingsGridCell
 
             let currentLang = allLanguages[indexPath.row]
@@ -246,7 +248,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             }
             return flagCell
             
-        } else if collectionView == appearanceModesCV {
+        case appearanceModesCV:
+            
             let appearanceModeCell = appearanceModesCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.appearanceModeCVCell.description, for: indexPath) as! TTASettingsGridCell
 
             appearanceModeCell.setupGridCellLayout(for: .roundCell)
@@ -266,27 +269,10 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             }
             
             return appearanceModeCell
+        default:
+            return UICollectionViewCell()
         }
         
-        return UICollectionViewCell()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var itemSize: CGSize = CGSize.zero
-        
-        if collectionView == translatorsCV {
-            itemSize = CGSize.init(width: self.scrollView.contentSize.width, height: 51)
-        } else if collectionView == flagsCV {
-            itemSize = CGSize.init(width: 110, height: 90)
-//            itemSize = CGSize.init(width: ((self.scrollView.contentSize.width - 16 - 16)/3), height: 90)
-//            print("WIDTH: \((self.scrollView.contentSize.width - 16 - 16)/3)")
-        } else if collectionView == appearanceModesCV {
-            itemSize = CGSize.init(width: 100 , height: 100)
-
-//            print("HEIGHT: \(self.scrollView.contentSize.width - (20 * 2) - (20 * 2)/3)")
-        }
-
-        return itemSize
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -295,34 +281,76 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TTASettingsHeaderCollectionReusableView.reuseID, for: indexPath) as? TTASettingsHeaderCollectionReusableView {
 //                headerView.backgroundColor = .purple
                 
-                if collectionView == translatorsCV {
+                switch collectionView {
+                case translatorsCV:
                     headerView.headerLabel.text = "TRANSLATION SERVICE"
-                } else if collectionView == flagsCV {
+                    return headerView
+                case flagsCV:
                     headerView.headerLabel.text = "TRANSLATION LANGUAGE"
-                } else if collectionView == appearanceModesCV {
+                    return headerView
+                case appearanceModesCV:
                     headerView.headerLabel.text = "APPEARANCE MODE"
+                    return headerView
+                default:
+                    return UICollectionReusableView()
                 }
                 
-                return headerView
+//                if collectionView == translatorsCV {
+//                    headerView.headerLabel.text = "TRANSLATION SERVICE"
+//                } else if collectionView == flagsCV {
+//                    headerView.headerLabel.text = "TRANSLATION LANGUAGE"
+//                } else if collectionView == appearanceModesCV {
+//                    headerView.headerLabel.text = "APPEARANCE MODE"
+//                }
+//
+//                return headerView
             }
         case UICollectionView.elementKindSectionFooter:
             if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID, for: indexPath) as? TTASettingsFooterCollectionReusableView {
 //                footerView.backgroundColor = .green
                 
-                if collectionView == translatorsCV {
+                switch collectionView {
+                case translatorsCV:
                     footerView.footerLabel.text = "Select the service which will provide you with the translation"
-                } else if collectionView == flagsCV {
+                    return footerView
+                case flagsCV:
                     footerView.footerLabel.text = "Select the language of translation"
-                } else if collectionView == appearanceModesCV {
+                    return footerView
+                case appearanceModesCV:
                     footerView.footerLabel.text = "Select appearance mode which will be applied to the whole app"
+                    return footerView
+                default:
+                    return UICollectionReusableView()
                 }
-                return footerView
+                
+//                if collectionView == translatorsCV {
+//                    footerView.footerLabel.text = "Select the service which will provide you with the translation"
+//                } else if collectionView == flagsCV {
+//                    footerView.footerLabel.text = "Select the language of translation"
+//                } else if collectionView == appearanceModesCV {
+//                    footerView.footerLabel.text = "Select appearance mode which will be applied to the whole app"
+//                }
+//                return footerView
             }
         default:
             return UICollectionReusableView()
         }
         return UICollectionReusableView()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
+        switch collectionView {
+        case translatorsCV:
+            return CGSize.init(width: self.scrollView.contentSize.width, height: 51)
+        case flagsCV:
+            return CGSize.init(width: 110, height: 90)
+        case appearanceModesCV:
+            return CGSize.init(width: 100 , height: 100)
+        default:
+            return CGSize.zero
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -335,45 +363,43 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        var sectionInset: CGFloat = CGFloat.zero
-        
-        if collectionView == translatorsCV {
-            sectionInset = 0
-        } else if collectionView == flagsCV {
-            sectionInset = 8
-        } else if collectionView == appearanceModesCV {
-            sectionInset = 0
+ 
+        switch collectionView {
+        case flagsCV:
+            return 8
+        default:
+            return 0
         }
-        
-        return sectionInset
+
     }
         
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        var edgeInsets: UIEdgeInsets = UIEdgeInsets.zero
-        
-        if collectionView == translatorsCV {
-            edgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-        } else if collectionView == flagsCV {
-            edgeInsets = UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
-        } else if collectionView == appearanceModesCV {
-//            let horizontalInset = Int((self.scrollView.contentSize.width)) - (100 * self.allAppModes.count) - (8 * 2)
-            
-            edgeInsets = UIEdgeInsets.init(top: 8, left: 20, bottom: 8, right: 20)
+
+        switch collectionView {
+        case translatorsCV:
+            return UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+        case flagsCV:
+            return UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
+        case appearanceModesCV:
+            return UIEdgeInsets.init(top: 8, left: 20, bottom: 8, right: 20)
+        default:
+            return UIEdgeInsets.zero
         }
-        return edgeInsets
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        var itemInset: CGFloat = CGFloat.zero
-        
-        if collectionView == flagsCV {
-            itemInset = CGFloat.init(10)
-        } else if collectionView == appearanceModesCV {
-            itemInset = CGFloat.init(16)
-        } else {
-            return itemInset
+
+        switch collectionView {
+        case flagsCV:
+            return CGFloat.init(10)
+        case appearanceModesCV:
+//            let interItemSpacing = (Int((self.scrollView.contentSize.width)) - 40 - (100 * allAppModes.count))/2
+            return CGFloat.init(16)
+        default:
+            return CGFloat.zero
         }
-        return itemInset
+
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

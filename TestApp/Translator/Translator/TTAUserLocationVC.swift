@@ -29,7 +29,7 @@ class TTAUserLocationVC: UIViewController {
 //        return manager
 //    }()
     
-    let userLocation: TTALocationManager?
+//    let userLocation: TTALocationManager?
         
 //    let latitude: Double? = nil
 //    let longitude: Double? = nil
