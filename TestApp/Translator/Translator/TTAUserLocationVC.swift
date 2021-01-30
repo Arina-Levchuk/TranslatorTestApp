@@ -8,7 +8,7 @@
 
 import UIKit
 import MapKit
-import CoreLocation
+//import CoreLocation
 
 
 protocol TTAUserLocationVCDelegate: class {
@@ -29,7 +29,7 @@ class TTAUserLocationVC: UIViewController {
 //        return manager
 //    }()
     
-//    let userLocation: TTALocationManager?
+    let userLocation: CLLocation? = nil
         
 //    let latitude: Double? = nil
 //    let longitude: Double? = nil
@@ -56,7 +56,7 @@ class TTAUserLocationVC: UIViewController {
         super.viewDidLoad()
         
         setUpMapView()
-//        getUserLocation()
+        setupUserLocation()
         mapView.showsUserLocation = true
 
     }
@@ -73,31 +73,23 @@ class TTAUserLocationVC: UIViewController {
         
     }
  
-//    ???
-    func render(latitude ltd: Double?, longitude lgd: Double) {
-        
-        let coordinate = CLLocationCoordinate2D(latitude: ltd!, longitude: lgd)
-        
-        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-        
+    func setupUserLocation() {
+//        Setting region
+        let coordinate = CLLocationCoordinate2D(latitude: (userLocation?.coordinate.latitude)!, longitude: (userLocation?.coordinate.longitude)!)
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: coordinate, span: span)
         
-        mapView.setRegion(region, animated: true)
+        self.mapView.setRegion(region, animated: true)
+        
+//        Adding pin
+        let pinLocation: CLLocationCoordinate2D = CLLocationCoordinate2DMake((userLocation?.coordinate.latitude)!, (userLocation?.coordinate.longitude)!)
+        let objectAnnotation = MKPointAnnotation()
+        
+        objectAnnotation.coordinate = pinLocation
+        self.mapView.addAnnotation(objectAnnotation)
         
     }
 
 }
 
-extension TTAUserLocationVC: CLLocationManagerDelegate {
-    
-//  ????
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        if let location = locations.last {
-//            locationManager.stopUpdatingLocation()
-//            self.delegate?.passUserCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-//        }
-//        
-//        render(latitude: self.latitude, longitude: self.longitude!)
-//    }
-    
-}
+//extension TTAUserLocationVC: CLLocationManagerDelegate {}

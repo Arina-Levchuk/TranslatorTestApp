@@ -22,9 +22,11 @@ final class TTALocationManager: NSObject {
     
     override init() {
         super.init()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
+//        locationManager.delegate = self
+//        locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        
+        getUserLocation()
     }
       
 //    MARK:- Methods
@@ -35,12 +37,12 @@ final class TTALocationManager: NSObject {
 
         if status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled() {
             return
-        }
+        } else if status == .notDetermined {
 
         // if haven't show location permission dialog before, show it to user
-        if status == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
             return
+            
         }
         // request location data once
         locationManager.requestLocation()
@@ -55,9 +57,9 @@ final class TTALocationManager: NSObject {
         
         if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
             locationManager.requestLocation()
+        } else {
+            retrieveLocation()
         }
-        
-        retrieveLocation()
     }
     
 }
@@ -71,10 +73,10 @@ extension TTALocationManager: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        if let location = locations.last {
-//            locationManager.stopUpdatingLocation()
-//            self.delegate?.passUserCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-//        }
+        if let location = locations.last {
+            locationManager.stopUpdatingLocation()
+            print("Current location is: \(location)")
+        }
     
 //        render(latitude: self.latitude, longitude: self.longitude!)
     }
