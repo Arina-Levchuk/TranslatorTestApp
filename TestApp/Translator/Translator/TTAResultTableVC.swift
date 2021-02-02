@@ -436,6 +436,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
                 let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
 
                 self.navigationController?.pushViewController(TTAUserLocationVC(latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
+                print("Cell's userLocation LAT: \(resultObject.latitude), LONG: \(resultObject.longitude)")
             }
         }
     }

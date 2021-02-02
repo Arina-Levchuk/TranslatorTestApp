@@ -34,6 +34,17 @@ class TTAUserLocationVC: UIViewController {
     let latitude: Double?
     let longitude: Double?
     
+    var locationTestLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.textColor = .systemPurple
+        lbl.font = UIFont.boldSystemFont(ofSize: 12)
+        lbl.textAlignment = .left
+        lbl.numberOfLines = 0
+        lbl.lineBreakMode = .byWordWrapping
+        return lbl
+    }()
+    
     init(latitude: Double?, longitude: Double?) {
 //        self.delegate = delegate
         self.latitude = latitude
@@ -57,7 +68,20 @@ class TTAUserLocationVC: UIViewController {
         setUpMapView()
         setupUserLocation()
         mapView.showsUserLocation = true
-
+        
+        setupTestLabel()
+        
+    }
+    
+    func setupTestLabel() {
+        mapView.addSubview(locationTestLabel)
+        
+        locationTestLabel.topAnchor.constraint(equalTo: mapView.topAnchor).isActive = true
+        locationTestLabel.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+        locationTestLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        locationTestLabel.widthAnchor.constraint(equalToConstant: view.bounds.width).isActive = true
+        
+        locationTestLabel.text = "LTD: \(self.latitude ?? 0.000); LNGTD: \(self.longitude ?? 0.000)"
     }
     
     func setUpMapView() {

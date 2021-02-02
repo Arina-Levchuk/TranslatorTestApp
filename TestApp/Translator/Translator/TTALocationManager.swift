@@ -38,8 +38,8 @@ final class TTALocationManager: NSObject {
     func setupLocationManager() {
         locationManager = CLLocationManager()
         locationManager?.delegate = self
-        locationManager?.distanceFilter = 10
-        locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager?.distanceFilter = 1
+        locationManager?.desiredAccuracy = kCLLocationAccuracyBest
 //        locationManager?.requestWhenInUseAuthorization()
         
         getUserLocation()
@@ -76,7 +76,7 @@ final class TTALocationManager: NSObject {
         locationManager?.requestWhenInUseAuthorization()
         
         if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
-            locationManager?.requestLocation()
+            locationManager?.startUpdatingLocation()
         } else {
             retrieveLocation()
         }
