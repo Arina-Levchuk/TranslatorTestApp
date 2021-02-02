@@ -20,7 +20,7 @@ class TTAUserLocationVC: UIViewController {
 
     let mapView = MKMapView()
         
-    weak var delegate: TTAUserLocationVCDelegate? = nil
+//    weak var delegate: TTAUserLocationVCDelegate? = nil
     
 //    lazy var locationManager: CLLocationManager = {
 //        var manager = CLLocationManager()
@@ -29,16 +29,15 @@ class TTAUserLocationVC: UIViewController {
 //        return manager
 //    }()
     
-    let userLocation: CLLocation? = nil
+//    let userLocation: CLLocation? = nil
         
-//    let latitude: Double? = nil
-//    let longitude: Double? = nil
+    let latitude: Double?
+    let longitude: Double?
     
-    init() {
-//    init(delegate: TTAUserLocationVCDelegate?, latitude: Double?, longitude: Double?) {
+    init(latitude: Double?, longitude: Double?) {
 //        self.delegate = delegate
-//        self.latitude = latitude
-//        self.longitude = longitude
+        self.latitude = latitude
+        self.longitude = longitude
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -75,14 +74,14 @@ class TTAUserLocationVC: UIViewController {
  
     func setupUserLocation() {
 //        Setting region
-        let coordinate = CLLocationCoordinate2D(latitude: (userLocation?.coordinate.latitude)!, longitude: (userLocation?.coordinate.longitude)!)
+        let coordinate = CLLocationCoordinate2D(latitude: (self.latitude)!, longitude: (self.longitude)!)
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: coordinate, span: span)
         
         self.mapView.setRegion(region, animated: true)
         
 //        Adding pin
-        let pinLocation: CLLocationCoordinate2D = CLLocationCoordinate2DMake((userLocation?.coordinate.latitude)!, (userLocation?.coordinate.longitude)!)
+        let pinLocation: CLLocationCoordinate2D = CLLocationCoordinate2DMake((self.latitude)!, (self.longitude)!)
         let objectAnnotation = MKPointAnnotation()
         
         objectAnnotation.coordinate = pinLocation

@@ -155,12 +155,12 @@
 				8445BD5C25C073AB00EFB6F1 /* TTATranslatorLanguage.swift */,
 				841E1AAE24B49EFE0075CB49 /* TTADecodedResponse.swift */,
 				841E1AAA24B49E640075CB49 /* URLExtension.swift */,
-				84DA943E259A3A3B00565CA3 /* ReusableCVCell.swift */,
 				84DE9F9D24016C67007E4239 /* Assets.xcassets */,
 				84DE9F9F24016C67007E4239 /* LaunchScreen.storyboard */,
 				84DE9FA224016C67007E4239 /* Info.plist */,
 				84DE9F9A24016C65007E4239 /* Translator.xcdatamodeld */,
 				845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */,
+				84DA943E259A3A3B00565CA3 /* ReusableCVCell.swift */,
 				846A57362570260000363261 /* TTASettingsList_DEPRECATED.swift */,
 				840035852450CADB00FB3BA1 /* DataSourceProvider.swift */,
 			);

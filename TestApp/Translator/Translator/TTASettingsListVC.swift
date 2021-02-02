@@ -210,7 +210,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
 //        let reusableCell: TTASettingsListCell = collectionView.dequeueReusableCell(for: indexPath)
         switch collectionView {
         case translatorsCV:
-//        if collectionView == translatorsCV {
             
             let cell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
             

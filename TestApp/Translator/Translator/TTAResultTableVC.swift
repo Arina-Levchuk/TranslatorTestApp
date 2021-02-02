@@ -317,7 +317,7 @@ class TTAResultTableVC: UIViewController {
             guard let translatorURL = translator.url else { return }
             guard self.inputField.text != nil && self.inputField.text != "" else { return }
 
-            
+//            let userLocation = TTALocationManager.userLocation.currentLocation
             let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertInto: coreDataStack.managedContext)
             
             getTranslation(to: translatorURL, with: translationRequest, completionHandler: { [weak self] (result, error) in
@@ -431,14 +431,13 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
     
     @objc func didTapLocationButton(_ sender: UIButton) {
         
-        self.navigationController?.pushViewController(TTAUserLocationVC(), animated: true)
-//        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
-//            if let cellIndexPath = self.tableView.indexPath(for: cell) {
-//                let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
-//
-//                self.navigationController?.pushViewController(TTAUserLocationVC(delegate: self, latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
-//            }
-//        }
+        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
+            if let cellIndexPath = self.tableView.indexPath(for: cell) {
+                let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
+
+                self.navigationController?.pushViewController(TTAUserLocationVC(latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {

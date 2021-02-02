@@ -9,54 +9,74 @@
 
 import CoreLocation
 
+
 final class TTALocationManager: NSObject {
-    
-//    private let locationManager = CLLocationManager()
-    
-    var locationManager: CLLocationManager = {
-        var manager = CLLocationManager()
-        manager.distanceFilter = 10
-        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        return manager
+
+//    Singleton instance
+    static let shared: TTALocationManager = {
+        let locationManager = TTALocationManager()
+        return locationManager
     }()
     
-    override init() {
-        super.init()
-//        locationManager.delegate = self
-//        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        
-        getUserLocation()
+    private var locationManager: CLLocationManager?
+    private var currentLocation: CLLocation?
+    
+    private var passLocation: ((_ location: CLLocation?, _ error: NSError?) -> Void)?
+    
+//        var manager = CLLocationManager()
+//        manager.distanceFilter = 10
+//        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+//        return manager
+//    }()
+    
+    private override init() {}
+    
+    deinit {
+        destroyLocationManager()
     }
-      
+    
 //    MARK:- Methods
     
-    func retrieveLocation() {
+    func setupLocationManager() {
+        locationManager = CLLocationManager()
+        locationManager?.delegate = self
+        locationManager?.distanceFilter = 10
+        locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager?.requestWhenInUseAuthorization()
+    }
+    
+    private func destroyLocationManager() {
+        locationManager?.delegate = nil
+        locationManager = nil
+        currentLocation = nil
+    }
 
+    private func retrieveLocation() {
         let status = CLLocationManager.authorizationStatus()
 
-        if status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled() {
+        if (status == .denied) || (status == .restricted) || (!CLLocationManager.locationServicesEnabled()) {
+//      TODO: to show alert??
             return
-        } else if status == .notDetermined {
+        } else if (status == .notDetermined) {
 
         // if haven't show location permission dialog before, show it to user
-            locationManager.requestWhenInUseAuthorization()
+            locationManager?.requestWhenInUseAuthorization()
             return
             
         }
         // request location data once
-        locationManager.requestLocation()
+//        locationManager.requestLocation()
 
         // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
-//        locationManager.startUpdatingLocation()
+        locationManager?.startUpdatingLocation()
     }
     
-    func getUserLocation() {
-        locationManager.delegate = self
-//        locationManager.requestWhenInUseAuthorization()
+    private func getUserLocation() {
+        locationManager?.delegate = self
+        locationManager?.requestWhenInUseAuthorization()
         
         if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
-            locationManager.requestLocation()
+            locationManager?.requestLocation()
         } else {
             retrieveLocation()
         }
@@ -74,11 +94,12 @@ extension TTALocationManager: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            locationManager.stopUpdatingLocation()
+            locationManager?.stopUpdatingLocation()
             print("Current location is: \(location)")
+            
+            self.currentLocation = location
         }
-    
-//        render(latitude: self.latitude, longitude: self.longitude!)
+
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
