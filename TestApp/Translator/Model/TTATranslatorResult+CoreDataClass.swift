@@ -47,7 +47,7 @@ public class TTATranslatorResult: NSManagedObject {
             }
         }
         
-        if let userLocation = TTALocationManager.userLocation.currentLocation {
+        if let userLocation = TTALocationManager.shared.currentLocation {
             self.latitude = userLocation.coordinate.latitude
             self.longitude = userLocation.coordinate.longitude
         }

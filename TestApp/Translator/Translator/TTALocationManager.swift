@@ -19,9 +19,7 @@ final class TTALocationManager: NSObject {
     }()
     
     private var locationManager: CLLocationManager?
-    private var currentLocation: CLLocation?
-    
-    private var passLocation: ((_ location: CLLocation?, _ error: NSError?) -> Void)?
+    var currentLocation: CLLocation?
     
 //        var manager = CLLocationManager()
 //        manager.distanceFilter = 10
@@ -42,16 +40,18 @@ final class TTALocationManager: NSObject {
         locationManager?.delegate = self
         locationManager?.distanceFilter = 10
         locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        locationManager?.requestWhenInUseAuthorization()
+//        locationManager?.requestWhenInUseAuthorization()
+        
+        getUserLocation()
     }
     
-    private func destroyLocationManager() {
+    func destroyLocationManager() {
         locationManager?.delegate = nil
         locationManager = nil
         currentLocation = nil
     }
 
-    private func retrieveLocation() {
+    func retrieveLocation() {
         let status = CLLocationManager.authorizationStatus()
 
         if (status == .denied) || (status == .restricted) || (!CLLocationManager.locationServicesEnabled()) {
@@ -71,8 +71,8 @@ final class TTALocationManager: NSObject {
         locationManager?.startUpdatingLocation()
     }
     
-    private func getUserLocation() {
-        locationManager?.delegate = self
+    func getUserLocation() {
+//        locationManager?.delegate = self
         locationManager?.requestWhenInUseAuthorization()
         
         if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
@@ -93,11 +93,12 @@ extension TTALocationManager: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            locationManager?.stopUpdatingLocation()
-            print("Current location is: \(location)")
+        if let newLocation = locations.last {
+            self.currentLocation = newLocation
             
-            self.currentLocation = location
+            locationManager?.stopUpdatingLocation()
+            print("Current location is: \(newLocation)")
+        
         }
 
     }

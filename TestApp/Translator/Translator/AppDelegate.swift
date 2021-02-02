@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.startMonitoringVisits()
         locationManager.requestWhenInUseAuthorization()
         
-        TTALocationManager.userLocation.getUserLocation()
+        TTALocationManager.shared.setupLocationManager()
 
         return true
     }
