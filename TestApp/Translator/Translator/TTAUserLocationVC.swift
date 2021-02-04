@@ -121,9 +121,6 @@ class TTAUserLocationVC: UIViewController {
             showAlert(presenter: self)
         }
 
-        // request location data once
-//        locationManager.requestLocation()
-
     }
     
     func showAlert(presenter: UIViewController) {

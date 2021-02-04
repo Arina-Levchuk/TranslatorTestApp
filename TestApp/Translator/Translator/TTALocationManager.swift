@@ -20,13 +20,7 @@ final class TTALocationManager: NSObject {
     
     private var locationManager: CLLocationManager?
     var currentLocation: CLLocation?
-    
-//        var manager = CLLocationManager()
-//        manager.distanceFilter = 10
-//        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-//        return manager
-//    }()
-    
+        
     private override init() {}
     
     deinit {
@@ -40,6 +34,7 @@ final class TTALocationManager: NSObject {
         locationManager?.delegate = self
         locationManager?.distanceFilter = 1
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager?.startMonitoringVisits()
 //        locationManager?.requestWhenInUseAuthorization()
         
         getUserLocation()
@@ -51,7 +46,7 @@ final class TTALocationManager: NSObject {
         currentLocation = nil
     }
 
-    func getUserLocation() {
+    private func getUserLocation() {
 //        locationManager?.delegate = self
         locationManager?.requestWhenInUseAuthorization()
         
@@ -62,14 +57,9 @@ final class TTALocationManager: NSObject {
         }
     }
     
-    func retrieveLocation() {
-        let status = CLLocationManager.authorizationStatus()
+    private func retrieveLocation() {
 
-        if (status == .denied) || (status == .restricted) || (!CLLocationManager.locationServicesEnabled()) {
-//      TODO: to show alert??
-            
-            
-        } else if (status == .notDetermined) {
+        if (CLLocationManager.authorizationStatus() == .notDetermined) {
 
         // if haven't show location permission dialog before, show it to user
             locationManager?.requestWhenInUseAuthorization()
@@ -82,16 +72,6 @@ final class TTALocationManager: NSObject {
         // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
         locationManager?.startUpdatingLocation()
     }
-    
-    func showAlert(presenter: UIViewController) {
-        let alert = UIAlertController(title: "Allow Location Access", message: "The app needs access to your location. Please turn on Location Services in your device settings.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: nil))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        presenter.present(alert, animated: true)
-        
-    }
-
     
 }
 
