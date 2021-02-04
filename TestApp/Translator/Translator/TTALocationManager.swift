@@ -6,7 +6,7 @@
 //  Copyright © 2021 admin. All rights reserved.
 //
 
-
+import UIKit
 import CoreLocation
 
 
@@ -51,12 +51,24 @@ final class TTALocationManager: NSObject {
         currentLocation = nil
     }
 
+    func getUserLocation() {
+//        locationManager?.delegate = self
+        locationManager?.requestWhenInUseAuthorization()
+        
+        if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
+            locationManager?.startUpdatingLocation()
+        } else {
+            retrieveLocation()
+        }
+    }
+    
     func retrieveLocation() {
         let status = CLLocationManager.authorizationStatus()
 
         if (status == .denied) || (status == .restricted) || (!CLLocationManager.locationServicesEnabled()) {
 //      TODO: to show alert??
-            return
+            
+            
         } else if (status == .notDetermined) {
 
         // if haven't show location permission dialog before, show it to user
@@ -71,16 +83,15 @@ final class TTALocationManager: NSObject {
         locationManager?.startUpdatingLocation()
     }
     
-    func getUserLocation() {
-//        locationManager?.delegate = self
-        locationManager?.requestWhenInUseAuthorization()
+    func showAlert(presenter: UIViewController) {
+        let alert = UIAlertController(title: "Allow Location Access", message: "The app needs access to your location. Please turn on Location Services in your device settings.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: nil))
         
-        if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
-            locationManager?.startUpdatingLocation()
-        } else {
-            retrieveLocation()
-        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        presenter.present(alert, animated: true)
+        
     }
+
     
 }
 

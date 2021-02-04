@@ -70,6 +70,7 @@ class TTAUserLocationVC: UIViewController {
         mapView.showsUserLocation = true
         
         setupTestLabel()
+        retrieveLocation()
         
     }
     
@@ -110,6 +111,34 @@ class TTAUserLocationVC: UIViewController {
         
         objectAnnotation.coordinate = pinLocation
         self.mapView.addAnnotation(objectAnnotation)
+        
+    }
+    
+    func retrieveLocation() {
+        let status = CLLocationManager.authorizationStatus()
+
+        if (status == .denied) || (status == .restricted) || (!CLLocationManager.locationServicesEnabled()) {
+            showAlert(presenter: self)
+        }
+
+        // request location data once
+//        locationManager.requestLocation()
+
+    }
+    
+    func showAlert(presenter: UIViewController) {
+        let alert = UIAlertController(title: "Allow Location Access", message: "The app needs access to your location. Please turn on Location Services in your device settings.", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (action) in
+            guard let deviceSettingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+            
+            if UIApplication.shared.canOpenURL(deviceSettingsURL) {
+                UIApplication.shared.open(deviceSettingsURL, completionHandler: nil)
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        presenter.present(alert, animated: true)
         
     }
 

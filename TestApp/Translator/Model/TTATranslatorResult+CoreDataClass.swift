@@ -57,11 +57,3 @@ public class TTATranslatorResult: NSManagedObject {
     }
     
 }
-
-//extension TTATranslatorResult: TTAUserLocationVCDelegate {
-//    func passUserCoordinates(latitude: Double, longitude: Double) {
-//        self.latitude = latitude
-//        self.longitude = longitude
-//    }
-//
-//}
