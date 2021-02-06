@@ -456,7 +456,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         let result = self.fetchedResultsController.object(at: indexPath)
   
         if let translator = self.selectedTranslator {
-            guard result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description else { return }
+            if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
             guard let translatorURL = translator.url else { return }
 
             getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
@@ -467,6 +467,14 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
                 }
                 self?.coreDataStack.saveContext()
             })
+            }
+            
+            if result.longitude == Double.zero && result.latitude == Double.zero {
+                TTALocationManager.shared.setupLocationManager()
+                result.setValue(TTALocationManager.shared.currentLocation?.coordinate.latitude, forKey: #keyPath(TTATranslatorResult.latitude))
+                result.setValue(TTALocationManager.shared.currentLocation?.coordinate.longitude, forKey: #keyPath(TTATranslatorResult.longitude))
+                self.coreDataStack.saveContext()
+            }
         }
     }
 
