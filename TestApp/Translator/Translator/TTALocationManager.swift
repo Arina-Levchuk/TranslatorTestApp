@@ -23,9 +23,9 @@ final class TTALocationManager: NSObject {
         
     private override init() {}
     
-    deinit {
-        destroyLocationManager()
-    }
+//    deinit {
+//        destroyLocationManager()
+//    }
     
 //    MARK:- Methods
     
@@ -34,45 +34,17 @@ final class TTALocationManager: NSObject {
         locationManager?.delegate = self
         locationManager?.distanceFilter = 1
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager?.startMonitoringVisits()
-//        locationManager?.requestWhenInUseAuthorization()
-        
-        getUserLocation()
-    }
-    
-    func destroyLocationManager() {
-        locationManager?.delegate = nil
-        locationManager = nil
-        currentLocation = nil
-    }
-
-    private func getUserLocation() {
-//        locationManager?.delegate = self
+//        locationManager?.startMonitoringVisits()
         locationManager?.requestWhenInUseAuthorization()
-        
-        if (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
-            locationManager?.startUpdatingLocation()
-        } else {
-            retrieveLocation()
-        }
+    
     }
     
-    private func retrieveLocation() {
+//    func destroyLocationManager() {
+//        locationManager?.delegate = nil
+//        locationManager = nil
+//        currentLocation = nil
+//    }
 
-        if (CLLocationManager.authorizationStatus() == .notDetermined) {
-
-        // if haven't show location permission dialog before, show it to user
-            locationManager?.requestWhenInUseAuthorization()
-            return
-            
-        }
-        // request location data once
-//        locationManager.requestLocation()
-
-        // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
-        locationManager?.startUpdatingLocation()
-    }
-    
 }
 
 //   MARK:- Extensions
@@ -99,12 +71,15 @@ extension TTALocationManager: CLLocationManagerDelegate {
         switch status {
         case .authorizedAlways:
             print("user allow app to get location data when app is active or in background")
+            locationManager?.startUpdatingLocation()
         case .authorizedWhenInUse:
             print("user allow app to get location data only when app is active")
+            locationManager?.startUpdatingLocation()
         case .denied:
             print("user tap 'disallow' on the permission dialog, cant get location data")
         case .notDetermined:
             print("the location permission dialog haven't shown before, user haven't tap allow/disallow")
+            locationManager?.requestWhenInUseAuthorization()
         case .restricted:
             print("parental control setting disallow location data")
         @unknown default:
