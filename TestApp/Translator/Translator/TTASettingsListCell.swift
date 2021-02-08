@@ -26,6 +26,10 @@ class TTASettingsListCell: UICollectionViewCell {
         self.layer.borderWidth = 0.5
         self.layer.borderColor = UIColor.systemGray5.cgColor
         
+//        self.traitCollection.performAsCurrent {
+//            self.layer.borderColor = UIColor(named: "CellBorderColor")?.cgColor
+//        }
+        
         contentView.isUserInteractionEnabled = false
     
     }
@@ -45,7 +49,7 @@ class TTASettingsListCell: UICollectionViewCell {
 //        if #available(iOS 13, *) {
 //            if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
 //                // ColorUtils.loadCGColorFromAsset returns cgcolor for color name
-//                layer.borderColor = ColorUtils.loadCGColorFromAsset(colorName: "CellBorderColor")
+//                self.layer.borderColor = UIColor(named: "CellBorderColor")?.cgColor
 //            }
 //        }
 //    }

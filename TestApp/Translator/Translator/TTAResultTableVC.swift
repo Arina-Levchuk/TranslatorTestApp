@@ -22,14 +22,13 @@ class TTAResultTableVC: UIViewController {
         
         let sort = NSSortDescriptor(key: #keyPath(TTATranslatorResult.timeStamp), ascending: true)
         fetchRequest.sortDescriptors = [sort]
-//        fetchRequest.fetchLimit = 10
-        
+
         fetchRequest.fetchBatchSize = 10
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
         
         fetchedResultsController.delegate = self
-//        fetchedResultsController.fetchRequest.fetchBatchSize = 10
+
         return fetchedResultsController
     }()
     
@@ -49,14 +48,6 @@ class TTAResultTableVC: UIViewController {
     
     let tableView = UITableView.init(frame: .zero)
     var inputViewBottomConstraint: NSLayoutConstraint?
-    
-//    lazy var activityIndicator: UIActivityIndicatorView = {
-//        let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
-//        spinner.translatesAutoresizingMaskIntoConstraints = false
-//        return spinner
-//    }()
-    
-//    var refreshControl: UIRefreshControl!
     
     var selectedTranslator: TTATranslator? = nil
     var selectedLanguage: TTATranslatorLanguage? = nil
