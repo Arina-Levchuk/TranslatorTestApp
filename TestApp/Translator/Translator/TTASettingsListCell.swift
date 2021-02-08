@@ -41,6 +41,15 @@ class TTASettingsListCell: UICollectionViewCell {
         cellIcon.image = nil
     }
     
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        if #available(iOS 13, *) {
+//            if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
+//                // ColorUtils.loadCGColorFromAsset returns cgcolor for color name
+//                layer.borderColor = ColorUtils.loadCGColorFromAsset(colorName: "CellBorderColor")
+//            }
+//        }
+//    }
+    
     let cellTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 20)

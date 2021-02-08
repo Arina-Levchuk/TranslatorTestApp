@@ -22,13 +22,17 @@ class TTAResultTableVC: UIViewController {
         
         let sort = NSSortDescriptor(key: #keyPath(TTATranslatorResult.timeStamp), ascending: true)
         fetchRequest.sortDescriptors = [sort]
+//        fetchRequest.fetchLimit = 10
+        
+        fetchRequest.fetchBatchSize = 10
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
         
         fetchedResultsController.delegate = self
-        
+//        fetchedResultsController.fetchRequest.fetchBatchSize = 10
         return fetchedResultsController
     }()
+    
         
     let inputField = UITextView()
     var inputFieldTopConstraint: NSLayoutConstraint?
@@ -42,10 +46,17 @@ class TTAResultTableVC: UIViewController {
     
     let sendButton = UIButton.init(type: .custom)
     let inputContainerView = UIView()
-    let tableView = UITableView.init(frame: .zero)
     
+    let tableView = UITableView.init(frame: .zero)
     var inputViewBottomConstraint: NSLayoutConstraint?
     
+//    lazy var activityIndicator: UIActivityIndicatorView = {
+//        let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+//        spinner.translatesAutoresizingMaskIntoConstraints = false
+//        return spinner
+//    }()
+    
+//    var refreshControl: UIRefreshControl!
     
     var selectedTranslator: TTATranslator? = nil
     var selectedLanguage: TTATranslatorLanguage? = nil
@@ -106,7 +117,7 @@ class TTAResultTableVC: UIViewController {
         
     }
 
-//    MARK: - Layout
+//    MARK: - View Lifecycle
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -144,6 +155,8 @@ class TTAResultTableVC: UIViewController {
         super.viewWillDisappear(false)
         self.view.endEditing(true)
     }
+    
+//  MARK:- Layout
     
     func setUpNavBarAppearance() {
         view.backgroundColor = .systemBackground
@@ -338,8 +351,12 @@ class TTAResultTableVC: UIViewController {
         }
     }
     
+    @objc func refreshTable() {
+        
+    }
     
-// MARK: - Methods
+    
+// MARK: - Custom Methods
         
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
             var url = address
@@ -396,6 +413,12 @@ class TTAResultTableVC: UIViewController {
             }
             task.resume()
         }
+    
+//    func loadMoreCells() {
+//        refreshControl.attributedTitle = NSAttributedString(string: "Uploading...")
+//        refreshControl.addTarget(self, action: #selector(refreshTable), for: UIControl.Event.valueChanged)
+//        tableView.addSubview(refreshControl)
+//    }
 }
 
 // MARK: - Extensions
@@ -425,6 +448,8 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
             cell.showSpinner(animate: true)
 //            cell.cellSubtitle.text = nil
         }
+        
+        print(cell)
         
         return cell
     }

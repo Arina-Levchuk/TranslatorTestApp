@@ -146,7 +146,8 @@ class TTASettingsListVC: UIViewController {
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height) + (appearanceModesCV.frame.height))
     }
     
-//  MARK: - Methods
+    
+//  MARK: - Custom Methods
     func setupViewLayout() {
         view.addSubview(scrollView)
         scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
