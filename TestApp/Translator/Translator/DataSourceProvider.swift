@@ -14,7 +14,6 @@ protocol DataSourceProviderDelegate {
 
 protocol DataSourceProvider {
     associatedtype T
-//  что за прием с двойными [[]]?? но у меня после него убралась ошибка с resultItems[section].count
     var items: [[T]] { get set }
     var delegate: DataSourceProviderDelegate? { get set }
     
@@ -23,7 +22,7 @@ protocol DataSourceProvider {
     func item(at indexPath: IndexPath) -> T?
     
     func updateCell(at indexPath: IndexPath, with value: T)
-//    ???
+
 //    func update(completion:@escaping (() -> Void))
         
 }
@@ -32,10 +31,7 @@ extension DataSourceProvider {
     func numberOfSections() -> Int {
         return items.count
     }
-    
-//  Не оч понимаю, зачем эти условия с секциями - судя по предыд функции - количество секций соответствует количеству айтемов -> отдельная секция для каждого айтема ??
-//  Тогда зачем нам рассчитывать количество айтемов??
-// Я так понимаю - каждая секция = айтем коллекшн вью (а не tableView)
+
     func numberOfItems(in section: Int) -> Int {
         guard section >= 0 && section < items.count else {
             return 0

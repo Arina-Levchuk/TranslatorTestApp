@@ -40,7 +40,7 @@ class TTATranslatorsListVC: UIViewController, UITableViewDelegate, UITableViewDa
     let cellId = "cellId"
 
     
-//    MARK: - View lifecycle
+//    MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,7 +57,7 @@ class TTATranslatorsListVC: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
     }
     
-//  MARK: - TableView set up
+//  MARK: - TableView Set Up
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             return "TRANSLATION SERVICE"
