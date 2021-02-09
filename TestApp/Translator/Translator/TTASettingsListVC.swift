@@ -111,7 +111,7 @@ class TTASettingsListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Settings"
+        navigationItem.title = TTASettingsVCKeys.returnSettingsKey(.title)()
         
         setupViewLayout()
 
@@ -283,27 +283,18 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 
                 switch collectionView {
                 case translatorsCV:
-                    headerView.headerLabel.text = "TRANSLATION SERVICE"
+                    headerView.headerLabel.text = TTASettingsVCKeys.TTATranslatorsKeys.returnTranslatorKey(.sectionHeader)()
                     return headerView
                 case flagsCV:
-                    headerView.headerLabel.text = "TRANSLATION LANGUAGE"
+                    headerView.headerLabel.text = TTASettingsVCKeys.TTALanguagesKeys.returnLangKey(.sectionHeader)()
                     return headerView
                 case appearanceModesCV:
-                    headerView.headerLabel.text = "APPEARANCE MODE"
+                    headerView.headerLabel.text = TTASettingsVCKeys.TTAAppearanceModesKeys.returnAppModeKey(.sectionHeader)()
                     return headerView
                 default:
                     return UICollectionReusableView()
                 }
-                
-//                if collectionView == translatorsCV {
-//                    headerView.headerLabel.text = "TRANSLATION SERVICE"
-//                } else if collectionView == flagsCV {
-//                    headerView.headerLabel.text = "TRANSLATION LANGUAGE"
-//                } else if collectionView == appearanceModesCV {
-//                    headerView.headerLabel.text = "APPEARANCE MODE"
-//                }
-//
-//                return headerView
+
             }
         case UICollectionView.elementKindSectionFooter:
             if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID, for: indexPath) as? TTASettingsFooterCollectionReusableView {
@@ -311,27 +302,19 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 
                 switch collectionView {
                 case translatorsCV:
-                    footerView.footerLabel.text = "Select the service which will provide you with the translation"
+                    footerView.footerLabel.text = TTASettingsVCKeys.TTATranslatorsKeys.returnTranslatorKey(.sectionFooter)()
                     return footerView
                 case flagsCV:
-                    footerView.footerLabel.text = "Select the language of translation"
+                    footerView.footerLabel.text = TTASettingsVCKeys.TTALanguagesKeys.returnLangKey(.sectionFooter)()
                     return footerView
                 case appearanceModesCV:
-                    footerView.footerLabel.text = "Select appearance mode which will be applied to the whole app"
+                    footerView.footerLabel.text = TTASettingsVCKeys.TTAAppearanceModesKeys.returnAppModeKey(.sectionFooter)()
                     return footerView
                 default:
                     return UICollectionReusableView()
                 }
-                
-//                if collectionView == translatorsCV {
-//                    footerView.footerLabel.text = "Select the service which will provide you with the translation"
-//                } else if collectionView == flagsCV {
-//                    footerView.footerLabel.text = "Select the language of translation"
-//                } else if collectionView == appearanceModesCV {
-//                    footerView.footerLabel.text = "Select appearance mode which will be applied to the whole app"
-//                }
-//                return footerView
             }
+            
         default:
             return UICollectionReusableView()
         }

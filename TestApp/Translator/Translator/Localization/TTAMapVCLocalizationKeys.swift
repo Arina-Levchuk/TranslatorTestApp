@@ -11,7 +11,7 @@ import Foundation
 enum TTAMapVCKeys: String {
     case alertTitle, alertMessage, alertSettingsButtonTitle, alertCancelButtonTitle
     
-    var mapVCKey: String {
+    func returnMapVCKey() -> String {
         switch self {
         case .alertTitle:
             return NSLocalizedString("locationAccessAlertTitle", comment: "")

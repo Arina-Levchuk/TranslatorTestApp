@@ -37,7 +37,8 @@ class TTAResultTableVC: UIViewController {
     var inputFieldTopConstraint: NSLayoutConstraint?
     let textViewPlaceholder: UILabel = {
         let tvPlaceholder = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        tvPlaceholder.text = "Enter a word..."
+        tvPlaceholder.text = TTAResultTableVCKeys.returnResultTableVCKey(.inputFielLabel)()
+//        tvPlaceholder.text = "Enter a word..."
         tvPlaceholder.textColor = .systemGray4
         tvPlaceholder.font = UIFont.systemFont(ofSize: 17.0)
         return tvPlaceholder
@@ -53,19 +54,19 @@ class TTAResultTableVC: UIViewController {
     var selectedLanguage: TTATranslatorLanguage? = nil
     
     var translators: [TTATranslator] = [
-        TTATranslator(name: "Yoda", url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
-        TTATranslator(name: "Klingon", url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
-        TTATranslator(name: "Shakespeare", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
-        TTATranslator(name: "Yandex", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
-        TTATranslator(name: "Valyrian", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))]
+        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.returnTranslatorNameKey(.yoda)())", url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
+        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.returnTranslatorNameKey(.klingon)())", url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
+        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.returnTranslatorNameKey(.shakespeare)())", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
+        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.returnTranslatorNameKey(.yandex)())", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
+        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.returnTranslatorNameKey(.valyrian)())", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))]
     
     var languages: [TTATranslatorLanguage] = [
-        TTATranslatorLanguage(language: "Russian", flagImg: UIImage(named: "ru"), langCode: "ru"),
-        TTATranslatorLanguage(language: "Hebrew", flagImg: UIImage(named: "he"), langCode: "he"),
-        TTATranslatorLanguage(language: "Polish", flagImg: UIImage(named: "pl"), langCode: "pl"),
-        TTATranslatorLanguage(language: "Chinese", flagImg: UIImage(named: "zh"), langCode: "zh"),
-        TTATranslatorLanguage(language: "Spanish", flagImg: UIImage(named: "es"), langCode: "es"),
-        TTATranslatorLanguage(language: "Ukrainian", flagImg: UIImage(named: "uk"), langCode: "uk")
+        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.returnLangName(.rus)())", flagImg: UIImage(named: "ru"), langCode: "ru"),
+        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.returnLangName(.hebrew)())", flagImg: UIImage(named: "he"), langCode: "he"),
+        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.returnLangName(.polish)())", flagImg: UIImage(named: "pl"), langCode: "pl"),
+        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.returnLangName(.chinese)())", flagImg: UIImage(named: "zh"), langCode: "zh"),
+        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.returnLangName(.spanish)())", flagImg: UIImage(named: "es"), langCode: "es"),
+        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.returnLangName(.ukr)())", flagImg: UIImage(named: "uk"), langCode: "uk")
     ]
 
 //  MARK: - View lifecycle
@@ -151,7 +152,8 @@ class TTAResultTableVC: UIViewController {
     
     func setUpNavBarAppearance() {
         view.backgroundColor = .systemBackground
-        navigationItem.title = "Results"
+//        navigationItem.title = "Results"
+        navigationItem.title = TTAResultTableVCKeys.returnResultTableVCKey(.title)()
         navigationController?.navigationBar.prefersLargeTitles = false
         
         let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(moveToTranslatorsList))
@@ -428,7 +430,8 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
             cell.cellSubtitle.textColor = .label
         case TTATranslatorResult.ResponseStatus.failure.description:
             cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = "Error. Tap to retry"
+//            cell.cellSubtitle.text = "Error. Tap to retry"
+            cell.cellSubtitle.text = TTAResultTableVCKeys.returnResultTableVCKey(.cellErrorMessage)()
             cell.cellSubtitle.textColor = .systemRed
         default:
             cell.showSpinner(animate: true)

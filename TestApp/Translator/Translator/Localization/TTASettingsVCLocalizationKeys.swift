@@ -69,7 +69,9 @@ enum TTASettingsVCKeys {
     }
     
     enum TTALanguagesKeys {
-        case sectionHeader, sectionFooter, languageName(name: TTALanguageName)
+        case sectionHeader
+        case sectionFooter
+//        case languageName(name: TTALanguageName)
         
         enum TTALanguageName {
             case rus, hebrew, polish, chinese, spanish, ukr
@@ -98,8 +100,8 @@ enum TTASettingsVCKeys {
                 return NSLocalizedString("flagViewHeader", comment: "")
             case .sectionFooter:
                 return NSLocalizedString("flagViewFooter", comment: "")
-            case let .languageName(name):
-                return NSLocalizedString("\(name.returnLangName())", comment: "")
+//            case let .languageName(name):
+//                return NSLocalizedString("\(name.returnLangName())", comment: "")
             }
         }
     }

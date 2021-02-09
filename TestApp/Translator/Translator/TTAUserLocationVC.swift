@@ -15,7 +15,6 @@ protocol TTAUserLocationVCDelegate: class {
     func passUserCoordinates(latitude: Double, longitude: Double)
 }
 
-
 class TTAUserLocationVC: UIViewController {
 
     let mapView = MKMapView()
@@ -124,8 +123,8 @@ class TTAUserLocationVC: UIViewController {
     }
     
     func showAlert(presenter: UIViewController) {
-        let alert = UIAlertController(title: "Allow Location Access", message: "The app needs access to your location. Please turn on Location Services in your device settings.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (action) in
+        let alert = UIAlertController(title: TTAMapVCKeys.returnMapVCKey(.alertTitle)(), message: TTAMapVCKeys.returnMapVCKey(.alertMessage)(), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: TTAMapVCKeys.returnMapVCKey(.alertSettingsButtonTitle)(), style: .default, handler: { (action) in
             guard let deviceSettingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
             
             if UIApplication.shared.canOpenURL(deviceSettingsURL) {
@@ -133,7 +132,7 @@ class TTAUserLocationVC: UIViewController {
             }
         }))
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: TTAMapVCKeys.returnMapVCKey(.alertCancelButtonTitle)(), style: .cancel, handler: nil))
         presenter.present(alert, animated: true)
         
     }
