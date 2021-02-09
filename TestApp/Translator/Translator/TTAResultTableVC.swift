@@ -405,11 +405,6 @@ class TTAResultTableVC: UIViewController {
             task.resume()
         }
     
-//    func loadMoreCells() {
-//        refreshControl.attributedTitle = NSAttributedString(string: "Uploading...")
-//        refreshControl.addTarget(self, action: #selector(refreshTable), for: UIControl.Event.valueChanged)
-//        tableView.addSubview(refreshControl)
-//    }
 }
 
 // MARK: - Extensions

@@ -125,7 +125,6 @@ class TTAUserLocationVC: UIViewController {
     
     func showAlert(presenter: UIViewController) {
         let alert = UIAlertController(title: "Allow Location Access", message: "The app needs access to your location. Please turn on Location Services in your device settings.", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (action) in
             guard let deviceSettingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
             
