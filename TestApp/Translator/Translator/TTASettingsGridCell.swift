@@ -39,6 +39,7 @@ class TTASettingsGridCell: UICollectionViewCell {
         }
         
         self.backgroundColor = .systemGray6
+        
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.systemGray4.cgColor
         
@@ -57,6 +58,11 @@ class TTASettingsGridCell: UICollectionViewCell {
         
         cellTitle.text = nil
         cellIcon.image = nil
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        layer.borderColor = UIColor.systemGray5.cgColor
     }
     
     let cellIcon: UIImageView = {

@@ -23,12 +23,9 @@ class TTASettingsListCell: UICollectionViewCell {
         setupListCellLayout()
         
         self.backgroundColor = .systemBackground
+        
         self.layer.borderWidth = 0.5
         self.layer.borderColor = UIColor.systemGray5.cgColor
-        
-//        self.traitCollection.performAsCurrent {
-//            self.layer.borderColor = UIColor(named: "CellBorderColor")?.cgColor
-//        }
         
         contentView.isUserInteractionEnabled = false
     
@@ -45,14 +42,11 @@ class TTASettingsListCell: UICollectionViewCell {
         cellIcon.image = nil
     }
     
-//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-//        if #available(iOS 13, *) {
-//            if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
-//                // ColorUtils.loadCGColorFromAsset returns cgcolor for color name
-//                self.layer.borderColor = UIColor(named: "CellBorderColor")?.cgColor
-//            }
-//        }
-//    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        layer.borderColor = UIColor.systemGray5.cgColor
+    }
     
     let cellTitle: UILabel = {
         let lbl = UILabel()

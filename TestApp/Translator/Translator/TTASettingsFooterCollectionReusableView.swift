@@ -16,6 +16,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
         super.init(frame: frame)
         
         self.backgroundColor = .systemGray5
+        
         layer.borderColor = UIColor.systemGray5.cgColor
         layer.borderWidth = 0.5
         
@@ -24,6 +25,11 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        layer.borderColor = UIColor.systemGray5.cgColor
     }
     
     let footerLabel: UILabel = {
