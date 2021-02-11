@@ -1,5 +1,5 @@
 //
-//  TTAResultsTableLocalizationKeys.swift
+//  TTAResultsTableVCLocalizationKeys.swift
 //  Translator
 //
 //  Created by admin on 9.02.21.
@@ -8,15 +8,10 @@
 
 import Foundation
 
-//enum TTAAppSection {
-//    case resultsTableVC, mapVC, settingsVC
-//}
-
 enum TTAResultTableVCKeys {
     case title, inputFielLabel, cellErrorMessage
     
     func returnResultTableVCKey() -> String {
-//    var resultTableVCKey: String {
         switch self {
         case .title:
             return NSLocalizedString("resultVCtitle", comment: "")

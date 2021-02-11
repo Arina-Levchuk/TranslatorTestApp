@@ -86,4 +86,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-extension AppDelegate: CLLocationManagerDelegate {}
+//extension AppDelegate: CLLocationManagerDelegate {}

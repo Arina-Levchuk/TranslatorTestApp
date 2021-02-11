@@ -9,8 +9,8 @@
 import UIKit
 
 protocol TTASettingsListDelegate: class {
-    func newTranslatorIsSelected(translator: TTATranslator)
     
+    func newTranslatorIsSelected(translator: TTATranslator)
     func newLanguageSelected(language: TTATranslatorLanguage)
 }
 
@@ -29,7 +29,13 @@ class TTASettingsListVC: UIViewController {
         TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light"), appMode: .light),
         TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"), appMode: .dark)
     ]
-    var selectedAppMode: TTAAppearanceMode! 
+    var selectedAppMode: TTAAppearanceMode!
+    
+    var allAppLocales: [TTALocale] = [
+        TTALocale(name: "English -> Arabic", code: .arabic),
+        TTALocale(name: "Arabic -> English", code: .english)
+    ]
+    var selectedLocale: TTALocale!
     
     var defaults = UserDefaults.standard
     private var appearanceMode: AppearanceMode {
@@ -38,6 +44,17 @@ class TTASettingsListVC: UIViewController {
         } set {
             defaults.appearanceMode = newValue
             setAppearanceMode(for: newValue)
+        }
+    }
+    
+    private var appLocalization: TTAAppLocale {
+        get {
+            return defaults.appLocale
+        } set {
+            defaults.appLocale = newValue
+//        TODO: setupLocale method - TBD
+            setAppLocale(for: newValue)
+            
         }
     }
     
@@ -106,6 +123,20 @@ class TTASettingsListVC: UIViewController {
         return cv
     }()
     
+    lazy var localesCV: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        cv.delegate = self
+        cv.dataSource = self
+        cv.register(TTASettingsListCell.self, forCellWithReuseIdentifier: TTASettingsListCell.ReuseID.textAppearanceCVCell.description)
+        cv.register(TTASettingsHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TTASettingsHeaderCollectionReusableView.reuseID)
+        cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.isScrollEnabled = false
+//        cv.backgroundColor = .systemBackground
+        cv.backgroundColor = .systemPurple
+        return cv
+    }()
+    
 //  MARK: - View lifecycle
     
     override func viewDidLoad() {
@@ -115,7 +146,7 @@ class TTASettingsListVC: UIViewController {
         
         setupViewLayout()
 
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height))
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height) + (localesCV.frame.height))
         
         self.selectedAppMode = {
             var initialMode: TTAAppearanceMode? = nil
@@ -127,8 +158,6 @@ class TTASettingsListVC: UIViewController {
             return initialMode
         }()
         
-//        print(allLanguages)
-                
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -143,7 +172,7 @@ class TTASettingsListVC: UIViewController {
         super.viewDidLayoutSubviews()
         
 //      makes scrollView with multiple CVs scrollable
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height) + (appearanceModesCV.frame.height))
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height) + (appearanceModesCV.frame.height) + (localesCV.frame.height))
     }
     
     
@@ -179,11 +208,20 @@ class TTASettingsListVC: UIViewController {
         appearanceModesCV.heightAnchor.constraint(equalToConstant: CGFloat(modeItemHeight + (verticalInset * 2) + (headerFooterHeight * 2))).isActive = true
 //        print(appearanceModesCV.bounds.height)
         
-        
+        scrollView.addSubview(localesCV)
+        localesCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
+        localesCV.trailingAnchor.constraint(equalTo: translatorsCV.trailingAnchor).isActive = true
+        localesCV.topAnchor.constraint(equalTo: appearanceModesCV.bottomAnchor).isActive = true
+        localesCV.heightAnchor.constraint(equalToConstant: CGFloat((headerFooterHeight * 2) + (51 * 2))).isActive = true
+    
     }
     
     private func setAppearanceMode(for theme: AppearanceMode) {
         view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
+    }
+    
+    private func setAppLocale(for theme: TTAAppLocale) {
+//    TODO: to set App Locale
     }
     
 
@@ -201,6 +239,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             return allLanguages.count
         case self.appearanceModesCV:
             return allAppModes.count
+        case self.localesCV:
+            return allAppLocales.count
         default:
             return 0
         }
@@ -215,6 +255,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             let cell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
             
             let currentTranslator = allTranslators[indexPath.row]
+            cell.setupListCellLayout(for: .withIcon)
 
             cell.cellIcon.image = currentTranslator.translatorIcon
             cell.cellTitle.text = currentTranslator.name
@@ -269,6 +310,24 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             }
             
             return appearanceModeCell
+        case localesCV:
+            let localeCell = localesCV.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.textAppearanceCVCell.description, for: indexPath) as! TTASettingsListCell
+            
+            let currentLocale = allAppLocales[indexPath.row]
+            localeCell.setupListCellLayout(for: .noIcon)
+            
+            localeCell.cellTitle.text = currentLocale.name
+            
+//            let selectedCell = UIView(frame: localeCell.bounds)
+//            selectedCell.backgroundColor = .systemPurple
+//
+//            localeCell.selectedBackgroundView = nil
+//            if currentLocale.code == selectedLocale.code {
+//                localeCell.isSelected = true
+//                localeCell.selectedBackgroundView = selectedCell
+//            }
+            
+            return localeCell
         default:
             return UICollectionViewCell()
         }
@@ -291,6 +350,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 case appearanceModesCV:
                     headerView.headerLabel.text = TTASettingsVCKeys.TTAAppearanceModesKeys.returnAppModeKey(.sectionHeader)()
                     return headerView
+                case localesCV:
+                    headerView.headerLabel.text = TTASettingsVCKeys.TTALocalizationSettingsKeys.returnLocaleSettingKey(.sectionHeader)()
+                    return headerView
                 default:
                     return UICollectionReusableView()
                 }
@@ -310,6 +372,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 case appearanceModesCV:
                     footerView.footerLabel.text = TTASettingsVCKeys.TTAAppearanceModesKeys.returnAppModeKey(.sectionFooter)()
                     return footerView
+                case localesCV:
+                    footerView.footerLabel.text = TTASettingsVCKeys.TTALocalizationSettingsKeys.returnLocaleSettingKey(.sectionFooter)()
+                    return footerView
                 default:
                     return UICollectionReusableView()
                 }
@@ -324,7 +389,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         switch collectionView {
-        case translatorsCV:
+        case translatorsCV, localesCV:
             return CGSize.init(width: self.scrollView.contentSize.width, height: 51)
         case flagsCV:
             return CGSize.init(width: 110, height: 90)
@@ -359,7 +424,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 
         switch collectionView {
-        case translatorsCV:
+        case translatorsCV, localesCV:
             return UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         case flagsCV:
             return UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)

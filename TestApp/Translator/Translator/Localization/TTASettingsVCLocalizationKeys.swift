@@ -120,9 +120,33 @@ enum TTASettingsVCKeys {
     }
     
     enum TTALocalizationSettingsKeys {
-        case sectionHeader, sectionFooter, localeName
-//      TODO: TBD
+        case sectionHeader
+        case sectionFooter
+        case localeName(name: TTALocaleName)
+        
+        func returnLocaleSettingKey() -> String {
+            switch self {
+            case .sectionHeader:
+                return NSLocalizedString("localizationViewHeader", comment: "")
+            case .sectionFooter:
+                return NSLocalizedString("localizationViewFooter", comment: "")
+            case let .localeName(name):
+                return NSLocalizedString("\(name.returnLocaleName())", comment: "")
+            }
+        }
+        
+        enum TTALocaleName {
+            case arabic, english
+            
+            func returnLocaleName() -> String {
+                switch self {
+                case .arabic:
+                    return NSLocalizedString("arabicLocaleName", comment: "")
+                case .english:
+                    return NSLocalizedString("engLocaleName", comment: "")
+                }
+            }
+        }
+        
     }
 }
-
-

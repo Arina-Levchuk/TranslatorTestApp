@@ -10,6 +10,10 @@ import UIKit
 
 class TTASettingsListCell: UICollectionViewCell {
     
+    enum CellView {
+        case withIcon, noIcon
+    }
+    
     enum ReuseID: String {
         case translatorsCVCell, textAppearanceCVCell
         
@@ -18,9 +22,18 @@ class TTASettingsListCell: UICollectionViewCell {
         }
     }
     
+    var setupListCellView: ((_ cellView: CellView?) -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupListCellLayout()
+        
+        setupListCellView = { [weak self] cellView in
+            
+            if let cellView = cellView {
+                self?.setupListCellLayout(for: cellView)
+            }
+            
+        }
         
         self.backgroundColor = .systemBackground
         
@@ -63,18 +76,31 @@ class TTASettingsListCell: UICollectionViewCell {
         return img
     }()
     
-    func setupListCellLayout() {
+    func setupListCellLayout(for cell: CellView) {
         
-        contentView.addSubview(cellIcon)
-        contentView.addSubview(cellTitle)
+        switch cell {
+        case .withIcon:
+            
+            contentView.addSubview(cellIcon)
+            contentView.addSubview(cellTitle)
 
-        cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        cellIcon.widthAnchor.constraint(equalToConstant: 51).isActive = true
-        cellIcon.heightAnchor.constraint(equalToConstant: 51).isActive = true
+            cellIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+            cellIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+            cellIcon.widthAnchor.constraint(equalToConstant: 51).isActive = true
+            cellIcon.heightAnchor.constraint(equalToConstant: 51).isActive = true
+            
+            cellTitle.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 20).isActive = true
+            cellTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+            
+        case .noIcon:
+            
+            contentView.addSubview(cellTitle)
+
+            cellTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
+            cellTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        }
         
-        cellTitle.leadingAnchor.constraint(equalTo: cellIcon.trailingAnchor, constant: 20).isActive = true
-        cellTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+
     }
     
 }
