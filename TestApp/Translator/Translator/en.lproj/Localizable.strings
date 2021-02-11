@@ -45,8 +45,8 @@
 // Localization Settings
 "localizationViewHeader" = "LOCALIZATION SETTINGS";
 "localizationViewFooter" = "Select locale which will be applied to the whole app";
-"engLocaleName" = "Arabic -> English";
-"arabicLocaleName" = "English -> Arabic";
+"engLocaleName" = "English";
+"arabicLocaleName" = "Arabic";
 
 // MARK: - MapVC
 

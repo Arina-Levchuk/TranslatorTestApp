@@ -323,7 +323,6 @@ class TTAResultTableVC: UIViewController {
             guard let translatorURL = translator.url else { return }
             guard self.inputField.text != nil && self.inputField.text != "" else { return }
 
-//            let userLocation = TTALocationManager.userLocation.currentLocation
             let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertInto: coreDataStack.managedContext)
             
             getTranslation(to: translatorURL, with: translationRequest, completionHandler: { [weak self] (result, error) in
@@ -573,9 +572,3 @@ extension TTAResultTableVC: TTASettingsListDelegate {
     }
     
 }
-
-//extension TTAResultTableVC: TTAUserLocationVCDelegate {
-//    func passUserCoordinates(latitude: Double, longitude: Double) {
-//
-//    }
-

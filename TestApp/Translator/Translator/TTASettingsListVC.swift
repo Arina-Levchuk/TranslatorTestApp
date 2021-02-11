@@ -18,22 +18,23 @@ class TTASettingsListVC: UIViewController {
     
 //  MARK: - Properties
     
+//    Translators
     var allTranslators: [TTATranslator] = []
     var selectedTranslator: TTATranslator!
-    
+//   Flags
     var allLanguages: [TTATranslatorLanguage] = []
     var selectedLanguage: TTATranslatorLanguage!
-    
+//  Appearance Modes
     var allAppModes: [TTAAppearanceMode] = [
         TTAAppearanceMode(mode: "Device's Mode", modeImg: UIImage(named: "device"), appMode: .device),
         TTAAppearanceMode(mode: "Light", modeImg: UIImage(named: "light"), appMode: .light),
         TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"), appMode: .dark)
     ]
     var selectedAppMode: TTAAppearanceMode!
-    
+//  App Languages
     var allAppLocales: [TTAAppLocale] = [
-        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.returnLocaleName(.arabic)())", code: .arabic),
-        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.returnLocaleName(.english)())", code: .english)
+        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.returnLocaleName(.english)())", code: .english),
+        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.returnLocaleName(.arabic)())", code: .arabic)
     ]
     var selectedLocale: TTAAppLocale!
     
@@ -53,7 +54,8 @@ class TTASettingsListVC: UIViewController {
         } set {
             defaults.appLocale = newValue
 //        TODO: setupLocale method - TBD
-//            setAppLocale(for: newValue)
+            setAppLocale(language: newValue.returnLocale())
+            UserDefaults.standard.synchronize()
             
         }
     }
@@ -158,16 +160,8 @@ class TTASettingsListVC: UIViewController {
             return initialMode
         }()
         
-        self.selectedLocale = {
-            var defaultLocale: TTAAppLocale? = nil
-            for locale in self.allAppLocales {
-                if locale.code == appLocale {
-                    defaultLocale = locale
-                }
-            }
-            return defaultLocale
-        }()
-        
+        self.selectedLocale = self.allAppLocales.first
+//        print("\(selectedLocale.code)")
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -230,10 +224,10 @@ class TTASettingsListVC: UIViewController {
         view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
     
-    private func setAppLocale(language: TTAAppLocale) {
+    private func setAppLocale(language: String) {
 //    TODO: to set App Locale
 //        TTALocalizationManager.localizationManager.localizeStringForKey(key: <#T##String#>, comment: <#T##String#>)
-//        if let langDirectoryPath = Bundle.main.path(forResource: language.code.returnLocale(), ofType: "lproj") {
+        Bundle.main.path(forResource: language, ofType: "lproj")
 //            Bundle.init(path: langDirectoryPath)
 //        }
 
