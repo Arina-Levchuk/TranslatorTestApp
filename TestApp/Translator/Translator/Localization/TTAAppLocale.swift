@@ -8,19 +8,19 @@
 
 import Foundation
 
-struct TTALocale {
+struct TTAAppLocale {
     let name: String
-    let code: TTAAppLocale
+    let code: TTALocaleName
 }
 
-enum TTAAppLocale: String {
+enum TTALocaleName: String {
     case english
     case arabic
     
     enum TTALocaleCode: String {
         case en, ar
         
-        func returnLangCode() -> String {
+        func returnLocaleCode() -> String {
             switch self {
             case .en, .ar:
                 return self.rawValue
@@ -28,12 +28,12 @@ enum TTAAppLocale: String {
         }
     }
     
-    func returnLocaleCode() -> String {
+    func returnLocale() -> String {
         switch self {
         case .english:
-            return TTALocaleCode.returnLangCode(.en)()
+            return TTALocaleCode.returnLocaleCode(.en)()
         case .arabic:
-            return TTALocaleCode.returnLangCode(.ar)()
+            return TTALocaleCode.returnLocaleCode(.ar)()
         }
     }
 }
@@ -41,10 +41,10 @@ enum TTAAppLocale: String {
 
 extension UserDefaults {
     
-    var appLocale: TTAAppLocale {
+    var appLocale: TTALocaleName {
         get {
-            register(defaults: [#function: TTAAppLocale.returnLocaleCode(.english)()])
-            return TTAAppLocale(rawValue: string(forKey: #function)!) ?? .english
+            register(defaults: [#function: TTALocaleName.returnLocale(.english)()])
+            return TTALocaleName(rawValue: string(forKey: #function)!) ?? .english
         } set {
             set(newValue.rawValue, forKey: #function)
         }

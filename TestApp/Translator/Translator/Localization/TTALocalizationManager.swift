@@ -20,7 +20,7 @@ class TTALocalizationManager: NSObject {
         bundle = Bundle.main
     }
     
-    func localizedStringForKey(key: String, comment: String) -> String {
+    func localizeStringForKey(key: String, comment: String) -> String {
         return bundle.localizedString(forKey: key, value: comment, table: nil)
     }
     

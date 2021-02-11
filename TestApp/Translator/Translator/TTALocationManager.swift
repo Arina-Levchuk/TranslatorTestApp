@@ -52,7 +52,7 @@ final class TTALocationManager: NSObject {
 extension TTALocationManager: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("localizationManager error: \(error.localizedDescription)")
+        print("locationManager error: \(error.localizedDescription)")
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

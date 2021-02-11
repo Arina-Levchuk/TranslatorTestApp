@@ -45,6 +45,8 @@
 // Localization Settings
 "localizationViewHeader" = "إعدادات التعريب";
 "localizationViewFooter" = "حدد اللغة التي سيتم تطبيقها على التطبيق بأكمله";
+"engLocaleName" = "العربية -الإنجليزية>";
+"arabicLocaleName" = "الإنجليزية> العربية";
 
 // MARK: - MapVC
 
