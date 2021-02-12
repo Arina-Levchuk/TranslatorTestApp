@@ -8,6 +8,24 @@
 
 import Foundation
 
+protocol StringsLocalizedProtocol where T.Type == Self.Type  {
+    associatedtype T
+    static func localizedString(type: T) -> String
+}
+
+enum MemberRegistrationFormFormStrings: String, StringsLocalizedProtocol {
+    
+    typealias T = Self
+    
+    case contacts = "Contacts"
+    case title = ""
+
+    
+    static func localizedString(type: MemberRegistrationFormFormStrings) -> String {
+        return NSLocalizedString(type.rawValue, comment: "")
+    }
+}
+
 class TTALocalizationManager: NSObject {
    
     static let localizationManager = TTALocalizationManager()
@@ -16,7 +34,7 @@ class TTALocalizationManager: NSObject {
     
     private override init() {
         super.init()
-        
+//        MemberRegistrationFormFormStrings.localizedString(type: .)
         bundle = Bundle.main
     }
     
