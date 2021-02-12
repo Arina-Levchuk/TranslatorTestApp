@@ -53,4 +53,4 @@
 "locationAccessAlertTitle" = "السماح بالوصول إلى الموقع";
 "locationAccessAlertMessage" = "يحتاج التطبيق إلى الوصول إلى موقعك. يرجى تشغيل خدمات الموقع في إعدادات جهازك.";
 "locationAccessAlertSettingsButtonTitle" = "الإعدادات";
-"locationAccessAlertCancelButtonTitle" = "إلغاء";
+"locationAccessAlertCancelButtonTitle" = "حسنا";

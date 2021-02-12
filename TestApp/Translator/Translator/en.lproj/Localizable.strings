@@ -53,7 +53,7 @@
 "locationAccessAlertTitle" = "Allow Location Access";
 "locationAccessAlertMessage" = "The app needs access to your location. Please turn on Location Services in your device settings.";
 "locationAccessAlertSettingsButtonTitle" = "Settings";
-"locationAccessAlertCancelButtonTitle" = "Cancel";
+"locationAccessAlertCancelButtonTitle" = "Ok";
 
 // ??? To include in the very file or not ???
 // .plist file: "Geolocation is needed to show your location on the map." from request location access alert
