@@ -117,12 +117,19 @@ class TTAUserLocationVC: UIViewController {
         let status = CLLocationManager.authorizationStatus()
 
         if (status == .denied) || (status == .restricted) || (!CLLocationManager.locationServicesEnabled()) {
-            showAlert(presenter: self)
+            
+            showEnableAccessAlert(presenter: self)
+            
+        } else if (CLLocationManager.locationServicesEnabled()) && latitude == Double.zero && longitude == Double.zero {
+            
+            showNoLocationDataAlert(presenter: self)
+            
         }
 
     }
     
-    func showAlert(presenter: UIViewController) {
+    func showEnableAccessAlert(presenter: UIViewController) {
+        
         let alert = UIAlertController(title: TTAMapVCKeys.returnMapVCKey(.alertTitle)(), message: TTAMapVCKeys.returnMapVCKey(.alertMessage)(), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: TTAMapVCKeys.returnMapVCKey(.alertSettingsButtonTitle)(), style: .default, handler: { (action) in
             guard let deviceSettingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
@@ -136,7 +143,16 @@ class TTAUserLocationVC: UIViewController {
         presenter.present(alert, animated: true)
         
     }
-
+    
+    func showNoLocationDataAlert(presenter: UIViewController) {
+  
+//        TODO: to add to the LOCALIZABLE files
+        let alert = UIAlertController(title: "No Location Data", message: "No location data as access hasn't been provided on time.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        presenter.present(alert, animated: true)
+        
+    }
+    
 }
 
 //extension TTAUserLocationVC: CLLocationManagerDelegate {}

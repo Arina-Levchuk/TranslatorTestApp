@@ -47,8 +47,8 @@ class TTATranslatorResultCell: UITableViewCell {
         let button = UIButton.init(type: .custom)
         button.setImage(UIImage(named: "retryButton"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
         return button
     }()
     

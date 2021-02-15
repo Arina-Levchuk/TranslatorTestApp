@@ -9,7 +9,7 @@
 // MARK: - ResultTableVC
 "resultVCtitle" = "النتائج";
 "resultVCinputFieldLabel" = "أدخل كلمة...";
-"resultCellErrorMessage" = "خطأ. اضغط لإعادة المحاولة";
+"resultCellErrorMessage" = "خطأ. اضغط على الزر لإعادة المحاولة";
 
 // MARK: - SettingsListVC
 
