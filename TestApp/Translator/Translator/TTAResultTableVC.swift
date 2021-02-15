@@ -412,13 +412,13 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         
         let result = self.fetchedResultsController.object(at: indexPath)
         
-        cell.accessoryType = .disclosureIndicator
+//        cell.accessoryType = .disclosureIndicator
 
         cell.cellTitle.text = result.textToTranslate
                 
-//        cell.locationButton.addTarget(self, action: #selector(didTapLocationButton), for: .touchUpInside)
+        cell.locationButton.addTarget(self, action: #selector(didTapLocationButton), for: .touchUpInside)
         
-        cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
+//        cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
                 
         switch result.responseStatus {
         case TTATranslatorResult.ResponseStatus.success.description:
@@ -430,7 +430,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
 //            cell.cellSubtitle.text = "Error. Tap to retry"
             cell.cellSubtitle.text = TTAResultTableVCKeys.returnResultTableVCKey(.cellErrorMessage)()
             cell.cellSubtitle.textColor = .systemRed
-            cell.retryButton.isHidden = false
+//            cell.retryButton.isHidden = false
         default:
             cell.showSpinner(animate: true)
 //            cell.cellSubtitle.text = nil
@@ -441,41 +441,41 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-//    @objc func didTapLocationButton(_ sender: UIButton) {
+    @objc func didTapLocationButton(_ sender: UIButton) {
+
+        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
+            if let cellIndexPath = self.tableView.indexPath(for: cell) {
+                let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
+
+                self.navigationController?.pushViewController(TTAUserLocationVC(latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
+                print("Cell's userLocation LAT: \(resultObject.latitude), LONG: \(resultObject.longitude)")
+            }
+        }
+    }
+    
+//    @objc func didTapRetryButton(_ sender: UIButton) {
 //
 //        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
 //            if let cellIndexPath = self.tableView.indexPath(for: cell) {
-//                let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
+//                let result = self.fetchedResultsController.object(at: cellIndexPath)
 //
-//                self.navigationController?.pushViewController(TTAUserLocationVC(latitude: resultObject.latitude, longitude: resultObject.longitude), animated: true)
-//                print("Cell's userLocation LAT: \(resultObject.latitude), LONG: \(resultObject.longitude)")
+//                if let translator = self.selectedTranslator {
+//                    if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
+//                        guard let translatorURL = translator.url else { return }
+//
+//                        getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
+//                            if newResult != nil {
+//                                result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
+//                            } else {
+//                                result.setValue(TTATranslatorResult.ResponseStatus.failure.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
+//                            }
+//                            self?.coreDataStack.saveContext()
+//                        })
+//                    }
+//                }
 //            }
-//        }
+//
 //    }
-    
-    @objc func didTapRetryButton(_ sender: UIButton) {
-        
-        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
-            if let cellIndexPath = self.tableView.indexPath(for: cell) {
-                let result = self.fetchedResultsController.object(at: cellIndexPath)
-        
-                if let translator = self.selectedTranslator {
-                    if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
-                        guard let translatorURL = translator.url else { return }
-
-                        getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
-                            if newResult != nil {
-                                result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
-                            } else {
-                                result.setValue(TTATranslatorResult.ResponseStatus.failure.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
-                            }
-                            self?.coreDataStack.saveContext()
-                        })
-                    }
-                }
-            }
-    
-    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
@@ -491,7 +491,23 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         
         let result = self.fetchedResultsController.object(at: indexPath)
         
-        self.navigationController?.pushViewController(TTAUserLocationVC(latitude: result.latitude, longitude: result.longitude), animated: true)
+        if let translator = self.selectedTranslator {
+            if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
+                guard let translatorURL = translator.url else { return }
+
+                getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
+                    if newResult != nil {
+                        result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
+                    } else {
+                        result.setValue(TTATranslatorResult.ResponseStatus.failure.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
+                    }
+                    self?.coreDataStack.saveContext()
+                })
+            }
+        }
+        
+        
+//        self.navigationController?.pushViewController(TTAUserLocationVC(latitude: result.latitude, longitude: result.longitude), animated: true)
   
 //        if let translator = self.selectedTranslator {
 //            if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
@@ -513,7 +529,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
 //                result.setValue(TTALocationManager.shared.currentLocation?.coordinate.longitude, forKey: #keyPath(TTATranslatorResult.longitude))
 //                self.coreDataStack.saveContext()
 //            }
-        }
+//        }
         
 
     }
