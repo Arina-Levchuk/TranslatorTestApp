@@ -153,7 +153,6 @@ class TTAResultTableVC: UIViewController {
     
     func setUpNavBarAppearance() {
         view.backgroundColor = .systemBackground
-//        navigationItem.title = "Results"
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         navigationController?.navigationBar.prefersLargeTitles = false
         

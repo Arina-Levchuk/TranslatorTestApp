@@ -13,6 +13,7 @@ protocol StringsLocalizedProtocol where T.Type == Self.Type  {
     static func localizedString(type: T) -> String
 }
 
+
 class TTALocalizationManager: NSObject {
    
     static let shared = TTALocalizationManager()

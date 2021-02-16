@@ -17,7 +17,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
 
     static func localizedString(type: TTASettingsVCKeys) -> String {
         return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//        return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
     }
     
 //  MARK: - Translators Section
@@ -30,7 +29,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
         
         static func localizedString(type: TTASettingsVCKeys.TTATranslatorsKeys) -> String {
             return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//            return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
         }
         
         enum TTATranslatorName: String, StringsLocalizedProtocol {
@@ -45,7 +43,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
             
             static func localizedString(type: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName) -> String {
                 return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//                return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
             }
         
         }
@@ -63,7 +60,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
         
         static func localizedString(type: TTASettingsVCKeys.TTALanguagesKeys) -> String {
             return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//            return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
         }
         
         enum TTALanguageName: String, StringsLocalizedProtocol {
@@ -79,7 +75,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
             
             static func localizedString(type: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName) -> String {
                 return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//                return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
             }
     
         }
@@ -97,7 +92,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
     
         static func localizedString(type: TTASettingsVCKeys.TTAAppearanceModesKeys) -> String {
             return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//            return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
         }
     }
     
@@ -112,7 +106,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
 
         static func localizedString(type: TTASettingsVCKeys.TTALocalizationSettingsKeys) -> String {
             return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//            return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
         }
 
         enum TTALocaleName: String, StringsLocalizedProtocol {
@@ -124,7 +117,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
             
             static func localizedString(type: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName) -> String {
                 return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//                return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
             }
 
         }

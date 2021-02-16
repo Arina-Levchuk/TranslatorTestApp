@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class TTASettingsListCell: UICollectionViewCell {
     
     enum CellView {
@@ -75,9 +76,9 @@ class TTASettingsListCell: UICollectionViewCell {
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
- 
+    
     func setupListCellLayout(for cell: CellView) {
-        
+ 
         switch cell {
         case .withIcon:
             

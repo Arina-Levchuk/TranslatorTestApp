@@ -22,7 +22,6 @@ enum TTAMapVCKeys: String, StringsLocalizedProtocol {
     
     static func localizedString(type: TTAMapVCKeys) -> String {
         return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//        return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
     }
 
 }

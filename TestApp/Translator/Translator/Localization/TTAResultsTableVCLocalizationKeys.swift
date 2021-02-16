@@ -18,7 +18,6 @@ enum TTAResultTableVCKeys: String, StringsLocalizedProtocol {
     
     static func localizedString(type: TTAResultTableVCKeys) -> String {
         return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
-//        return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
     }
     
 }

@@ -54,8 +54,6 @@ class TTASettingsListVC: UIViewController {
         } set {
             defaults.appLocale = newValue
             TTALocalizationManager.shared.setLocale(language: newValue.description)
-//        TODO: setupLocale method - TBD
-//            setAppLocale(language: newValue.description)
         }
     }
     
@@ -230,13 +228,6 @@ class TTASettingsListVC: UIViewController {
         view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
     
-//    private func setAppLocale(language: String) {
-////    TODO: to set App Locale
-//
-//
-//    }
-    
-
 }
 
 //  MARK: - Extensions
@@ -350,8 +341,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TTASettingsHeaderCollectionReusableView.reuseID, for: indexPath) as? TTASettingsHeaderCollectionReusableView {
-//                headerView.backgroundColor = .purple
-                
+    
                 switch collectionView {
                 case translatorsCV:
                     headerView.headerLabel.text = TTASettingsVCKeys.TTATranslatorsKeys.localizedString(type: .sectionHeader)
@@ -372,7 +362,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             }
         case UICollectionView.elementKindSectionFooter:
             if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID, for: indexPath) as? TTASettingsFooterCollectionReusableView {
-//                footerView.backgroundColor = .green
                 
                 switch collectionView {
                 case translatorsCV:
@@ -454,7 +443,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         case flagsCV:
             return CGFloat.init(10)
         case appearanceModesCV:
-//            let interItemSpacing = (Int((self.scrollView.contentSize.width)) - 40 - (100 * allAppModes.count))/2
             return CGFloat.init(16)
         default:
             return CGFloat.zero
