@@ -37,7 +37,7 @@ class TTAResultTableVC: UIViewController {
     var inputFieldTopConstraint: NSLayoutConstraint?
     let textViewPlaceholder: UILabel = {
         let tvPlaceholder = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        tvPlaceholder.text = TTAResultTableVCKeys.returnResultTableVCKey(.inputFielLabel)()
+        tvPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
 //        tvPlaceholder.text = "Enter a word..."
         tvPlaceholder.textColor = .systemGray4
         tvPlaceholder.font = UIFont.systemFont(ofSize: 17.0)
@@ -153,7 +153,7 @@ class TTAResultTableVC: UIViewController {
     func setUpNavBarAppearance() {
         view.backgroundColor = .systemBackground
 //        navigationItem.title = "Results"
-        navigationItem.title = TTAResultTableVCKeys.returnResultTableVCKey(.title)()
+        navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         navigationController?.navigationBar.prefersLargeTitles = false
         
         let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(moveToTranslatorsList))
@@ -427,7 +427,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         case TTATranslatorResult.ResponseStatus.failure.description:
             cell.showSpinner(animate: false)
 //            cell.cellSubtitle.text = "Error. Tap to retry"
-            cell.cellSubtitle.text = TTAResultTableVCKeys.returnResultTableVCKey(.cellErrorMessage)()
+            cell.cellSubtitle.text = TTAResultTableVCKeys.localizedString(type: .cellErrorMessage)
             cell.cellSubtitle.textColor = .systemRed
             cell.retryButton.isHidden = false
         default:

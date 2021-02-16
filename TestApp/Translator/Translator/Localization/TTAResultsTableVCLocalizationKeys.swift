@@ -8,18 +8,35 @@
 
 import Foundation
 
-enum TTAResultTableVCKeys {
-    case title, inputFielLabel, cellErrorMessage
+
+protocol StringsLocalizedProtocol where T.Type == Self.Type  {
+    associatedtype T
+    static func localizedString(type: T) -> String
+}
+
+enum MemberRegistrationFormFormStrings: String, StringsLocalizedProtocol {
     
-    func returnResultTableVCKey() -> String {
-        switch self {
-        case .title:
-            return NSLocalizedString("resultVCtitle", comment: "")
-        case .inputFielLabel:
-            return NSLocalizedString("resultVCinputFieldLabel", comment: "")
-        case .cellErrorMessage:
-            return NSLocalizedString("resultCellErrorMessage", comment: "")
-        }
-        
+    typealias T = Self
+    
+    case contacts = "Contacts"
+    case title = ""
+
+    
+    static func localizedString(type: MemberRegistrationFormFormStrings) -> String {
+        return NSLocalizedString(type.rawValue, comment: "")
     }
+}
+
+enum TTAResultTableVCKeys: String, StringsLocalizedProtocol {
+    
+    typealias T = Self
+    
+    case title = "resultVCtitle"
+    case inputFielLabel = "resultVCinputFieldLabel"
+    case cellErrorMessage = "resultCellErrorMessage"
+    
+    static func localizedString(type: TTAResultTableVCKeys) -> String {
+        return NSLocalizedString(type.rawValue, comment: "")
+    }
+    
 }

@@ -9,7 +9,7 @@
 // MARK: - ResultTableVC
 "resultVCtitle" = "Results";
 "resultVCinputFieldLabel" = "Enter a word...";
-"resultCellErrorMessage" = "Error. Tap to retry";
+"resultCellErrorMessage" = "Error. Tap the button to retry";
 
 // MARK: - SettingsListVC
 
