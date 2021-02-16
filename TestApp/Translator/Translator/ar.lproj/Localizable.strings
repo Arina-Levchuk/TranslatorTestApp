@@ -54,3 +54,7 @@
 "locationAccessAlertMessage" = "يحتاج التطبيق إلى الوصول إلى موقعك. يرجى تشغيل خدمات الموقع في إعدادات جهازك.";
 "locationAccessAlertSettingsButtonTitle" = "الإعدادات";
 "locationAccessAlertCancelButtonTitle" = "حسنا";
+
+"noLocationDataAlertTitle" = "لا توجد بيانات الموقع";
+"noLocationDataAlertMessage" = "لم يتم توفير أي بيانات الموقع كما الوصول في الوقت المحدد";
+"noLocationDataAlertButton" = "حسنا";
