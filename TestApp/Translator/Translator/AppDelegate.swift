@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 
         TTALocationManager.shared.setupLocationManager()
+        TTALocalizationManager.shared.setLocale(language: UserDefaults.standard.appLocale.description)
 
         return true
     }

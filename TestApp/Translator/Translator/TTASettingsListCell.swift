@@ -75,7 +75,7 @@ class TTASettingsListCell: UICollectionViewCell {
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
-    
+ 
     func setupListCellLayout(for cell: CellView) {
         
         switch cell {
@@ -93,11 +93,11 @@ class TTASettingsListCell: UICollectionViewCell {
             cellTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
             
         case .noIcon:
-            
             contentView.addSubview(cellTitle)
 
             cellTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
             cellTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+            
         }
         
 

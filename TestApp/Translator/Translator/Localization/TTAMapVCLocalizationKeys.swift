@@ -21,7 +21,8 @@ enum TTAMapVCKeys: String, StringsLocalizedProtocol {
     case noLocationDataAlertButton = "noLocationDataAlertButton"
     
     static func localizedString(type: TTAMapVCKeys) -> String {
-        return NSLocalizedString(type.rawValue, comment: "")
+        return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
+//        return NSLocalizedString(type.rawValue, tableName: nil, bundle: TTALocalizationManager.shared.bundle!, value: "", comment: "")
     }
 
 }

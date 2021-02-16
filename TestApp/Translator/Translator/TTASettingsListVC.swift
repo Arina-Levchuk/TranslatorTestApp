@@ -53,8 +53,9 @@ class TTASettingsListVC: UIViewController {
             return defaults.appLocale
         } set {
             defaults.appLocale = newValue
+            TTALocalizationManager.shared.setLocale(language: newValue.description)
 //        TODO: setupLocale method - TBD
-//            setAppLocale(language: newValue)
+//            setAppLocale(language: newValue.description)
         }
     }
     
@@ -229,13 +230,11 @@ class TTASettingsListVC: UIViewController {
         view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
     
-    private func setAppLocale(language: String) {
-//    TODO: to set App Locale
-        TTALocalizationManager.shared.setLocale(language: language)
-        print("\(TTALocalizationManager.shared.getSelectedLocale())")
-//        TTALocalizationManager.shared.localizeTTAapp(key: <#T##Any#>, comment: <#T##Any#>)
-
-    }
+//    private func setAppLocale(language: String) {
+////    TODO: to set App Locale
+//
+//
+//    }
     
 
 }
