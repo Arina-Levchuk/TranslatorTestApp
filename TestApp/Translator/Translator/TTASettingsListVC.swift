@@ -54,9 +54,7 @@ class TTASettingsListVC: UIViewController {
         } set {
             defaults.appLocale = newValue
 //        TODO: setupLocale method - TBD
-            setAppLocale(language: newValue.returnLocale())
-            UserDefaults.standard.synchronize()
-            
+//            setAppLocale(language: newValue)
         }
     }
     
@@ -134,8 +132,7 @@ class TTASettingsListVC: UIViewController {
         cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
-//        cv.backgroundColor = .systemBackground
-        cv.backgroundColor = .systemPurple
+        cv.backgroundColor = .systemBackground
         return cv
     }()
     
@@ -160,8 +157,16 @@ class TTASettingsListVC: UIViewController {
             return initialMode
         }()
         
-        self.selectedLocale = self.allAppLocales.first
-//        print("\(selectedLocale.code)")
+        self.selectedLocale = {
+            var initialLocale: TTAAppLocale? = nil
+            for locale in allAppLocales {
+                if locale.code == appLocale {
+                    initialLocale = locale
+                }
+            }
+            return initialLocale
+        }()
+
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -226,10 +231,9 @@ class TTASettingsListVC: UIViewController {
     
     private func setAppLocale(language: String) {
 //    TODO: to set App Locale
-//        TTALocalizationManager.localizationManager.localizeStringForKey(key: <#T##String#>, comment: <#T##String#>)
-        Bundle.main.path(forResource: language, ofType: "lproj")
-//            Bundle.init(path: langDirectoryPath)
-//        }
+        TTALocalizationManager.shared.setLocale(language: language)
+        print("\(TTALocalizationManager.shared.getSelectedLocale())")
+//        TTALocalizationManager.shared.localizeTTAapp(key: <#T##Any#>, comment: <#T##Any#>)
 
     }
     

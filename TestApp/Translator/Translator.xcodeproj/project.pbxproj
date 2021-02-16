@@ -114,8 +114,8 @@
 		845AE11625D301A100D3A121 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				8408179925D592AA00C1B28C /* TTAAppLocale.swift */,
 				8408179625D3DC5900C1B28C /* TTALocalizationManager.swift */,
+				8408179925D592AA00C1B28C /* TTAAppLocale.swift */,
 				845AE10D25D3014900D3A121 /* TTAResultsTableVCLocalizationKeys.swift */,
 				845AE11325D3018800D3A121 /* TTAMapVCLocalizationKeys.swift */,
 				845AE11025D3016600D3A121 /* TTASettingsVCLocalizationKeys.swift */,

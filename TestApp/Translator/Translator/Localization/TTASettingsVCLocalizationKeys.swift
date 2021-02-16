@@ -8,22 +8,9 @@
 
 import Foundation
 
-//enum MemberRegistrationFormFormStrings: String, StringsLocalizedProtocol {
-//
-//    typealias T = Self
-//
-//    case contacts = "Contacts"
-//    case title = ""
-//
-//
-//    static func localizedString(type: MemberRegistrationFormFormStrings) -> String {
-//        return NSLocalizedString(type.rawValue, comment: "")
-//    }
-//}
-
 enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
 
-//  MARK: - Settings VC
+//  MARK: - Main Settings View
     typealias T = Self
     
     case title = "settingsVCtitle"

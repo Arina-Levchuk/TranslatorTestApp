@@ -22,8 +22,6 @@ enum TTALocaleName: String {
     }
 }
 
-
-
 extension UserDefaults {
     
     var appLocale: TTALocaleName {
