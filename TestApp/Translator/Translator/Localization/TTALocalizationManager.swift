@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol StringsLocalizedProtocol where T.Type == Self.Type  {
+    associatedtype T
+    static func localizedString(type: T) -> String
+}
 
 class TTALocalizationManager: NSObject {
    

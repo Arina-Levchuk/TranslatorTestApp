@@ -8,19 +8,20 @@
 
 import Foundation
 
-enum TTAMapVCKeys: String {
-    case alertTitle, alertMessage, alertSettingsButtonTitle, alertCancelButtonTitle
+enum TTAMapVCKeys: String, StringsLocalizedProtocol {
     
-    func returnMapVCKey() -> String {
-        switch self {
-        case .alertTitle:
-            return NSLocalizedString("locationAccessAlertTitle", comment: "")
-        case .alertMessage:
-            return NSLocalizedString("locationAccessAlertMessage", comment: "")
-        case .alertSettingsButtonTitle:
-            return NSLocalizedString("locationAccessAlertSettingsButtonTitle", comment: "")
-        case .alertCancelButtonTitle:
-            return NSLocalizedString("locationAccessAlertCancelButtonTitle", comment: "")
-        }
+    typealias T = Self
+    
+    case noAccessAlertTitle = "locationAccessAlertTitle"
+    case noAccessAlertMessage = "locationAccessAlertMessage"
+    case alertSettingsButtonTitle = "locationAccessAlertSettingsButtonTitle"
+    case alertCancelButtonTitle = "locationAccessAlertCancelButtonTitle"
+    case noLocationDataAlertTitle = "noLocationDataAlertTitle"
+    case noLocationDataAlertMessage = "noLocationDataAlertMessage"
+    case noLocationDataAlertButton = "noLocationDataAlertButton"
+    
+    static func localizedString(type: TTAMapVCKeys) -> String {
+        return NSLocalizedString(type.rawValue, comment: "")
     }
+
 }

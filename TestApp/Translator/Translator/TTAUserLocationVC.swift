@@ -127,8 +127,8 @@ class TTAUserLocationVC: UIViewController {
     
     func showNoLocationAccessAlert(presenter: UIViewController) {
         
-        let alert = UIAlertController(title: TTAMapVCKeys.returnMapVCKey(.alertTitle)(), message: TTAMapVCKeys.returnMapVCKey(.alertMessage)(), preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: TTAMapVCKeys.returnMapVCKey(.alertSettingsButtonTitle)(), style: .default, handler: { (action) in
+        let alert = UIAlertController(title: TTAMapVCKeys.localizedString(type: .noAccessAlertTitle), message: TTAMapVCKeys.localizedString(type: .noAccessAlertMessage), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: TTAMapVCKeys.localizedString(type: .alertSettingsButtonTitle), style: .default, handler: { (action) in
             guard let deviceSettingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
             
             if UIApplication.shared.canOpenURL(deviceSettingsURL) {
@@ -136,15 +136,15 @@ class TTAUserLocationVC: UIViewController {
             }
         }))
         
-        alert.addAction(UIAlertAction(title: TTAMapVCKeys.returnMapVCKey(.alertCancelButtonTitle)(), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: TTAMapVCKeys.localizedString(type: .alertCancelButtonTitle), style: .cancel, handler: nil))
         presenter.present(alert, animated: true)
         
     }
     
     func showNoLocationDataAlert(presenter: UIViewController) {
-//        TODO: to make the strings LOCALIZABLE
-        let alert = UIAlertController(title: "No Location Data", message: "No location data as access hasn't been provided on time", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+
+        let alert = UIAlertController(title: TTAMapVCKeys.localizedString(type: .noLocationDataAlertTitle), message: TTAMapVCKeys.localizedString(type: .noLocationDataAlertMessage), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: TTAMapVCKeys.localizedString(type: .noLocationDataAlertButton), style: .cancel, handler: nil))
    
         presenter.present(alert, animated: true)
         

@@ -8,145 +8,132 @@
 
 import Foundation
 
+//enum MemberRegistrationFormFormStrings: String, StringsLocalizedProtocol {
+//
+//    typealias T = Self
+//
+//    case contacts = "Contacts"
+//    case title = ""
+//
+//
+//    static func localizedString(type: MemberRegistrationFormFormStrings) -> String {
+//        return NSLocalizedString(type.rawValue, comment: "")
+//    }
+//}
 
-enum TTASettingsVCKeys {
+enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
+
+//  MARK: - Settings VC
+    typealias T = Self
     
-    case title
-//    case translators(translatorName: TTATranslatorsKeys)
-//    case languages(lang: TTALanguagesKeys)
-//    case appearanceModes(theme: TTAAppearanceModesKeys)
-//    case localizationSettings(locale: TTALocalizationSettingsKeys)
-    
-    enum TTATranslatorsKeys {
-        case sectionHeader
-        case sectionFooter
-        case translatorName(name: TTATranslatorName)
-        
-        enum TTATranslatorName {
-            case yoda, klingon, shakespeare, yandex, valyrian
-        
-            func returnTranslatorNameKey() -> String {
-                switch self {
-                case .yoda:
-                    return NSLocalizedString("yodaTranslatorName", comment: "")
-                case .klingon:
-                    return NSLocalizedString("klingonTranslatorName", comment: "")
-                case .shakespeare:
-                    return NSLocalizedString("shakespeareTranslatorName", comment: "")
-                case .yandex:
-                    return NSLocalizedString("yandexTranslatorName", comment: "")
-                case .valyrian:
-                    return NSLocalizedString("valyrianTranslatorName", comment: "")
-                }
-            }
-        }
-        
-        func returnTranslatorKey() -> String {
-            switch self {
-            case .sectionHeader:
-                return NSLocalizedString("translatorViewHeader", comment: "")
-            case .sectionFooter:
-                return NSLocalizedString("translatorViewFooter", comment: "")
-            case let .translatorName(name):
-                return NSLocalizedString("\(name.returnTranslatorNameKey())", comment: "")
-            }
-        }
+    case title = "settingsVCtitle"
+
+    static func localizedString(type: TTASettingsVCKeys) -> String {
+        return NSLocalizedString(type.rawValue, comment: "")
     }
     
-    func returnSettingsKey() -> String {
-        switch self {
-        case .title:
-            return NSLocalizedString("settingsVCtitle", comment: "")
-//        case let .translators(translatorName):
-//            return NSLocalizedString("\(translatorName.returnTranslatorKey())", comment: "")
-//        case .languages:
-//            return NSLocalizedString("", comment: "")
-//        case .appearanceModes:
-//            return NSLocalizedString("", comment: "")
-//        case .localizationSettings:
-//            return NSLocalizedString("", comment: "")
-        }
-    }
-    
-    enum TTALanguagesKeys {
-        case sectionHeader
-        case sectionFooter
-//        case languageName(name: TTALanguageName)
+//  MARK: - Translators Section
+    enum TTATranslatorsKeys: String, StringsLocalizedProtocol {
+                
+        typealias T = Self
         
-        enum TTALanguageName {
-            case rus, hebrew, polish, chinese, spanish, ukr
+        case sectionHeader = "translatorViewHeader"
+        case sectionFooter = "translatorViewFooter"
+        
+        static func localizedString(type: TTASettingsVCKeys.TTATranslatorsKeys) -> String {
+            return NSLocalizedString(type.rawValue, comment: "")
+        }
+        
+        enum TTATranslatorName: String, StringsLocalizedProtocol {
+
+            typealias T = Self
             
-            func returnLangName() -> String {
-                switch self {
-                case .rus:
-                    return NSLocalizedString("rusLang", comment: "")
-                case .hebrew:
-                    return NSLocalizedString("hebLang", comment: "")
-                case .polish:
-                    return NSLocalizedString("polLang", comment: "")
-                case .chinese:
-                    return NSLocalizedString("chinLang", comment: "")
-                case .spanish:
-                    return NSLocalizedString("spanLang", comment: "")
-                case .ukr:
-                    return NSLocalizedString("ukrLang", comment: "")
-                }
-            }
-        }
-        
-        func returnLangKey() -> String {
-            switch self {
-            case .sectionHeader:
-                return NSLocalizedString("flagViewHeader", comment: "")
-            case .sectionFooter:
-                return NSLocalizedString("flagViewFooter", comment: "")
-//            case let .languageName(name):
-//                return NSLocalizedString("\(name.returnLangName())", comment: "")
-            }
-        }
-    }
-    
-    enum TTAAppearanceModesKeys {
-        case sectionHeader, sectionFooter
-    
-        func returnAppModeKey() -> String {
-            switch self {
-            case .sectionHeader:
-                return NSLocalizedString("appModeViewHeader", comment: "")
-            case .sectionFooter:
-                return NSLocalizedString("appModeViewFooter", comment: "")
-            }
-        }
-    }
-    
-    enum TTALocalizationSettingsKeys {
-        case sectionHeader
-        case sectionFooter
-//        case localeName(name: TTALocaleName)
-        
-        func returnLocaleSettingKey() -> String {
-            switch self {
-            case .sectionHeader:
-                return NSLocalizedString("localizationViewHeader", comment: "")
-            case .sectionFooter:
-                return NSLocalizedString("localizationViewFooter", comment: "")
-//            case let .localeName(name):
-//                return NSLocalizedString("\(name.returnLocaleName())", comment: "")
-            }
-        }
-        
-        enum TTALocaleName {
-            case arabic, english
+            case yoda = "yodaTranslatorName"
+            case klingon = "klingonTranslatorName"
+            case shakespeare = "shakespeareTranslatorName"
+            case yandex = "yandexTranslatorName"
+            case valyrian = "valyrianTranslatorName"
             
-            func returnLocaleName() -> String {
-                switch self {
-                case .arabic:
-                    return NSLocalizedString("arabicLocaleName", comment: "")
-                case .english:
-                    return NSLocalizedString("engLocaleName", comment: "")
-                }
+            static func localizedString(type: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName) -> String {
+                return NSLocalizedString(type.rawValue, comment: "")
             }
+        
+        }
+    
+    }
+    
+//  MARK: - Languages (flags) Section
+    
+    enum TTALanguagesKeys: String, StringsLocalizedProtocol {
+        
+        typealias T = Self
+        
+        case sectionHeader = "flagViewHeader"
+        case sectionFooter = "flagViewFooter"
+        
+        static func localizedString(type: TTASettingsVCKeys.TTALanguagesKeys) -> String {
+            return NSLocalizedString(type.rawValue, comment: "")
+        }
+        
+        enum TTALanguageName: String, StringsLocalizedProtocol {
+            
+            typealias T = Self
+            
+            case rus = "rusLang"
+            case hebrew = "hebLang"
+            case polish = "polLang"
+            case chinese = "chinLang"
+            case spanish = "spanLang"
+            case ukr = "ukrLang"
+            
+            static func localizedString(type: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName) -> String {
+                return NSLocalizedString(type.rawValue, comment: "")
+            }
+    
         }
         
     }
+   
+//  MARK: - Appearance Mode Settings Section
+    
+    enum TTAAppearanceModesKeys: String, StringsLocalizedProtocol {
+        
+        typealias T = Self
+        
+        case sectionHeader = "appModeViewHeader"
+        case sectionFooter = "appModeViewFooter"
+    
+        static func localizedString(type: TTASettingsVCKeys.TTAAppearanceModesKeys) -> String {
+            return NSLocalizedString(type.rawValue, comment: "")
+        }
+    }
+    
+//  MARK: - Localization Settings Section
+    
+    enum TTALocalizationSettingsKeys: String, StringsLocalizedProtocol {
+
+        typealias T = Self
+        
+        case sectionHeader = "localizationViewHeader"
+        case sectionFooter = "localizationViewFooter"
+
+        static func localizedString(type: TTASettingsVCKeys.TTALocalizationSettingsKeys) -> String {
+            return NSLocalizedString(type.rawValue, comment: "")
+        }
+
+        enum TTALocaleName: String, StringsLocalizedProtocol {
+
+            typealias T = Self
+            
+            case arabic = "arabicLocaleName"
+            case english = "engLocaleName"
+            
+            static func localizedString(type: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName) -> String {
+                return NSLocalizedString(type.rawValue, comment: "")
+            }
+
+        }
+        
+    }
+    
 }

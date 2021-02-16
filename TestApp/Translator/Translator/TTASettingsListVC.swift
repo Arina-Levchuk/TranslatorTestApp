@@ -33,8 +33,8 @@ class TTASettingsListVC: UIViewController {
     var selectedAppMode: TTAAppearanceMode!
 //  App Languages
     var allAppLocales: [TTAAppLocale] = [
-        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.returnLocaleName(.english)())", code: .english),
-        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.returnLocaleName(.arabic)())", code: .arabic)
+        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english))", code: .english),
+        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic))", code: .arabic)
     ]
     var selectedLocale: TTAAppLocale!
     
@@ -144,7 +144,7 @@ class TTASettingsListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = TTASettingsVCKeys.returnSettingsKey(.title)()
+        navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
         
         setupViewLayout()
 
@@ -351,16 +351,16 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 
                 switch collectionView {
                 case translatorsCV:
-                    headerView.headerLabel.text = TTASettingsVCKeys.TTATranslatorsKeys.returnTranslatorKey(.sectionHeader)()
+                    headerView.headerLabel.text = TTASettingsVCKeys.TTATranslatorsKeys.localizedString(type: .sectionHeader)
                     return headerView
                 case flagsCV:
-                    headerView.headerLabel.text = TTASettingsVCKeys.TTALanguagesKeys.returnLangKey(.sectionHeader)()
+                    headerView.headerLabel.text = TTASettingsVCKeys.TTALanguagesKeys.localizedString(type: .sectionHeader)
                     return headerView
                 case appearanceModesCV:
-                    headerView.headerLabel.text = TTASettingsVCKeys.TTAAppearanceModesKeys.returnAppModeKey(.sectionHeader)()
+                    headerView.headerLabel.text = TTASettingsVCKeys.TTAAppearanceModesKeys.localizedString(type: .sectionHeader)
                     return headerView
                 case localesCV:
-                    headerView.headerLabel.text = TTASettingsVCKeys.TTALocalizationSettingsKeys.returnLocaleSettingKey(.sectionHeader)()
+                    headerView.headerLabel.text = TTASettingsVCKeys.TTALocalizationSettingsKeys.localizedString(type: .sectionHeader)
                     return headerView
                 default:
                     return UICollectionReusableView()
@@ -373,16 +373,16 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 
                 switch collectionView {
                 case translatorsCV:
-                    footerView.footerLabel.text = TTASettingsVCKeys.TTATranslatorsKeys.returnTranslatorKey(.sectionFooter)()
+                    footerView.footerLabel.text = TTASettingsVCKeys.TTATranslatorsKeys.localizedString(type: .sectionFooter)
                     return footerView
                 case flagsCV:
-                    footerView.footerLabel.text = TTASettingsVCKeys.TTALanguagesKeys.returnLangKey(.sectionFooter)()
+                    footerView.footerLabel.text = TTASettingsVCKeys.TTALanguagesKeys.localizedString(type: .sectionFooter)
                     return footerView
                 case appearanceModesCV:
-                    footerView.footerLabel.text = TTASettingsVCKeys.TTAAppearanceModesKeys.returnAppModeKey(.sectionFooter)()
+                    footerView.footerLabel.text = TTASettingsVCKeys.TTAAppearanceModesKeys.localizedString(type: .sectionFooter)
                     return footerView
                 case localesCV:
-                    footerView.footerLabel.text = TTASettingsVCKeys.TTALocalizationSettingsKeys.returnLocaleSettingKey(.sectionFooter)()
+                    footerView.footerLabel.text = TTASettingsVCKeys.TTALocalizationSettingsKeys.localizedString(type: .sectionFooter)
                     return footerView
                 default:
                     return UICollectionReusableView()
