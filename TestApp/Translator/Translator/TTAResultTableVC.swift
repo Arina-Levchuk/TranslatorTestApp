@@ -417,7 +417,6 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         cell.cellTitle.text = result.textToTranslate
                 
 //        cell.locationButton.addTarget(self, action: #selector(didTapLocationButton), for: .touchUpInside)
-        
         cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
                 
         switch result.responseStatus {
@@ -492,21 +491,6 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         let result = self.fetchedResultsController.object(at: indexPath)
         
         self.navigationController?.pushViewController(TTAUserLocationVC(latitude: result.latitude, longitude: result.longitude), animated: true)
-        
-//        if let translator = self.selectedTranslator {
-//            if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
-//                guard let translatorURL = translator.url else { return }
-//
-//                getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
-//                    if newResult != nil {
-//                        result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
-//                    } else {
-//                        result.setValue(TTATranslatorResult.ResponseStatus.failure.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
-//                    }
-//                    self?.coreDataStack.saveContext()
-//                })
-//            }
-//        }
           
 //            if result.longitude == Double.zero && result.latitude == Double.zero {
 //                TTALocationManager.shared.setupLocationManager()
