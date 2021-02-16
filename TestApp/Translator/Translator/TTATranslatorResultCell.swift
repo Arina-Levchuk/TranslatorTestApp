@@ -43,14 +43,14 @@ class TTATranslatorResultCell: UITableViewCell {
 //        return button
 //    }()
     
-//    let retryButton: UIButton = {
-//        let button = UIButton.init(type: .custom)
-//        button.setImage(UIImage(named: "retryButton"), for: .normal)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.widthAnchor.constraint(equalToConstant: 35).isActive = true
-//        button.heightAnchor.constraint(equalToConstant: 35).isActive = true
-//        return button
-//    }()
+    let retryButton: UIButton = {
+        let button = UIButton.init(type: .custom)
+        button.setImage(UIImage(named: "retryButton"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        return button
+    }()
     
     let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
@@ -71,7 +71,7 @@ class TTATranslatorResultCell: UITableViewCell {
     func setUpHorizontalView() {
 //      Horizontal position for each label
         cellTitle.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
-        cellTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+//        cellTitle.trailingAnchor.constraint(equalTo: retryButton.leadingAnchor).isActive = true
         
         cellSubtitle.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
         cellSubtitle.trailingAnchor.constraint(equalTo: cellTitle.trailingAnchor).isActive = true
@@ -82,8 +82,8 @@ class TTATranslatorResultCell: UITableViewCell {
 //        locationButton.leadingAnchor.constraint(equalTo: cellTitle.trailingAnchor).isActive = true
 //        locationButton.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
         
-//        retryButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
-//        retryButton.trailingAnchor.constraint(equalTo: locationButton.leadingAnchor).isActive = true
+        retryButton.leadingAnchor.constraint(equalTo: cellTitle.trailingAnchor).isActive = true
+        retryButton.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -10).isActive = true
   
     }
     
@@ -98,7 +98,7 @@ class TTATranslatorResultCell: UITableViewCell {
 //        locationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
 //        locationButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         
-//        retryButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        retryButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     
     }
     
@@ -108,7 +108,7 @@ class TTATranslatorResultCell: UITableViewCell {
         contentView.addSubview(cellTitle)
         contentView.addSubview(cellSubtitle)
 //        contentView.addSubview(locationButton)
-//        contentView.addSubview(retryButton)
+        contentView.addSubview(retryButton)
 //        retryButton.isHidden = true
         
         contentView.addSubview(spinner)

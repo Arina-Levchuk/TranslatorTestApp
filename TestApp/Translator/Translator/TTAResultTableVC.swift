@@ -474,7 +474,6 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
 //                    }
 //                }
 //            }
-//
 //    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
