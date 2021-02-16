@@ -14,40 +14,27 @@ struct TTAAppLocale {
 }
 
 enum TTALocaleName: String {
-    case english
-    case arabic
+    case english = "en"
+    case arabic = "ar"
     
-    enum TTALocaleCode: String {
-        case en, ar
-        
-        func returnLocaleCode() -> String {
-            switch self {
-            case .en, .ar:
-                return self.rawValue
-            }
-        }
-    }
-    
-    func returnLocale() -> String {
-        switch self {
-        case .english:
-            return TTALocaleCode.returnLocaleCode(.en)()
-        case .arabic:
-            return TTALocaleCode.returnLocaleCode(.ar)()
-        }
+    var description: String {
+        return self.rawValue
     }
 }
+
 
 
 extension UserDefaults {
     
     var appLocale: TTALocaleName {
+        
         get {
-            register(defaults: [#function: TTALocaleName.returnLocale(.english)()])
+            register(defaults: [#function: TTALocaleName.english.description])
             return TTALocaleName(rawValue: string(forKey: #function)!) ?? .english
         } set {
             set(newValue.rawValue, forKey: #function)
         }
+        
     }
     
 }
