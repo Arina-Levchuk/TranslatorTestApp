@@ -418,7 +418,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
                 
 //        cell.locationButton.addTarget(self, action: #selector(didTapLocationButton), for: .touchUpInside)
         
-//        cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
+        cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
                 
         switch result.responseStatus {
         case TTATranslatorResult.ResponseStatus.success.description:
@@ -430,7 +430,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
 //            cell.cellSubtitle.text = "Error. Tap to retry"
             cell.cellSubtitle.text = TTAResultTableVCKeys.returnResultTableVCKey(.cellErrorMessage)()
             cell.cellSubtitle.textColor = .systemRed
-//            cell.retryButton.isHidden = false
+            cell.retryButton.isHidden = false
         default:
             cell.showSpinner(animate: true)
 //            cell.cellSubtitle.text = nil
@@ -453,28 +453,29 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-//    @objc func didTapRetryButton(_ sender: UIButton) {
-//
-//        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
-//            if let cellIndexPath = self.tableView.indexPath(for: cell) {
-//                let result = self.fetchedResultsController.object(at: cellIndexPath)
-//
-//                if let translator = self.selectedTranslator {
-//                    if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
-//                        guard let translatorURL = translator.url else { return }
-//
-//                        getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
-//                            if newResult != nil {
-//                                result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
-//                            } else {
-//                                result.setValue(TTATranslatorResult.ResponseStatus.failure.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
-//                            }
-//                            self?.coreDataStack.saveContext()
-//                        })
-//                    }
-//                }
-//            }
-//    }
+    @objc func didTapRetryButton(_ sender: UIButton) {
+
+        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
+            if let cellIndexPath = self.tableView.indexPath(for: cell) {
+                let result = self.fetchedResultsController.object(at: cellIndexPath)
+
+                if let translator = self.selectedTranslator {
+                    if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
+                        guard let translatorURL = translator.url else { return }
+
+                        getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
+                            if newResult != nil {
+                                result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
+                            } else {
+                                result.setValue(TTATranslatorResult.ResponseStatus.failure.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
+                            }
+                            self?.coreDataStack.saveContext()
+                        })
+                    }
+                }
+            }
+        }
+    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
@@ -518,6 +519,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
     }
 
 }
+
 
 extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
     

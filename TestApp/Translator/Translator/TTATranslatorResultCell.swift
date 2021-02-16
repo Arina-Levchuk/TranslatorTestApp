@@ -109,7 +109,7 @@ class TTATranslatorResultCell: UITableViewCell {
         contentView.addSubview(cellSubtitle)
 //        contentView.addSubview(locationButton)
         contentView.addSubview(retryButton)
-//        retryButton.isHidden = true
+        retryButton.isHidden = true
         
         contentView.addSubview(spinner)
         spinner.isHidden = true
@@ -127,7 +127,7 @@ class TTATranslatorResultCell: UITableViewCell {
         cellTitle.text = nil
         cellSubtitle.text = nil
         spinner.isHidden = true
-//        retryButton.isHidden = true
+        retryButton.isHidden = true
         cellSubtitle.textColor = .black
     }
     
