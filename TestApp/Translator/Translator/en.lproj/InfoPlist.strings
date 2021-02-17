@@ -6,7 +6,6 @@
   Copyright © 2021 admin. All rights reserved.
 */
 
+"CFBundleDisplayName" = "TranslatorApp";
 
-"CFBundleDisplayName" = "تطبيق المترجم";
-
-"NSLocationWhenInUseUsageDescription" = "هناك حاجة إلى تحديد الموقع الجغرافي لإظهار موقعك على الخريطة.";
+"NSLocationWhenInUseUsageDescription" = "Geolocation is needed to show your location on the map.";

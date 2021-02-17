@@ -7,3 +7,5 @@
 */
 
 "CFBundleDisplayName" = "تطبيق المترجم";
+
+"NSLocationWhenInUseUsageDescription" = "هناك حاجة إلى تحديد الموقع الجغرافي لإظهار موقعك على الخريطة.";

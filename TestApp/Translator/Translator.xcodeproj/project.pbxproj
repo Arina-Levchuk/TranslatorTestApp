@@ -12,7 +12,7 @@
 		8408178C25D30BB100C1B28C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8408178E25D30BB100C1B28C /* Localizable.strings */; };
 		8408179725D3DC5900C1B28C /* TTALocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408179625D3DC5900C1B28C /* TTALocalizationManager.swift */; };
 		8408179A25D592AA00C1B28C /* TTAAppLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408179925D592AA00C1B28C /* TTAAppLocale.swift */; };
-		841ABC4825DDA9BC00EBCF48 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 841ABC4A25DDA9BC00EBCF48 /* InfoPlist.strings */; };
+		841ABC5225DDAB1100EBCF48 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 841ABC5425DDAB1100EBCF48 /* InfoPlist.strings */; };
 		841E1AAB24B49E640075CB49 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841E1AAA24B49E640075CB49 /* URLExtension.swift */; };
 		841E1AAF24B49EFE0075CB49 /* TTADecodedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841E1AAE24B49EFE0075CB49 /* TTADecodedResponse.swift */; };
 		842C1E9C2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842C1E9A2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift */; };
@@ -48,8 +48,8 @@
 		8408178F25D30BB400C1B28C /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8408179625D3DC5900C1B28C /* TTALocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTALocalizationManager.swift; sourceTree = "<group>"; };
 		8408179925D592AA00C1B28C /* TTAAppLocale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTAAppLocale.swift; sourceTree = "<group>"; };
-		841ABC4925DDA9BC00EBCF48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		841ABC4C25DDA9C200EBCF48 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		841ABC5325DDAB1100EBCF48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		841ABC5625DDAB1700EBCF48 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		841E1AAA24B49E640075CB49 /* URLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		841E1AAE24B49EFE0075CB49 /* TTADecodedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTADecodedResponse.swift; sourceTree = "<group>"; };
 		842C1E9A2517A4E70036DF59 /* TTATranslatorResult+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TTATranslatorResult+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -170,7 +170,6 @@
 		84DE9F8524016C65007E4239 = {
 			isa = PBXGroup;
 			children = (
-				841ABC4A25DDA9BC00EBCF48 /* InfoPlist.strings */,
 				84DE9F9024016C65007E4239 /* Translator */,
 				84DE9F8F24016C65007E4239 /* Products */,
 			);
@@ -198,6 +197,7 @@
 				84DE9F9D24016C67007E4239 /* Assets.xcassets */,
 				84DE9F9F24016C67007E4239 /* LaunchScreen.storyboard */,
 				84DE9FA224016C67007E4239 /* Info.plist */,
+				841ABC5425DDAB1100EBCF48 /* InfoPlist.strings */,
 				84DE9F9A24016C65007E4239 /* Translator.xcdatamodeld */,
 				845A034A242F8877009B5339 /* TTATranslatorsListVC.swift */,
 				84DA943E259A3A3B00565CA3 /* ReusableCVCell.swift */,
@@ -267,7 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				842C1E9F2517E7D10036DF59 /* Assets.xcassets in Resources */,
-				841ABC4825DDA9BC00EBCF48 /* InfoPlist.strings in Resources */,
+				841ABC5225DDAB1100EBCF48 /* InfoPlist.strings in Resources */,
 				8408178C25D30BB100C1B28C /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,14 +323,13 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		841ABC4A25DDA9BC00EBCF48 /* InfoPlist.strings */ = {
+		841ABC5425DDAB1100EBCF48 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				841ABC4925DDA9BC00EBCF48 /* en */,
-				841ABC4C25DDA9C200EBCF48 /* ar */,
+				841ABC5325DDAB1100EBCF48 /* en */,
+				841ABC5625DDAB1700EBCF48 /* ar */,
 			);
 			name = InfoPlist.strings;
-			path = Translator;
 			sourceTree = "<group>";
 		};
 		84DE9F9F24016C67007E4239 /* LaunchScreen.storyboard */ = {
