@@ -107,7 +107,18 @@ class TTAResultTableVC: UIViewController {
 //        view.addGestureRecognizer(tapRecognizer)
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
-        
+    
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
+    }
+    
+    @objc func onAppLangDidChange(_ notification: NSNotification) {
+        tableView.reloadData()
+        navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
+        textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
     }
 
 //    MARK: - View Lifecycle
@@ -147,6 +158,7 @@ class TTAResultTableVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)
         self.view.endEditing(true)
+//        NotificationCenter.default.removeObserver(self)
     }
     
 //  MARK:- Layout
@@ -188,8 +200,8 @@ class TTAResultTableVC: UIViewController {
         view.addConstraint(inputViewBottomConstraint!)
         
         inputContainerView.backgroundColor = .purple
-//      Blur container view
         
+//      Blur container view
 //        inputContainerView.backgroundColor = .clear
 //        let blurEffect = UIBlurEffect(style: .light)
 //        let blurView = UIVisualEffectView(effect: blurEffect)

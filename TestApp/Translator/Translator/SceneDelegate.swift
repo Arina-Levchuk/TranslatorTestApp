@@ -27,19 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let defaults = UserDefaults.standard
         window?.overrideUserInterfaceStyle = defaults.appearanceMode.userInterfaceStyle
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
     
     }
-    
-    @objc func onAppLangDidChange(_ notification: NSNotification) {
         
-        let rootVC = TTAResultTableVC(nibName: nil, bundle: TTALocalizationManager.shared.bundle)
-        let navBar = UINavigationController(rootViewController: rootVC)
-        window?.rootViewController = navBar
-        
-    }
-    
     func sceneDidDisconnect(_ scene: UIScene) {
         
         self.window?.endEditing(true)

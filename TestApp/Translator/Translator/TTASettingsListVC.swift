@@ -458,55 +458,34 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("SELECTED")
-        
-        switch collectionView {
-        case translatorsCV:
+                
+        if collectionView == translatorsCV {
             self.selectedTranslator = allTranslators[indexPath.row]
-//            self.translatorsCV.reloadData()
+            self.translatorsCV.reloadData()
             self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
-        case flagsCV:
+        } else if collectionView == flagsCV {
             self.selectedLanguage = allLanguages[indexPath.row]
-//            self.flagsCV.reloadData()
+            self.flagsCV.reloadData()
             self.delegate?.newLanguageSelected(language: self.selectedLanguage)
-        case appearanceModesCV:
+        } else if collectionView == appearanceModesCV {
             self.selectedAppMode = self.allAppModes[indexPath.row]
             self.appearanceMode = selectedAppMode.appMode
-//            self.appearanceModesCV.reloadData()
-        case localesCV:
+            self.appearanceModesCV.reloadData()
+        } else if collectionView == localesCV {
             self.selectedLocale = self.allAppLocales[indexPath.row]
             self.appLocale = selectedLocale.code
-            
             NotificationCenter.default.post(name: .didChangeAppLang, object: nil)
-            
-            self.translatorsCV.reloadData()
-            self.flagsCV.reloadData()
-            self.appearanceModesCV.reloadData()
-            self.localesCV.reloadData()
-        default:
-            return
         }
-        
-//        if collectionView == translatorsCV {
-//            self.selectedTranslator = allTranslators[indexPath.row]
-//            self.translatorsCV.reloadData()
-//            self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
-//        } else if collectionView == flagsCV {
-//            self.selectedLanguage = allLanguages[indexPath.row]
-//            self.flagsCV.reloadData()
-//            self.delegate?.newLanguageSelected(language: self.selectedLanguage)
-//        } else if collectionView == appearanceModesCV {
-//            self.selectedAppMode = self.allAppModes[indexPath.row]
-//            self.appearanceMode = selectedAppMode.appMode
-//            self.appearanceModesCV.reloadData()
-//        } else if collectionView == localesCV {
-//            self.selectedLocale = self.allAppLocales[indexPath.row]
-//            self.appLocale = selectedLocale.code
-//            collectionView.reloadData()
-//        }
 
     }
     
     @objc func onDidChangeAppLanguage(_ notification: NSNotification) {
+        
+        navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
+        self.translatorsCV.reloadData()
+        self.flagsCV.reloadData()
+        self.appearanceModesCV.reloadData()
+        self.localesCV.reloadData()
         
     }
     
