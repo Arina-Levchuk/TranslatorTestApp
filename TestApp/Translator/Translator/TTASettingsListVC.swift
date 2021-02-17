@@ -165,6 +165,10 @@ class TTASettingsListVC: UIViewController {
             }
             return initialLocale
         }()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeAppLanguage(_:)), name: .didChangeAppLang, object: nil)
+        
+//        NotificationCenter.default.removeObserver(self, name: .didChangeAppLang, object: nil)
 
     }
     
@@ -455,33 +459,59 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("SELECTED")
         
-        if collectionView == translatorsCV {
+        switch collectionView {
+        case translatorsCV:
             self.selectedTranslator = allTranslators[indexPath.row]
-            self.translatorsCV.reloadData()
+//            self.translatorsCV.reloadData()
             self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
-        } else if collectionView == flagsCV {
+        case flagsCV:
             self.selectedLanguage = allLanguages[indexPath.row]
-            self.flagsCV.reloadData()
+//            self.flagsCV.reloadData()
             self.delegate?.newLanguageSelected(language: self.selectedLanguage)
-        } else if collectionView == appearanceModesCV {
+        case appearanceModesCV:
             self.selectedAppMode = self.allAppModes[indexPath.row]
             self.appearanceMode = selectedAppMode.appMode
-            self.appearanceModesCV.reloadData()
-        } else if collectionView == localesCV {
+//            self.appearanceModesCV.reloadData()
+        case localesCV:
             self.selectedLocale = self.allAppLocales[indexPath.row]
             self.appLocale = selectedLocale.code
+            
+            NotificationCenter.default.post(name: .didChangeAppLang, object: nil)
+            
+            self.translatorsCV.reloadData()
+            self.flagsCV.reloadData()
+            self.appearanceModesCV.reloadData()
             self.localesCV.reloadData()
+        default:
+            return
         }
+        
+//        if collectionView == translatorsCV {
+//            self.selectedTranslator = allTranslators[indexPath.row]
+//            self.translatorsCV.reloadData()
+//            self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
+//        } else if collectionView == flagsCV {
+//            self.selectedLanguage = allLanguages[indexPath.row]
+//            self.flagsCV.reloadData()
+//            self.delegate?.newLanguageSelected(language: self.selectedLanguage)
+//        } else if collectionView == appearanceModesCV {
+//            self.selectedAppMode = self.allAppModes[indexPath.row]
+//            self.appearanceMode = selectedAppMode.appMode
+//            self.appearanceModesCV.reloadData()
+//        } else if collectionView == localesCV {
+//            self.selectedLocale = self.allAppLocales[indexPath.row]
+//            self.appLocale = selectedLocale.code
+//            collectionView.reloadData()
+//        }
 
     }
-
+    
+    @objc func onDidChangeAppLanguage(_ notification: NSNotification) {
+        
+    }
     
 }
 
-//extension UICollectionView {
-//    func dequeueReusableCell<T: TTASettingsListCell>(for indexPath: IndexPath) -> T {
-//        guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else { fatalError("Unable to Dequeue Reusable Table View Cell")}
-//
-//        return cell
-//    }
-//}
+extension Notification.Name {
+    static let didChangeAppLang = Notification.Name("appLanguageWillBeChanged")
+}

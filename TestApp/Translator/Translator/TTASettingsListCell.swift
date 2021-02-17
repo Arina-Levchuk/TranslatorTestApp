@@ -118,5 +118,3 @@ class TTASettingsListCell: UICollectionViewCell {
     }
     
 }
-
-//extension TTASettingsListCell: ReusableCVCell {}

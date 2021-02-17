@@ -12,10 +12,7 @@ class TTASettingsGridCell: UICollectionViewCell {
     
     enum CellView: String {
         case roundCell, squareCell
-        
-//        var description: String {
-//            return self.rawValue
-//        }
+
     }
     
     enum ReuseID: String {
@@ -112,5 +109,3 @@ class TTASettingsGridCell: UICollectionViewCell {
     }
     
 }
-
-//extension TTASettingsGridCell: ReusableCVCell {}
