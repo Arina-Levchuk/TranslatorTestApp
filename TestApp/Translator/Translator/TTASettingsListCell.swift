@@ -54,6 +54,7 @@ class TTASettingsListCell: UICollectionViewCell {
         
         cellTitle.text = nil
         cellIcon.image = nil
+        checkmark.isHidden = true
     }
     
     
@@ -77,8 +78,20 @@ class TTASettingsListCell: UICollectionViewCell {
         return img
     }()
     
+    let checkmark: UIImageView = {
+        let mark = UIImageView(image: UIImage(systemName: "checkmark"))
+        mark.translatesAutoresizingMaskIntoConstraints = false
+        return mark
+    }()
+    
     func setupListCellLayout(for cell: CellView) {
  
+        contentView.addSubview(checkmark)
+        checkmark.isHidden = true
+        
+        checkmark.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        checkmark.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
+        
         switch cell {
         case .withIcon:
             

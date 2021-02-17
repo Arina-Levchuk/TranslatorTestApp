@@ -255,23 +255,24 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         switch collectionView {
         case translatorsCV:
             
-            let cell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
+            let translatorCell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
             
             let currentTranslator = allTranslators[indexPath.row]
-            cell.setupListCellLayout(for: .withIcon)
+            translatorCell.setupListCellLayout(for: .withIcon)
 
-            cell.cellIcon.image = currentTranslator.translatorIcon
-            cell.cellTitle.text = currentTranslator.name
+            translatorCell.cellIcon.image = currentTranslator.translatorIcon
+            translatorCell.cellTitle.text = currentTranslator.name
             
-            let selectedTranslatorCell = UIView(frame: cell.bounds)
-            selectedTranslatorCell.backgroundColor = .systemYellow
-            
-            cell.selectedBackgroundView = nil
+//            let selectedTranslatorCell = UIView(frame: cell.bounds)
+//            selectedTranslatorCell.backgroundColor = .systemYellow
+//
+//            cell.selectedBackgroundView = nil
             if currentTranslator.url == selectedTranslator.url {
-                cell.isSelected = true
-                cell.selectedBackgroundView = selectedTranslatorCell
+                translatorCell.checkmark.isHidden = false
+//                cell.isSelected = true
+//                cell.selectedBackgroundView = selectedTranslatorCell
             }            
-            return cell
+            return translatorCell
             
         case flagsCV:
             let flagCell = flagsCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.flagsCVCell.description, for: indexPath) as! TTASettingsGridCell
@@ -282,13 +283,13 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             flagCell.cellIcon.image = currentLang.flagImg
             flagCell.cellTitle.text = currentLang.language
             
-            let selectedLangCell = UIView(frame: flagCell.bounds)
-            selectedLangCell.backgroundColor = .systemIndigo
+            let selectedCell = UIView(frame: flagCell.bounds)
+            selectedCell.backgroundColor = .systemYellow
             
             flagCell.selectedBackgroundView = nil
             if currentLang.langCode == selectedLanguage.langCode {
                 flagCell.isSelected = true
-                flagCell.selectedBackgroundView = selectedLangCell
+                flagCell.selectedBackgroundView = selectedCell
             }
             return flagCell
             
@@ -301,14 +302,14 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             
             appearanceModeCell.cellIcon.image = currentAppearanceMode.modeImg
             
-            let selectedAppModeCell = UIView(frame: appearanceModeCell.bounds)
-            selectedAppModeCell.backgroundColor = .systemRed
+            let selectedCell = UIView(frame: appearanceModeCell.bounds)
+            selectedCell.backgroundColor = .systemYellow
             
             appearanceModeCell.selectedBackgroundView = nil
             if selectedAppMode != nil {
                 if currentAppearanceMode.mode == self.selectedAppMode.mode {
                     appearanceModeCell.isSelected = true
-                    appearanceModeCell.selectedBackgroundView = selectedAppModeCell
+                    appearanceModeCell.selectedBackgroundView = selectedCell
                 }
             }
             
@@ -321,13 +322,14 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             
             localeCell.cellTitle.text = currentLocale.name
             
-            let selectedCell = UIView(frame: localeCell.bounds)
-            selectedCell.backgroundColor = .systemPurple
-
-            localeCell.selectedBackgroundView = nil
+//            let selectedCell = UIView(frame: localeCell.bounds)
+//            selectedCell.backgroundColor = .systemPurple
+//
+//            localeCell.selectedBackgroundView = nil
             if currentLocale.code == selectedLocale.code {
-                localeCell.isSelected = true
-                localeCell.selectedBackgroundView = selectedCell
+                localeCell.checkmark.isHidden = false
+//                localeCell.isSelected = true
+//                localeCell.selectedBackgroundView = selectedCell
             }
             
             return localeCell
