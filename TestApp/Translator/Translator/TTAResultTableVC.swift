@@ -14,7 +14,7 @@ import CoreData
 class TTAResultTableVC: UIViewController {
 
 //  MARK: - Properties
-    
+
     lazy var coreDataStack = TTACoreDataStack(modelName: "Translator")
     
     lazy var fetchedResultsController: NSFetchedResultsController<TTATranslatorResult> = {
@@ -32,7 +32,6 @@ class TTAResultTableVC: UIViewController {
         return fetchedResultsController
     }()
     
-        
     let inputField = UITextView()
     var inputFieldTopConstraint: NSLayoutConstraint?
     let textViewPlaceholder: UILabel = {
@@ -45,33 +44,33 @@ class TTAResultTableVC: UIViewController {
     }()
     
     let sendButton = UIButton.init(type: .custom)
-    let inputContainerView = UIView()
     
-    let tableView = UITableView.init(frame: .zero)
+    let inputContainerView = UIView()
     var inputViewBottomConstraint: NSLayoutConstraint?
     
-    var selectedTranslator: TTATranslator? = nil
-    var selectedLanguage: TTATranslatorLanguage? = nil
+    let tableView = UITableView.init(frame: .zero)
     
+    var selectedTranslator: TTATranslator? = nil
     var translators: [TTATranslator] = [
-        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yoda))", url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
-        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .klingon))", url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
-        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .shakespeare))", url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
-        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yandex))", url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
-        TTATranslator(name: "\(TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .valyrian))", url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yoda), url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .klingon), url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .shakespeare), url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yandex), url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .valyrian), url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))
     ]
     
+    var selectedLanguage: TTATranslatorLanguage? = nil
     var languages: [TTATranslatorLanguage] = [
-        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .rus))", flagImg: UIImage(named: "ru"), langCode: "ru"),
-        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .hebrew))", flagImg: UIImage(named: "he"), langCode: "he"),
-        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .polish))", flagImg: UIImage(named: "pl"), langCode: "pl"),
-        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .chinese))", flagImg: UIImage(named: "zh"), langCode: "zh"),
-        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .spanish))", flagImg: UIImage(named: "es"), langCode: "es"),
-        TTATranslatorLanguage(language: "\(TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .ukr))", flagImg: UIImage(named: "uk"), langCode: "uk")
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .rus), flagImg: UIImage(named: "ru"), langCode: "ru"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .hebrew), flagImg: UIImage(named: "he"), langCode: "he"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .polish), flagImg: UIImage(named: "pl"), langCode: "pl"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .chinese), flagImg: UIImage(named: "zh"), langCode: "zh"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .spanish), flagImg: UIImage(named: "es"), langCode: "es"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .ukr), flagImg: UIImage(named: "uk"), langCode: "uk")
     ]
 
 //  MARK: - View lifecycle
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        print("VIEW DID LOAD")
@@ -96,7 +95,7 @@ class TTAResultTableVC: UIViewController {
         
         
         tableView.tableFooterView = UIView()
-        tableView.keyboardDismissMode = .onDrag
+//        tableView.keyboardDismissMode = .onDrag
 
         self.inputField.delegate = self
 
@@ -109,7 +108,7 @@ class TTAResultTableVC: UIViewController {
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
     
     }
-    
+            
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
@@ -119,9 +118,8 @@ class TTAResultTableVC: UIViewController {
         tableView.reloadData()
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
+        TTALocalizationManager.shared.setLocale(language: UserDefaults.standard.appLocale.description)
     }
-
-//    MARK: - View Lifecycle
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -147,12 +145,11 @@ class TTAResultTableVC: UIViewController {
         self.inputFieldTopConstraint?.constant = newTxtViewHeight
 
     }
-    
+        
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {

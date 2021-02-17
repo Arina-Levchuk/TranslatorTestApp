@@ -33,8 +33,8 @@ class TTASettingsListVC: UIViewController {
     var selectedAppMode: TTAAppearanceMode!
 //  App Languages
     var allAppLocales: [TTAAppLocale] = [
-        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english))", code: .english),
-        TTAAppLocale(name: "\(TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic))", code: .arabic)
+        TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english), code: .english),
+        TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic), code: .arabic)
     ]
     var selectedLocale: TTAAppLocale!
     
@@ -486,7 +486,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         self.flagsCV.reloadData()
         self.appearanceModesCV.reloadData()
         self.localesCV.reloadData()
-        
+//        TTALocalizationManager.shared.setLocale(language: UserDefaults.standard.appLocale.description)
     }
     
 }
