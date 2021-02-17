@@ -118,7 +118,7 @@ class TTAResultTableVC: UIViewController {
         tableView.reloadData()
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
-        TTALocalizationManager.shared.setLocale(language: UserDefaults.standard.appLocale.description)
+       
     }
     
     override func viewDidLayoutSubviews() {

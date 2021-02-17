@@ -21,9 +21,11 @@ class TTASettingsListVC: UIViewController {
 //    Translators
     var allTranslators: [TTATranslator] = []
     var selectedTranslator: TTATranslator!
+    
 //   Flags
     var allLanguages: [TTATranslatorLanguage] = []
     var selectedLanguage: TTATranslatorLanguage!
+    
 //  Appearance Modes
     var allAppModes: [TTAAppearanceMode] = [
         TTAAppearanceMode(mode: "Device's Mode", modeImg: UIImage(named: "device"), appMode: .device),
@@ -31,6 +33,7 @@ class TTASettingsListVC: UIViewController {
         TTAAppearanceMode(mode: "Dark", modeImg: UIImage(named: "dark"), appMode: .dark)
     ]
     var selectedAppMode: TTAAppearanceMode!
+    
 //  App Languages
     var allAppLocales: [TTAAppLocale] = [
         TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english), code: .english),
@@ -135,7 +138,7 @@ class TTASettingsListVC: UIViewController {
         return cv
     }()
     
-//  MARK: - View lifecycle
+//  MARK: - View
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -188,7 +191,7 @@ class TTASettingsListVC: UIViewController {
     }
     
     
-//  MARK: - Custom Methods
+//  MARK: - Methods
     func setupViewLayout() {
         view.addSubview(scrollView)
         scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -260,7 +263,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         case translatorsCV:
             
             let translatorCell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
-            
+        
             let currentTranslator = allTranslators[indexPath.row]
             translatorCell.setupListCellLayout(for: .withIcon)
 
@@ -476,17 +479,20 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             self.appLocale = selectedLocale.code
             NotificationCenter.default.post(name: .didChangeAppLang, object: nil)
         }
+        
+
 
     }
     
     @objc func onDidChangeAppLanguage(_ notification: NSNotification) {
         
         navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
+        
         self.translatorsCV.reloadData()
         self.flagsCV.reloadData()
         self.appearanceModesCV.reloadData()
         self.localesCV.reloadData()
-//        TTALocalizationManager.shared.setLocale(language: UserDefaults.standard.appLocale.description)
+
     }
     
 }
