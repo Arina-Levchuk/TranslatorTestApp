@@ -35,7 +35,7 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     let headerLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 14)
-        lbl.textAlignment = .natural
+        lbl.textAlignment = .left
         lbl.textColor = .label
 //        lbl.numberOfLines = 0
 //        lbl.clipsToBounds = true
@@ -48,6 +48,7 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
 //        headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, multiplier: 2).isActive = true
         NSLayoutConstraint.activate([
             headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+//            headerLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             headerLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 0),
             headerLabel.lastBaselineAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: 0),
             headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)

@@ -17,7 +17,7 @@ class TTATranslatorResultCell: UITableViewCell {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .label
         lbl.font = UIFont.boldSystemFont(ofSize: 17)
-        lbl.textAlignment = .natural
+        lbl.textAlignment = .left
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         return lbl
@@ -28,7 +28,7 @@ class TTATranslatorResultCell: UITableViewCell {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .label
         lbl.font = UIFont.systemFont(ofSize: 17)
-        lbl.textAlignment = .natural
+        lbl.textAlignment = .left
         lbl.numberOfLines = 0   // to remove any maximum limit, and use as many lines as needed, set the value of this property to 0
         lbl.lineBreakMode = .byWordWrapping
         return lbl
@@ -71,13 +71,12 @@ class TTATranslatorResultCell: UITableViewCell {
     func setUpHorizontalView() {
 //      Horizontal position for each label
         cellTitle.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor).isActive = true
-//        cellTitle.trailingAnchor.constraint(equalTo: retryButton.leadingAnchor).isActive = true
+        cellTitle.trailingAnchor.constraint(equalTo: retryButton.leadingAnchor).isActive = true
         
         cellSubtitle.leadingAnchor.constraint(equalTo: cellTitle.leadingAnchor).isActive = true
         cellSubtitle.trailingAnchor.constraint(equalTo: cellTitle.trailingAnchor).isActive = true
         
         spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         
 //        locationButton.leadingAnchor.constraint(equalTo: cellTitle.trailingAnchor).isActive = true
 //        locationButton.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor).isActive = true
@@ -97,6 +96,8 @@ class TTATranslatorResultCell: UITableViewCell {
                 
 //        locationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
 //        locationButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        
+        spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         
         retryButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     

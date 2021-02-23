@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol StringsLocalizedProtocol where T.Type == Self.Type  {
     associatedtype T
@@ -37,6 +38,18 @@ class TTALocalizationManager: NSObject {
             self.bundle = Bundle(path: path)
         } else {
             resetLocalization()
+        }
+        
+        changeAppearance()
+                
+    }
+    
+    func changeAppearance() {
+        
+        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
+            UIView.appearance().semanticContentAttribute = .forceRightToLeft
+        } else if UserDefaults.standard.appLocale.description == TTALocaleName.english.description {
+            UIView.appearance().semanticContentAttribute = .forceLeftToRight
         }
         
     }

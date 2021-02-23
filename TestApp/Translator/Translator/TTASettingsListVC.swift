@@ -492,7 +492,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         self.flagsCV.reloadData()
         self.appearanceModesCV.reloadData()
         self.localesCV.reloadData()
-
+        
+        
     }
     
 }

@@ -40,6 +40,7 @@ class TTAResultTableVC: UIViewController {
 //        tvPlaceholder.text = "Enter a word..."
         tvPlaceholder.textColor = .systemGray4
         tvPlaceholder.font = UIFont.systemFont(ofSize: 17.0)
+        tvPlaceholder.textAlignment = .left
         return tvPlaceholder
     }()
     
@@ -112,12 +113,15 @@ class TTAResultTableVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
+        
+//        self.view.layoutIfNeeded()
     }
     
     @objc func onAppLangDidChange(_ notification: NSNotification) {
-        tableView.reloadData()
+
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
+        tableView.reloadData()
        
     }
     
