@@ -40,19 +40,17 @@ class TTALocalizationManager: NSObject {
             resetLocalization()
         }
         
-        changeAppearance()
+//        changeAppearance()
                 
     }
     
-    func changeAppearance() {
-        
-        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
-            UIView.appearance().semanticContentAttribute = .forceRightToLeft
-        } else if UserDefaults.standard.appLocale.description == TTALocaleName.english.description {
-            UIView.appearance().semanticContentAttribute = .forceLeftToRight
-        }
-        
-    }
+//    func changeAppearance() {
+//        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
+//            UIView.appearance().semanticContentAttribute = .forceRightToLeft
+//        } else if UserDefaults.standard.appLocale.description == TTALocaleName.english.description {
+//            UIView.appearance().semanticContentAttribute = .forceLeftToRight
+//        }
+//    }
     
     func resetLocalization() {
         bundle = Bundle.main

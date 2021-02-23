@@ -35,7 +35,7 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     let headerLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 14)
-        lbl.textAlignment = .left
+        lbl.textAlignment = .natural
         lbl.textColor = .label
 //        lbl.numberOfLines = 0
 //        lbl.clipsToBounds = true

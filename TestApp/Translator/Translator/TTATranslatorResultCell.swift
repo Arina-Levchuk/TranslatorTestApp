@@ -17,7 +17,7 @@ class TTATranslatorResultCell: UITableViewCell {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .label
         lbl.font = UIFont.boldSystemFont(ofSize: 17)
-        lbl.textAlignment = .left
+        lbl.textAlignment = .natural
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         return lbl
@@ -28,7 +28,7 @@ class TTATranslatorResultCell: UITableViewCell {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .label
         lbl.font = UIFont.systemFont(ofSize: 17)
-        lbl.textAlignment = .left
+        lbl.textAlignment = .natural
         lbl.numberOfLines = 0   // to remove any maximum limit, and use as many lines as needed, set the value of this property to 0
         lbl.lineBreakMode = .byWordWrapping
         return lbl

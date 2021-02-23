@@ -40,7 +40,7 @@ class TTAResultTableVC: UIViewController {
 //        tvPlaceholder.text = "Enter a word..."
         tvPlaceholder.textColor = .systemGray4
         tvPlaceholder.font = UIFont.systemFont(ofSize: 17.0)
-        tvPlaceholder.textAlignment = .left
+        tvPlaceholder.textAlignment = .natural
         return tvPlaceholder
     }()
     
@@ -121,7 +121,6 @@ class TTAResultTableVC: UIViewController {
 
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
-        tableView.reloadData()
        
     }
     
