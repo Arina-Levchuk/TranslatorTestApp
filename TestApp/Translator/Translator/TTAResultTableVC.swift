@@ -40,7 +40,7 @@ class TTAResultTableVC: UIViewController {
 //        tvPlaceholder.text = "Enter a word..."
         tvPlaceholder.textColor = .systemGray4
         tvPlaceholder.font = UIFont.systemFont(ofSize: 17.0)
-        tvPlaceholder.textAlignment = .natural
+//        tvPlaceholder.textAlignment = .natural
         return tvPlaceholder
     }()
     
@@ -107,6 +107,8 @@ class TTAResultTableVC: UIViewController {
 //        view.addGestureRecognizer(tapRecognizer)
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
+        
+        textViewPlaceholder.determineTextDirection()
     
     }
             
@@ -114,14 +116,14 @@ class TTAResultTableVC: UIViewController {
         super.viewWillAppear(true)
         NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
         
-//        self.view.layoutIfNeeded()
     }
     
     @objc func onAppLangDidChange(_ notification: NSNotification) {
 
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
-       
+        textViewPlaceholder.determineTextDirection()
+
     }
     
     override func viewDidLayoutSubviews() {
@@ -129,7 +131,6 @@ class TTAResultTableVC: UIViewController {
     
 //        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
 //        tableView.scrollIndicatorInsets = tableView.contentInset
-
 
 //        let size = CGSize(width: self.inputField.frame.width, height: newTxtViewHeight)
 //        let newTxtViewSize = self.inputField.sizeThatFits(size)
@@ -446,8 +447,6 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
             cell.showSpinner(animate: true)
 //            cell.cellSubtitle.text = nil
         }
-        
-        print(cell)
         
         return cell
     }

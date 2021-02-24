@@ -45,6 +45,7 @@ class TTALocalizationManager: NSObject {
     }
     
 //    func changeAppearance() {
+    
 //        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
 //            UIView.appearance().semanticContentAttribute = .forceRightToLeft
 //        } else if UserDefaults.standard.appLocale.description == TTALocaleName.english.description {
@@ -63,5 +64,20 @@ class TTALocalizationManager: NSObject {
 //        return nil
 //    }
         
+}
+
+
+extension UILabel {
+    func determineTextDirection() {
+        guard self.text != nil else { return }
+        
+        let tagger = NSLinguisticTagger(tagSchemes: [.language], options: 0)
+        tagger.string = self.text
+        
+        let lang = tagger.dominantLanguage
+        
+        let rtl = lang == TTALocaleName.arabic.description
+        self.textAlignment = rtl ? .right : .left
+    }
 }
 
