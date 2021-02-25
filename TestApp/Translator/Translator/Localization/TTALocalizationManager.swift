@@ -90,6 +90,14 @@ extension UITextView {
         
         self.textAlignment = rtl ? .right : .left
         
+//        if appLang == TTALocaleName.arabic.description {
+//            let cursorRTLposition = self.beginningOfDocument
+//            self.selectedTextRange = self.textRange(from: cursorRTLposition, to: cursorRTLposition)
+//        } else {
+//            let cursorLTRposition = self.endOfDocument
+//            self.selectedTextRange = self.textRange(from: cursorLTRposition, to: cursorLTRposition)
+//        }
+        
     }
     
 }
