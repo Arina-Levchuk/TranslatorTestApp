@@ -94,7 +94,6 @@ class TTAResultTableVC: UIViewController {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
-        
         tableView.tableFooterView = UIView()
 //        tableView.keyboardDismissMode = .onDrag
 
@@ -108,8 +107,6 @@ class TTAResultTableVC: UIViewController {
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
         
-        textViewPlaceholder.determineTextDirection()
-
     }
             
     override func viewWillAppear(_ animated: Bool) {
@@ -128,9 +125,13 @@ class TTAResultTableVC: UIViewController {
         
         if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
             navigationController?.navigationBar.semanticContentAttribute = .forceRightToLeft
+//            inputField.textAlignment = .right
         } else {
             navigationController?.navigationBar.semanticContentAttribute = .forceLeftToRight
+//            inputField.textAlignment = .left
         }
+        
+        inputField.determineTextDirection()
 
     }
     
@@ -196,7 +197,7 @@ class TTAResultTableVC: UIViewController {
         
         inputContainerView.addSubview(inputField)
         inputContainerView.addSubview(sendButton)
-        setUpInputField()
+        setUpInputFieldAppearance()
         setUpSendButton()
         
         inputContainerView.translatesAutoresizingMaskIntoConstraints                                             = false
@@ -224,21 +225,32 @@ class TTAResultTableVC: UIViewController {
         
     }
     
-    func setUpInputField() {
+    func setUpInputFieldAppearance() {
         inputField.backgroundColor = .systemBackground
         inputField.layer.cornerRadius = 15
         inputField.layer.borderWidth = 1
         inputField.layer.borderColor = UIColor.systemGray5.cgColor
         inputField.keyboardAppearance = .default
         inputField.keyboardType = .default
-        
+
         inputField.textColor = .label
+        inputField.determineTextDirection()
 
         inputField.font = UIFont.systemFont(ofSize: 17.0)
         inputField.textContainerInset.left = 10
         inputField.textContainerInset.right = inputField.textContainerInset.left
         
+        inputField.isScrollEnabled = false
+        
         inputField.addSubview(textViewPlaceholder)
+        setupTextViewPlaceholder()
+        
+        setupInputFieldConstraints()
+                
+    }
+    
+    func setupTextViewPlaceholder() {
+        
         textViewPlaceholder.isHidden = false
         textViewPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         textViewPlaceholder.leadingAnchor.constraint(equalTo: inputField.leadingAnchor, constant: 10).isActive = true
@@ -246,7 +258,11 @@ class TTAResultTableVC: UIViewController {
         textViewPlaceholder.centerXAnchor.constraint(equalTo: inputField.centerXAnchor).isActive = true
         textViewPlaceholder.centerYAnchor.constraint(equalTo: inputField.centerYAnchor).isActive = true
         
-        inputField.isScrollEnabled = false
+        textViewPlaceholder.determineTextDirection()
+        
+    }
+    
+    func setupInputFieldConstraints() {
         
         inputField.translatesAutoresizingMaskIntoConstraints = false
         inputField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true

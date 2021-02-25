@@ -81,3 +81,15 @@ extension UILabel {
     }
 }
 
+extension UITextView {
+    func determineTextDirection() {
+
+        let appLang = UserDefaults.standard.appLocale.description
+        
+        let rtl = appLang == TTALocaleName.arabic.description
+        
+        self.textAlignment = rtl ? .right : .left
+        
+    }
+    
+}

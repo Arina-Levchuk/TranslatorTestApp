@@ -487,13 +487,12 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     @objc func onDidChangeAppLanguage(_ notification: NSNotification) {
         
         navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
-        
+
         self.translatorsCV.reloadData()
         self.flagsCV.reloadData()
         self.appearanceModesCV.reloadData()
         self.localesCV.reloadData()
-        
-        
+ 
     }
     
 }
