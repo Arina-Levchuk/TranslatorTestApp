@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         TTALocationManager.shared.setupLocationManager()
         TTALocalizationManager.shared.setLocale(language: UserDefaults.standard.appLocale.description)
-
+        
         return true
     }
     

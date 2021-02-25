@@ -75,14 +75,10 @@ class TTATranslatorResultCell: UITableViewCell {
     }()
     
     func setUpHorizontalView() {
-        
+      
         cellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         cellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        cellView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-
         
-//      Horizontal position for each label
         cellTitle.leadingAnchor.constraint(equalTo: cellView.layoutMarginsGuide.leadingAnchor, constant: 10).isActive = true
         cellTitle.trailingAnchor.constraint(equalTo: retryButton.leadingAnchor).isActive = true
         
@@ -100,20 +96,37 @@ class TTATranslatorResultCell: UITableViewCell {
     }
     
     func setUpVerticalView() {
-//      Vertical position for each label
+        
+        cellView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        
         cellTitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellView.layoutMarginsGuide.topAnchor, multiplier: 1).isActive = true
             
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         
-        contentView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
+        cellView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
                 
 //        locationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        locationButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        locationButton.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
         
         spinner.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
         
         retryButton.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
     
+    }
+    
+    func setCellDirection() {
+        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
+            UIView.appearance().semanticContentAttribute = .forceRightToLeft
+            cellTitle.semanticContentAttribute = .forceRightToLeft
+            cellSubtitle.semanticContentAttribute = .forceRightToLeft
+            locationButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        } else {
+            UIView.appearance().semanticContentAttribute = .forceLeftToRight
+            cellTitle.semanticContentAttribute = .forceLeftToRight
+            cellSubtitle.semanticContentAttribute = .forceLeftToRight
+            locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -127,42 +140,20 @@ class TTATranslatorResultCell: UITableViewCell {
         cellView.addSubview(retryButton)
         retryButton.isHidden = true
         
-        contentView.addSubview(spinner)
+        cellView.addSubview(spinner)
         spinner.isHidden = true
         
         setUpHorizontalView()
         setUpVerticalView()
         
-        if UserDefaults.standard.appLocale.description == "ar" {
-            UIView.appearance().semanticContentAttribute = .forceRightToLeft
-            cellTitle.semanticContentAttribute = .forceRightToLeft
-            cellSubtitle.semanticContentAttribute = .forceRightToLeft
-            locationButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        } else {
-            UIView.appearance().semanticContentAttribute = .forceLeftToRight
-            cellTitle.semanticContentAttribute = .forceLeftToRight
-            cellSubtitle.semanticContentAttribute = .forceLeftToRight
-            locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        }
-        
-        
+        setCellDirection()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
         
     }
     
     @objc func onAppLangDidChange(_ notification: NSNotification) {
-        if UserDefaults.standard.appLocale.description == "ar" {
-            UIView.appearance().semanticContentAttribute = .forceRightToLeft
-            cellTitle.semanticContentAttribute = .forceRightToLeft
-            cellSubtitle.semanticContentAttribute = .forceRightToLeft
-            locationButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        } else {
-            UIView.appearance().semanticContentAttribute = .forceLeftToRight
-            cellTitle.semanticContentAttribute = .forceLeftToRight
-            cellSubtitle.semanticContentAttribute = .forceLeftToRight
-            locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        }
+        setCellDirection()
     }
     
     required init?(coder: NSCoder) {

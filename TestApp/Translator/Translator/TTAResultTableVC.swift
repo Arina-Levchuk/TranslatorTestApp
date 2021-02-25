@@ -124,12 +124,12 @@ class TTAResultTableVC: UIViewController {
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
         textViewPlaceholder.determineTextDirection()
         
-        if UserDefaults.standard.appLocale.description == "ar" {
-            UIView.appearance().semanticContentAttribute = .forceRightToLeft
-            tableView.semanticContentAttribute = .forceRightToLeft
+        self.tableView.reloadData()
+        
+        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
+            navigationController?.navigationBar.semanticContentAttribute = .forceRightToLeft
         } else {
-            UIView.appearance().semanticContentAttribute = .forceLeftToRight
-            tableView.semanticContentAttribute = .forceLeftToRight
+            navigationController?.navigationBar.semanticContentAttribute = .forceLeftToRight
         }
 
     }
