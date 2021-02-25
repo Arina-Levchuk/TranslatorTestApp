@@ -109,7 +109,7 @@ class TTAResultTableVC: UIViewController {
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
         
         textViewPlaceholder.determineTextDirection()
-    
+
     }
             
     override func viewWillAppear(_ animated: Bool) {
@@ -123,6 +123,14 @@ class TTAResultTableVC: UIViewController {
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
         textViewPlaceholder.determineTextDirection()
+        
+        if UserDefaults.standard.appLocale.description == "ar" {
+            UIView.appearance().semanticContentAttribute = .forceRightToLeft
+            tableView.semanticContentAttribute = .forceRightToLeft
+        } else {
+            UIView.appearance().semanticContentAttribute = .forceLeftToRight
+            tableView.semanticContentAttribute = .forceLeftToRight
+        }
 
     }
     
@@ -425,7 +433,7 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         
         let result = self.fetchedResultsController.object(at: indexPath)
         
-        cell.accessoryType = .disclosureIndicator
+//        cell.accessoryType = .disclosureIndicator
 
         cell.cellTitle.text = result.textToTranslate
                 
@@ -464,8 +472,8 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func didTapRetryButton(_ sender: UIButton) {
-
-        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
+        print("BUTTON TAPPED")
+        if let superview = sender.superview, let cell = superview.superview?.superview as? TTATranslatorResultCell {
             if let cellIndexPath = self.tableView.indexPath(for: cell) {
                 let result = self.fetchedResultsController.object(at: cellIndexPath)
 
