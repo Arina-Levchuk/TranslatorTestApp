@@ -48,9 +48,9 @@ class TTASettingsListVC: UIViewController {
     var selectedAppMode: TTAAppearanceMode!
     
 //  App Languages
-    var allAppLocales: [TTAAppLocale] = [
-        TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english), code: .english),
-        TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic), code: .arabic)
+    static var allAppLocales: [TTAAppLocale] = [
+        TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english), code: .english, isRTL: false),
+        TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic), code: .arabic, isRTL: true)
     ]
     var selectedLocale: TTAAppLocale!
     
@@ -178,7 +178,7 @@ class TTASettingsListVC: UIViewController {
         
         self.selectedLocale = {
             var initialLocale: TTAAppLocale? = nil
-            for locale in allAppLocales {
+            for locale in TTASettingsListVC.allAppLocales {
                 if locale.code == appLocale {
                     initialLocale = locale
                 }
@@ -267,7 +267,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         case self.appearanceModesCV:
             return allAppModes.count
         case self.localesCV:
-            return allAppLocales.count
+            return TTASettingsListVC.allAppLocales.count
         default:
             return 0
         }
@@ -341,7 +341,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         case localesCV:
             let localeCell = localesCV.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.textAppearanceCVCell.description, for: indexPath) as! TTASettingsListCell
             
-            let currentLocale = allAppLocales[indexPath.row]
+            let currentLocale = TTASettingsListVC.allAppLocales[indexPath.row]
             localeCell.setupListCellLayout(for: .noIcon)
             
             localeCell.cellTitle.text = currentLocale.name
@@ -492,14 +492,24 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             self.appearanceMode = selectedAppMode.appMode
             self.appearanceModesCV.reloadData()
         } else if collectionView == localesCV {
-            self.selectedLocale = self.allAppLocales[indexPath.row]
+            self.selectedLocale = TTASettingsListVC.allAppLocales[indexPath.row]
             self.appLocale = selectedLocale.code
             NotificationCenter.default.post(name: .didChangeAppLang, object: nil)
         }
         
-
-
     }
+    
+    func updateNavBar() {
+
+        self.navigationController?.navigationBar.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+        self.navigationController?.view.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+        self.navigationController?.navigationBar.setNeedsLayout()
+        self.navigationController?.navigationBar.layoutIfNeeded()
+
+//        IHSNavigationControllerHelper.setupBackButton(navVC: self.navigationController,
+//                                                      title: IHSLocacalizeHelper.localizedString("Language", comment: ""),
+//                                                      isBackButtonEnabled: true)
+        }
     
     @objc func onDidChangeAppLanguage(_ notification: NSNotification) {
         
@@ -520,9 +530,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .spanish), flagImg: UIImage(named: "es"), langCode: "es"),
             TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .ukr), flagImg: UIImage(named: "uk"), langCode: "uk")
         ]
-        self.allAppLocales = [
-            TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english), code: .english),
-            TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic), code: .arabic)
+        TTASettingsListVC.allAppLocales = [
+            TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english), code: .english, isRTL: false),
+            TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic), code: .arabic, isRTL: true)
         ]
         
         self.translatorsCV.reloadData()
@@ -530,6 +540,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         self.appearanceModesCV.reloadData()
         self.localesCV.reloadData()
  
+        updateNavBar()
     }
     
 }

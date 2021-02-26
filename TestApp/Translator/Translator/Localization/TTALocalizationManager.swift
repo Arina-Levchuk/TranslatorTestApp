@@ -45,38 +45,53 @@ class TTALocalizationManager: NSObject {
     }
     
     func changeAppearance() {
+        
+        let RTLview: () = UIView.appearance().semanticContentAttribute = .forceRightToLeft
+        let LTRview: () = UIView.appearance().semanticContentAttribute = .forceLeftToRight
     
-        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
-            UIView.appearance().semanticContentAttribute = .forceRightToLeft
-        } else if UserDefaults.standard.appLocale.description == TTALocaleName.english.description {
-            UIView.appearance().semanticContentAttribute = .forceLeftToRight
-        }
+        TTALocalizationManager.shared.getSelectedLocale().isRTL ? RTLview : LTRview
+
+         
     }
     
     func resetLocalization() {
         bundle = Bundle.main
     }
     
-//    func getSelectedLocale() -> String? {
-//        if let language = UserDefaults.standard.string(forKey: UserDefaults.standard.appLocale.rawValue) {
-//            return language
-//        }
-//        return nil
-//    }
+    func getSelectedLocale() -> TTAAppLocale {
         
+        var language: TTAAppLocale? = nil
+        let selectedLocale = UserDefaults.standard.appLocale.description
+        
+        for lang in TTASettingsListVC.allAppLocales {
+            if lang.code.description == selectedLocale {
+                language = lang
+            }
+        }
+        
+        return language!
+    }
+        
+
+
+
 }
+        
+
 
 
 extension UILabel {
     func determineTextDirection() {
         guard self.text != nil else { return }
         
-        let tagger = NSLinguisticTagger(tagSchemes: [.language], options: 0)
-        tagger.string = self.text
+//        let tagger = NSLinguisticTagger(tagSchemes: [.language], options: 0)
+//        tagger.string = self.text
+//        
+//        let lang = tagger.dominantLanguage
         
-        let lang = tagger.dominantLanguage
+//        let rtl = lang == TTALocaleName.arabic.description
         
-        let rtl = lang == TTALocaleName.arabic.description
+        let rtl = TTALocalizationManager.shared.getSelectedLocale().isRTL
         self.textAlignment = rtl ? .right : .left
     }
 }
@@ -84,19 +99,13 @@ extension UILabel {
 extension UITextView {
     func determineTextDirection() {
 
-        let appLang = UserDefaults.standard.appLocale.description
+//        let appLang = UserDefaults.standard.appLocale.description
         
-        let rtl = appLang == TTALocaleName.arabic.description
+//        let rtl = appLang == TTALocaleName.arabic.description
+        
+        let rtl = TTALocalizationManager.shared.getSelectedLocale().isRTL
         
         self.textAlignment = rtl ? .right : .left
-        
-//        if appLang == TTALocaleName.arabic.description {
-//            let cursorRTLposition = self.beginningOfDocument
-//            self.selectedTextRange = self.textRange(from: cursorRTLposition, to: cursorRTLposition)
-//        } else {
-//            let cursorLTRposition = self.endOfDocument
-//            self.selectedTextRange = self.textRange(from: cursorLTRposition, to: cursorLTRposition)
-//        }
         
     }
     

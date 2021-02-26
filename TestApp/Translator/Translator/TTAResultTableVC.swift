@@ -122,13 +122,13 @@ class TTAResultTableVC: UIViewController {
         
         self.tableView.reloadData()
         
-        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
-            navigationController?.navigationBar.semanticContentAttribute = .forceRightToLeft
-//            inputField.textAlignment = .right
-        } else {
-            navigationController?.navigationBar.semanticContentAttribute = .forceLeftToRight
-//            inputField.textAlignment = .left
-        }
+//        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
+//            navigationController?.navigationBar.semanticContentAttribute = .forceRightToLeft
+////            inputField.textAlignment = .right
+//        } else {
+//            navigationController?.navigationBar.semanticContentAttribute = .forceLeftToRight
+////            inputField.textAlignment = .left
+//        }
         
         inputField.determineTextDirection()
 

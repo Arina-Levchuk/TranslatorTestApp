@@ -11,15 +11,17 @@ import Foundation
 struct TTAAppLocale {
     let name: String
     let code: TTALocaleName
+    let isRTL: Bool
 }
 
 enum TTALocaleName: String {
     case english = "en"
     case arabic = "ar"
-    
+
     var description: String {
         return self.rawValue
     }
+
 }
 
 extension UserDefaults {

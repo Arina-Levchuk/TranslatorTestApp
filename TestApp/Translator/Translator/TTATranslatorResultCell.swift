@@ -116,7 +116,8 @@ class TTATranslatorResultCell: UITableViewCell {
     }
     
     func setCellDirection() {
-        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
+        
+        if TTALocalizationManager.shared.getSelectedLocale().isRTL {
             UIView.appearance().semanticContentAttribute = .forceRightToLeft
             cellTitle.semanticContentAttribute = .forceRightToLeft
             cellSubtitle.semanticContentAttribute = .forceRightToLeft
@@ -127,6 +128,18 @@ class TTATranslatorResultCell: UITableViewCell {
             cellSubtitle.semanticContentAttribute = .forceLeftToRight
             locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         }
+        
+//        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
+//            UIView.appearance().semanticContentAttribute = .forceRightToLeft
+//            cellTitle.semanticContentAttribute = .forceRightToLeft
+//            cellSubtitle.semanticContentAttribute = .forceRightToLeft
+//            locationButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+//        } else {
+//            UIView.appearance().semanticContentAttribute = .forceLeftToRight
+//            cellTitle.semanticContentAttribute = .forceLeftToRight
+//            cellSubtitle.semanticContentAttribute = .forceLeftToRight
+//            locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+//        }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
