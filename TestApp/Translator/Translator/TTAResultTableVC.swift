@@ -117,22 +117,17 @@ class TTAResultTableVC: UIViewController {
     @objc func onAppLangDidChange(_ notification: NSNotification) {
 
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
+//        updateNavBar()
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
         textViewPlaceholder.determineTextDirection()
         
         self.tableView.reloadData()
         
-//        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
-//            navigationController?.navigationBar.semanticContentAttribute = .forceRightToLeft
-////            inputField.textAlignment = .right
-//        } else {
-//            navigationController?.navigationBar.semanticContentAttribute = .forceLeftToRight
-////            inputField.textAlignment = .left
-//        }
-        
         inputField.determineTextDirection()
 
     }
+    
+
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

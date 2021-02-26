@@ -117,29 +117,12 @@ class TTATranslatorResultCell: UITableViewCell {
     
     func setCellDirection() {
         
-        if TTALocalizationManager.shared.getSelectedLocale().isRTL {
-            UIView.appearance().semanticContentAttribute = .forceRightToLeft
-            cellTitle.semanticContentAttribute = .forceRightToLeft
-            cellSubtitle.semanticContentAttribute = .forceRightToLeft
-            locationButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        } else {
-            UIView.appearance().semanticContentAttribute = .forceLeftToRight
-            cellTitle.semanticContentAttribute = .forceLeftToRight
-            cellSubtitle.semanticContentAttribute = .forceLeftToRight
-            locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        }
+        UIView.appearance().semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+        cellTitle.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+        cellSubtitle.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
         
-//        if UserDefaults.standard.appLocale.description == TTALocaleName.arabic.description {
-//            UIView.appearance().semanticContentAttribute = .forceRightToLeft
-//            cellTitle.semanticContentAttribute = .forceRightToLeft
-//            cellSubtitle.semanticContentAttribute = .forceRightToLeft
-//            locationButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-//        } else {
-//            UIView.appearance().semanticContentAttribute = .forceLeftToRight
-//            cellTitle.semanticContentAttribute = .forceLeftToRight
-//            cellSubtitle.semanticContentAttribute = .forceLeftToRight
-//            locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-//        }
+        TTALocalizationManager.shared.getSelectedLocale().isRTL ? locationButton.setImage(UIImage(systemName: "chevron.left"), for: .normal) : locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
