@@ -19,11 +19,24 @@ class TTASettingsListVC: UIViewController {
 //  MARK: - Properties
     
 //    Translators
-    var allTranslators: [TTATranslator] = []
+    static var allTranslators: [TTATranslator] = [
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yoda), url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .klingon), url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .shakespeare), url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yandex), url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
+        TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .valyrian), url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))
+    ]
     var selectedTranslator: TTATranslator!
     
 //   Flags
-    var allLanguages: [TTATranslatorLanguage] = []
+    static var allLanguages: [TTATranslatorLanguage] = [
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .rus), flagImg: UIImage(named: "ru"), langCode: "ru"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .hebrew), flagImg: UIImage(named: "he"), langCode: "he"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .polish), flagImg: UIImage(named: "pl"), langCode: "pl"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .chinese), flagImg: UIImage(named: "zh"), langCode: "zh"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .spanish), flagImg: UIImage(named: "es"), langCode: "es"),
+        TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .ukr), flagImg: UIImage(named: "uk"), langCode: "uk")
+    ]
     var selectedLanguage: TTATranslatorLanguage!
     
 //  Appearance Modes
@@ -62,13 +75,13 @@ class TTASettingsListVC: UIViewController {
     
     weak var delegate: TTASettingsListDelegate? = nil
     
-    init(selectedTranslator: TTATranslator, allTranslators: [TTATranslator], selectedLanguage: TTATranslatorLanguage, allLanguages: [TTATranslatorLanguage], delegate: TTASettingsListDelegate?) {
+    init(selectedTranslator: TTATranslator, selectedLanguage: TTATranslatorLanguage, delegate: TTASettingsListDelegate?) {
         
         self.selectedTranslator = selectedTranslator
-        self.allTranslators = allTranslators
+//        self.allTranslators = allTranslators
         
         self.selectedLanguage = selectedLanguage
-        self.allLanguages = allLanguages
+//        self.allLanguages = allLanguages
         
         self.delegate = delegate
         
@@ -149,6 +162,10 @@ class TTASettingsListVC: UIViewController {
 
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorsCV.frame.height) + (flagsCV.frame.height) + (localesCV.frame.height))
         
+        
+        self.selectedTranslator = TTASettingsListVC.allTranslators.first
+        self.selectedLanguage = TTASettingsListVC.allLanguages.first
+        
         self.selectedAppMode = {
             var initialMode: TTAAppearanceMode? = nil
             for mode in self.allAppModes {
@@ -202,7 +219,7 @@ class TTASettingsListVC: UIViewController {
         scrollView.addSubview(translatorsCV)
         translatorsCV.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
         translatorsCV.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor).isActive = true
-        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * allTranslators.count) + (50 * 2))).isActive = true
+        translatorsCV.heightAnchor.constraint(equalToConstant: CGFloat((51 * TTASettingsListVC.allTranslators.count) + (50 * 2))).isActive = true
         
         scrollView.addSubview(flagsCV)
         flagsCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
@@ -210,7 +227,7 @@ class TTASettingsListVC: UIViewController {
         flagsCV.topAnchor.constraint(equalTo: translatorsCV.bottomAnchor).isActive = true
 //        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((90 * allLanguages.count/3) + (8 * 3) + (50 * 2))).isActive = true
 //        TODO: (8 * n) should be calculated as if n = 2 or any other value
-        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((allLanguages.count > 3 ? (90 * allLanguages.count/3) : 90) + (8 * 2) + (50 * 2))).isActive = true
+        flagsCV.heightAnchor.constraint(equalToConstant: CGFloat((TTASettingsListVC.allLanguages.count > 3 ? (90 * TTASettingsListVC.allLanguages.count/3) : 90) + (8 * 2) + (50 * 2))).isActive = true
         
         scrollView.addSubview(appearanceModesCV)
         appearanceModesCV.leadingAnchor.constraint(equalTo: translatorsCV.leadingAnchor).isActive = true
@@ -244,9 +261,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
         case self.translatorsCV:
-            return allTranslators.count
+            return TTASettingsListVC.allTranslators.count
         case self.flagsCV:
-            return allLanguages.count
+            return TTASettingsListVC.allLanguages.count
         case self.appearanceModesCV:
             return allAppModes.count
         case self.localesCV:
@@ -264,7 +281,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             
             let translatorCell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
         
-            let currentTranslator = allTranslators[indexPath.row]
+            let currentTranslator = TTASettingsListVC.allTranslators[indexPath.row]
             translatorCell.setupListCellLayout(for: .withIcon)
 
             translatorCell.cellIcon.image = currentTranslator.translatorIcon
@@ -284,7 +301,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         case flagsCV:
             let flagCell = flagsCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.flagsCVCell.description, for: indexPath) as! TTASettingsGridCell
 
-            let currentLang = allLanguages[indexPath.row]
+            let currentLang = TTASettingsListVC.allLanguages[indexPath.row]
             flagCell.setupGridCellLayout(for: .squareCell)
             
             flagCell.cellIcon.image = currentLang.flagImg
@@ -463,11 +480,11 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         print("SELECTED")
                 
         if collectionView == translatorsCV {
-            self.selectedTranslator = allTranslators[indexPath.row]
+            self.selectedTranslator = TTASettingsListVC.allTranslators[indexPath.row]
             self.translatorsCV.reloadData()
             self.delegate?.newTranslatorIsSelected(translator: self.selectedTranslator)
         } else if collectionView == flagsCV {
-            self.selectedLanguage = allLanguages[indexPath.row]
+            self.selectedLanguage = TTASettingsListVC.allLanguages[indexPath.row]
             self.flagsCV.reloadData()
             self.delegate?.newLanguageSelected(language: self.selectedLanguage)
         } else if collectionView == appearanceModesCV {
