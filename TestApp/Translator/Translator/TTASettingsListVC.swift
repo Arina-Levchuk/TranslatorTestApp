@@ -504,7 +504,27 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     @objc func onDidChangeAppLanguage(_ notification: NSNotification) {
         
         navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
-
+        
+        TTASettingsListVC.allTranslators = [
+            TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yoda), url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
+            TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .klingon), url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
+            TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .shakespeare), url: URL(string: "https://api.funtranslations.com/translate/shakespeare.json"), translatorIcon: UIImage(named: "Shakespeare")),
+            TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yandex), url: URL(string: "https://translate.yandex.net/api/v1.5/tr.json/translate"), translatorIcon: UIImage(named: "Yandex"), queryDict: ["key": "trnsl.1.1.20200504T182931Z.03785aecf85306af.7922af70293ac75cde1e43526b6b4c4cd682cf8e"]),
+            TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .valyrian), url: URL(string: "https://api.funtranslations.com/translate/valyrian.json"), translatorIcon: UIImage(named: "GoT"))
+        ]
+        TTASettingsListVC.allLanguages = [
+            TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .rus), flagImg: UIImage(named: "ru"), langCode: "ru"),
+            TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .hebrew), flagImg: UIImage(named: "he"), langCode: "he"),
+            TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .polish), flagImg: UIImage(named: "pl"), langCode: "pl"),
+            TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .chinese), flagImg: UIImage(named: "zh"), langCode: "zh"),
+            TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .spanish), flagImg: UIImage(named: "es"), langCode: "es"),
+            TTATranslatorLanguage(language: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName.localizedString(type: .ukr), flagImg: UIImage(named: "uk"), langCode: "uk")
+        ]
+        self.allAppLocales = [
+            TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .english), code: .english),
+            TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic), code: .arabic)
+        ]
+        
         self.translatorsCV.reloadData()
         self.flagsCV.reloadData()
         self.appearanceModesCV.reloadData()
