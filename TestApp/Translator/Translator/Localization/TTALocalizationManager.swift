@@ -45,13 +45,10 @@ class TTALocalizationManager: NSObject {
     }
     
     func changeAppearance() {
-        
-        let RTLview: () = UIView.appearance().semanticContentAttribute = .forceRightToLeft
-        let LTRview: () = UIView.appearance().semanticContentAttribute = .forceLeftToRight
-    
-        TTALocalizationManager.shared.getSelectedLocale().isRTL ? RTLview : LTRview
-                
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UIScrollView.appearance().semanticContentAttribute = .forceRightToLeft) : (UIScrollView.appearance().semanticContentAttribute = .forceLeftToRight)
+
+        UIView.appearance().semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+
+        UINavigationBar.appearance().semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
 
     }
     
@@ -106,4 +103,16 @@ extension UITextView {
     
 }
 
+
+//extension UIApplication {
+//    
+//    var TTAuserInterfaceLayoutDirection: UIUserInterfaceLayoutDirection {
+//        
+//        get {
+//            let direction = TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UIUserInterfaceLayoutDirection.rightToLeft) : (UIUserInterfaceLayoutDirection.leftToRight)
+//        
+//            return direction
+//        }
+//    }
+//}
 

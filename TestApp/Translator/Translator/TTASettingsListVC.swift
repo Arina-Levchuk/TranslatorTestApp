@@ -159,7 +159,9 @@ class TTASettingsListVC: UIViewController {
         navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
         
         setupViewLayout()
-
+        
+        updateNavBar()
+        
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorCV.frame.height) + (flagCV.frame.height) + (localeCV.frame.height))
         
         
@@ -188,6 +190,7 @@ class TTASettingsListVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeAppLanguage(_:)), name: .didChangeAppLang, object: nil)
         
+
 //        NotificationCenter.default.removeObserver(self, name: .didChangeAppLang, object: nil)
 
     }
@@ -500,21 +503,20 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func updateNavBar() {
+        
+        navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
 
         self.navigationController?.navigationBar.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+//        to change the Swipe Direction
         self.navigationController?.view.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+        
         self.navigationController?.navigationBar.setNeedsLayout()
         self.navigationController?.navigationBar.layoutIfNeeded()
-
-//        IHSNavigationControllerHelper.setupBackButton(navVC: self.navigationController,
-//                                                      title: IHSLocacalizeHelper.localizedString("Language", comment: ""),
-//                                                      isBackButtonEnabled: true)
-        }
+        
+    }
     
     @objc func onDidChangeAppLanguage(_ notification: NSNotification) {
                
-        navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
-        
         TTASettingsListVC.allTranslators = [
             TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yoda), url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
             TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .klingon), url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
@@ -561,7 +563,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         updateNavBar()
 
     }
-    
+        
 }
 
 extension Notification.Name {
