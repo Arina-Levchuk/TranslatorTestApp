@@ -35,13 +35,14 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     let headerLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 14)
-//        lbl.textAlignment = .natural
+        lbl.textAlignment = .natural
         lbl.textColor = .label
 //        lbl.numberOfLines = 0
 //        lbl.clipsToBounds = true
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
+
     
     func setupHeaderView() {
         addSubview(headerLabel)

@@ -35,7 +35,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     let footerLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 14)
-//        lbl.textAlignment = .natural
+        lbl.textAlignment = .natural
         lbl.textColor = .label
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
