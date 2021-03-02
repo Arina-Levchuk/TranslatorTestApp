@@ -186,10 +186,7 @@ class TTASettingsListVC: UIViewController {
             return initialLocale
         }()
         
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (translatorCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (flagCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (appearanceModeCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (localeCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeAppLanguage(_:)), name: .didChangeAppLang, object: nil)
         
 //        NotificationCenter.default.removeObserver(self, name: .didChangeAppLang, object: nil)
 
@@ -540,36 +537,26 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic), code: .arabic, isRTL: true)
         ]
         
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UICollectionView.appearance().semanticContentAttribute = .forceRightToLeft) : (UICollectionView.appearance().semanticContentAttribute = .forceLeftToRight)
-        
         self.translatorCV.reloadData()
         self.flagCV.reloadData()
         self.appearanceModeCV.reloadData()
         self.localeCV.reloadData()
-                
-        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (translatorCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (flagCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (appearanceModeCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (localeCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
         
-        
-//        viewDidAppear(true)
+        if TTALocalizationManager.shared.getSelectedLocale().isRTL {
+            translatorCV.semanticContentAttribute = .forceRightToLeft
+            flagCV.semanticContentAttribute = .forceRightToLeft
+            appearanceModeCV.semanticContentAttribute = .forceRightToLeft
+            localeCV.semanticContentAttribute = .forceRightToLeft
+        } else {
+            translatorCV.semanticContentAttribute = .forceLeftToRight
+            flagCV.semanticContentAttribute = .forceLeftToRight
+            appearanceModeCV.semanticContentAttribute = .forceLeftToRight
+            localeCV.semanticContentAttribute = .forceLeftToRight
+        }
         
         updateNavBar()
 
 
-    }
- 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(false)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeAppLanguage(_:)), name: .didChangeAppLang, object: nil)
-        
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (translatorCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (flagCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (appearanceModeCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (localeCV.semanticContentAttribute = .forceRightToLeft) : (translatorCV.semanticContentAttribute = .forceLeftToRight)
-        
     }
     
 }

@@ -53,10 +53,7 @@ class TTALocalizationManager: NSObject {
         
         TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UILabel.appearance().semanticContentAttribute = .forceRightToLeft) :
         (UILabel.appearance().semanticContentAttribute = .forceLeftToRight)
-        
-        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UIScrollView.appearance().semanticContentAttribute = .forceRightToLeft) : (UIScrollView.appearance().semanticContentAttribute = .forceLeftToRight)
-        
-        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UICollectionView.appearance().semanticContentAttribute = .forceRightToLeft) : (UICollectionView.appearance().semanticContentAttribute = .forceLeftToRight)
+
     }
     
     func resetLocalization() {
@@ -109,3 +106,5 @@ extension UITextView {
     }
     
 }
+
+
