@@ -46,7 +46,7 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     
     func setupHeaderView() {
         addSubview(headerLabel)
-//        headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, multiplier: 2).isActive = true
+
         NSLayoutConstraint.activate([
             headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
 //            headerLabel.trailingAnchor.constraint(equalTo: trailingAnchor),

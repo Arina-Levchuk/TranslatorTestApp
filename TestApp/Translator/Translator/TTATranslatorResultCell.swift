@@ -11,7 +11,48 @@ import UIKit
 
 class TTATranslatorResultCell: UITableViewCell {
     static let reuseIdentifier = "TTATranslatorResultCell"
+  
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        contentView.addSubview(cellView)
+        
+        cellView.addSubview(cellTitle)
+        cellView.addSubview(cellSubtitle)
+        cellView.addSubview(locationButton)
+        cellView.addSubview(retryButton)
+        retryButton.isHidden = true
+        
+        cellView.addSubview(spinner)
+        spinner.isHidden = true
+        
+        setUpHorizontalView()
+        setUpVerticalView()
+        
+        setCellDirection()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellTitle.text = nil
+        cellSubtitle.text = nil
+        spinner.isHidden = true
+        retryButton.isHidden = true
+        cellSubtitle.textColor = .black
+    }
+
+    @objc func onAppLangDidChange(_ notification: NSNotification) {
+        setCellDirection()
+    }
+
+// MARK:- Properties
     let cellTitle: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +99,14 @@ class TTATranslatorResultCell: UITableViewCell {
         return spinner
     }()
     
+    
+    let cellView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+// MARK:- Methods
     func showSpinner(animate: Bool) {
         if animate == true {
             spinner.isHidden = false
@@ -67,12 +116,6 @@ class TTATranslatorResultCell: UITableViewCell {
             spinner.hidesWhenStopped = true
         }
     }
-    
-    let cellView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     
     func setUpHorizontalView() {
       
@@ -124,46 +167,6 @@ class TTATranslatorResultCell: UITableViewCell {
         TTALocalizationManager.shared.getSelectedLocale().isRTL ? locationButton.setImage(UIImage(systemName: "chevron.left"), for: .normal) : locationButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         
     }
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        contentView.addSubview(cellView)
-        
-        cellView.addSubview(cellTitle)
-        cellView.addSubview(cellSubtitle)
-        cellView.addSubview(locationButton)
-        cellView.addSubview(retryButton)
-        retryButton.isHidden = true
-        
-        cellView.addSubview(spinner)
-        spinner.isHidden = true
-        
-        setUpHorizontalView()
-        setUpVerticalView()
-        
-        setCellDirection()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
-        
-    }
-    
-    @objc func onAppLangDidChange(_ notification: NSNotification) {
-        setCellDirection()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        cellTitle.text = nil
-        cellSubtitle.text = nil
-        spinner.isHidden = true
-        retryButton.isHidden = true
-        cellSubtitle.textColor = .black
-    }
-    
+
 }
 
