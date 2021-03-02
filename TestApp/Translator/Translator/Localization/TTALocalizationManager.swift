@@ -50,9 +50,8 @@ class TTALocalizationManager: NSObject {
         let LTRview: () = UIView.appearance().semanticContentAttribute = .forceLeftToRight
     
         TTALocalizationManager.shared.getSelectedLocale().isRTL ? RTLview : LTRview
-        
-        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UILabel.appearance().semanticContentAttribute = .forceRightToLeft) :
-        (UILabel.appearance().semanticContentAttribute = .forceLeftToRight)
+                
+//        TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UIScrollView.appearance().semanticContentAttribute = .forceRightToLeft) : (UIScrollView.appearance().semanticContentAttribute = .forceLeftToRight)
 
     }
     

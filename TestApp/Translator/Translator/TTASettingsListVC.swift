@@ -537,25 +537,28 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             TTAAppLocale(name: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName.localizedString(type: .arabic), code: .arabic, isRTL: true)
         ]
         
-        self.translatorCV.reloadData()
-        self.flagCV.reloadData()
-        self.appearanceModeCV.reloadData()
-        self.localeCV.reloadData()
-        
         if TTALocalizationManager.shared.getSelectedLocale().isRTL {
+            scrollView.semanticContentAttribute = .forceRightToLeft
+            
             translatorCV.semanticContentAttribute = .forceRightToLeft
             flagCV.semanticContentAttribute = .forceRightToLeft
             appearanceModeCV.semanticContentAttribute = .forceRightToLeft
             localeCV.semanticContentAttribute = .forceRightToLeft
         } else {
+            scrollView.semanticContentAttribute = .forceLeftToRight
+            
             translatorCV.semanticContentAttribute = .forceLeftToRight
             flagCV.semanticContentAttribute = .forceLeftToRight
             appearanceModeCV.semanticContentAttribute = .forceLeftToRight
             localeCV.semanticContentAttribute = .forceLeftToRight
         }
         
-        updateNavBar()
+        self.translatorCV.reloadData()
+        self.flagCV.reloadData()
+        self.appearanceModeCV.reloadData()
+        self.localeCV.reloadData()
 
+        updateNavBar()
 
     }
     
