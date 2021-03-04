@@ -162,6 +162,10 @@ class TTASettingsListVC: UIViewController {
         
         updateNavBar()
         
+        
+        
+        self.navigationController?.navigationBar.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+        
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorCV.frame.height) + (flagCV.frame.height) + (localeCV.frame.height))
         
         
@@ -505,13 +509,27 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func updateNavBar() {
         
         navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
-
+        navigationItem.hidesBackButton = true
         self.navigationController?.navigationBar.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+        navigationItem.hidesBackButton = false
+        
+        
 //        to change the Swipe Direction
         self.navigationController?.view.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
         
+//        let barAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [TTASettingsListVC.self])
+//        if TTALocalizationManager.shared.getSelectedLocale().isRTL {
+//            barAppearance.backIndicatorImage = UIImage(systemName: "chevron.forward")
+//            barAppearance.backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.forward")
+//
+//        } else {
+//            barAppearance.backIndicatorImage = UIImage(systemName: "chevron.backward")
+//            barAppearance.backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.backward")
+//        }
+        
         self.navigationController?.navigationBar.setNeedsLayout()
         self.navigationController?.navigationBar.layoutIfNeeded()
+        self.navigationController?.navigationBar.setNeedsDisplay()
         
     }
     
@@ -570,10 +588,3 @@ extension Notification.Name {
     static let didChangeAppLang = Notification.Name("appLanguageWillBeChanged")
 }
 
-extension UICollectionViewFlowLayout {
-    
-    open override var flipsHorizontallyInOppositeLayoutDirection: Bool {
-        return true
-    }
-    
-}

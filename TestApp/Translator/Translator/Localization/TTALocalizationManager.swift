@@ -48,7 +48,16 @@ class TTALocalizationManager: NSObject {
 
         UIView.appearance().semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
 
-        UINavigationBar.appearance().semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
+//        if TTALocalizationManager.shared.getSelectedLocale().isRTL {
+//            UINavigationBar.appearance().backIndicatorImage = UIImage(systemName: "chevron.forward")
+//            UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.forward")
+//            
+//        } else {
+//            UINavigationBar.appearance().backIndicatorImage = UIImage(systemName: "chevron.forward")
+//            UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.forward")
+//        }
+        
+//        UINavigationBar.appearance().semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
 
     }
     
@@ -104,15 +113,14 @@ extension UITextView {
 }
 
 
-//extension UIApplication {
-//    
-//    var TTAuserInterfaceLayoutDirection: UIUserInterfaceLayoutDirection {
-//        
-//        get {
-//            let direction = TTALocalizationManager.shared.getSelectedLocale().isRTL ? (UIUserInterfaceLayoutDirection.rightToLeft) : (UIUserInterfaceLayoutDirection.leftToRight)
-//        
-//            return direction
-//        }
-//    }
-//}
-
+extension UIApplication {
+    @objc var tta_userInterfaceLayoutDirection : UIUserInterfaceLayoutDirection {
+        get {
+            var direction = UIUserInterfaceLayoutDirection.leftToRight
+            if TTALocalizationManager.shared.getSelectedLocale().isRTL {
+                direction = .rightToLeft
+            }
+            return direction
+        }
+    }
+}
