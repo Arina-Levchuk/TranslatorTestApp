@@ -162,13 +162,10 @@ class TTASettingsListVC: UIViewController {
         
         updateNavBar()
         
-        
-        
         self.navigationController?.navigationBar.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
         
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorCV.frame.height) + (flagCV.frame.height) + (localeCV.frame.height))
-        
-        
+      
         self.selectedTranslator = TTASettingsListVC.allTranslators.first
         self.selectedLanguage = TTASettingsListVC.allLanguages.first
         
@@ -193,9 +190,6 @@ class TTASettingsListVC: UIViewController {
         }()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeAppLanguage(_:)), name: .didChangeAppLang, object: nil)
-        
-
-//        NotificationCenter.default.removeObserver(self, name: .didChangeAppLang, object: nil)
 
     }
     
@@ -204,7 +198,6 @@ class TTASettingsListVC: UIViewController {
         translatorCV.collectionViewLayout.invalidateLayout()
         flagCV.collectionViewLayout.invalidateLayout()
         appearanceModeCV.collectionViewLayout.invalidateLayout()
-//        self.translatorsCV.layoutIfNeeded()
     }
     
     override func viewDidLayoutSubviews() {
@@ -281,8 +274,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-//        let reusableCell: TTASettingsListCell = collectionView.dequeueReusableCell(for: indexPath)
+
         switch collectionView {
         case translatorCV:
             
@@ -293,15 +285,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
 
             translatorCell.cellIcon.image = currentTranslator.translatorIcon
             translatorCell.cellTitle.text = currentTranslator.name
-            
-//            let selectedTranslatorCell = UIView(frame: cell.bounds)
-//            selectedTranslatorCell.backgroundColor = .systemYellow
-//
-//            cell.selectedBackgroundView = nil
+
             if currentTranslator.url == selectedTranslator.url {
                 translatorCell.checkmark.isHidden = false
-//                cell.isSelected = true
-//                cell.selectedBackgroundView = selectedTranslatorCell
             }            
             return translatorCell
             
@@ -352,15 +338,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             localeCell.setupListCellLayout(for: .noIcon)
             
             localeCell.cellTitle.text = currentLocale.name
-            
-//            let selectedCell = UIView(frame: localeCell.bounds)
-//            selectedCell.backgroundColor = .systemPurple
-//
-//            localeCell.selectedBackgroundView = nil
+
             if currentLocale.code == selectedLocale.code {
                 localeCell.checkmark.isHidden = false
-//                localeCell.isSelected = true
-//                localeCell.selectedBackgroundView = selectedCell
             }
             
             return localeCell
@@ -513,19 +493,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         self.navigationController?.navigationBar.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
         navigationItem.hidesBackButton = false
         
-        
 //        to change the Swipe Direction
         self.navigationController?.view.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
-        
-//        let barAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [TTASettingsListVC.self])
-//        if TTALocalizationManager.shared.getSelectedLocale().isRTL {
-//            barAppearance.backIndicatorImage = UIImage(systemName: "chevron.forward")
-//            barAppearance.backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.forward")
-//
-//        } else {
-//            barAppearance.backIndicatorImage = UIImage(systemName: "chevron.backward")
-//            barAppearance.backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.backward")
-//        }
         
         self.navigationController?.navigationBar.setNeedsLayout()
         self.navigationController?.navigationBar.layoutIfNeeded()

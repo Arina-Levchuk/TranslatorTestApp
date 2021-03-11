@@ -55,6 +55,6 @@
 "locationAccessAlertSettingsButtonTitle" = "الإعدادات";
 "locationAccessAlertCancelButtonTitle" = "حسنا";
 
-"noLocationDataAlertTitle" = "لا توجد بيانات الموقع";
-"noLocationDataAlertMessage" = "لم يتم توفير أي بيانات الموقع كما الوصول في الوقت المحدد";
+"noLocationDataAlertTitle" = "الموقع الحالي غير متوفر";
+"noLocationDataAlertMessage" = "لا يمكن تحديد موقعك الحالي في هذا الوقت.";
 "noLocationDataAlertButton" = "حسنا";

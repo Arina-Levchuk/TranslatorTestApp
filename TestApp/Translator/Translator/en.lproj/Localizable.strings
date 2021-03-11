@@ -55,6 +55,6 @@
 "locationAccessAlertSettingsButtonTitle" = "Settings";
 "locationAccessAlertCancelButtonTitle" = "OK";
 
-"noLocationDataAlertTitle" = "No Location Data";
-"noLocationDataAlertMessage" = "No location data as access hasn't been provided on time";
+"noLocationDataAlertTitle" = "Current Location Not Available";
+"noLocationDataAlertMessage" = "Your current location can not be determined at this time.";
 "noLocationDataAlertButton" = "OK";

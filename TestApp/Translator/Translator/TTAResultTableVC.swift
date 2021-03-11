@@ -99,23 +99,31 @@ class TTAResultTableVC: UIViewController {
         
     }
     
-    @objc func onAppLangDidChange(_ notification: NSNotification) {
-
-        navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
-
-        textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
-        textViewPlaceholder.determineTextDirection()
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        inputField.layer.borderColor = UIColor.systemGray5.cgColor
+    }
         
-        self.tableView.reloadData()
+    private var inputFieldIsOversized = false {
         
-        inputField.determineTextDirection()
-
+        didSet {
+            
+            guard oldValue != inputFieldIsOversized else { return }
+            inputField.reloadInputViews()
+            inputField.isScrollEnabled = inputFieldIsOversized
+            inputField.setNeedsUpdateConstraints()
+        }
+        
     }
     
+    private let limitedInputFieldHeight: CGFloat = 70
 
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        self.inputFieldTopConstraint?.constant = limitedInputFieldHeight
     
 //        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
 //        tableView.scrollIndicatorInsets = tableView.contentInset
@@ -124,19 +132,14 @@ class TTAResultTableVC: UIViewController {
 //        let newTxtViewSize = self.inputField.sizeThatFits(size)
 
 //        let limitedHeight = view.safeAreaLayoutGuide.layoutFrame.height/5
-        let newTxtViewHeight = self.inputField.contentSize.height
-        let limitedHeight: CGFloat = 70
-
-        if newTxtViewHeight > limitedHeight  {
-            self.inputField.isScrollEnabled = true
-            self.inputFieldTopConstraint?.constant = limitedHeight
-//            self.inputFieldTopConstraint?.isActive = true
-        } else {
-            self.inputField.isScrollEnabled = false
-        }
-        self.inputFieldTopConstraint?.constant = newTxtViewHeight
 
     }
+    
+        func textViewDidChange(_ textView: UITextView) {
+            
+            inputFieldIsOversized = inputField.contentSize.height > limitedInputFieldHeight
+
+        }
         
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
@@ -359,6 +362,19 @@ class TTAResultTableVC: UIViewController {
         }
     }
     
+    @objc func onAppLangDidChange(_ notification: NSNotification) {
+
+        navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
+
+        textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
+        textViewPlaceholder.determineTextDirection()
+        
+        self.tableView.reloadData()
+        
+        inputField.determineTextDirection()
+
+    }
+    
     
 // MARK: - Custom Methods
         
@@ -572,9 +588,6 @@ extension TTAResultTableVC: UITextViewDelegate {
         }
     }
         
-//    func textViewDidChange(_ textView: UITextView) {
-//        self.inputFieldTopConstraint?.constant = textView.contentSize.height
-//    }
     
 //  [Return] button closes the keyboard
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
