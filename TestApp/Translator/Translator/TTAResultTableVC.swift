@@ -34,7 +34,7 @@ class TTAResultTableVC: UIViewController {
     
     let inputField = UITextView()
     var inputFieldTopConstraint: NSLayoutConstraint?
-    private let limitedInputFieldHeight: CGFloat = 200
+    private let limitedInputFieldHeight: CGFloat = 100
     
     private var inputFieldIsOversized = false {
         
@@ -122,14 +122,6 @@ class TTAResultTableVC: UIViewController {
         super.viewDidLayoutSubviews()
         
         self.inputFieldTopConstraint?.constant = limitedInputFieldHeight
-    
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
-//        tableView.scrollIndicatorInsets = tableView.contentInset
-
-//        let size = CGSize(width: self.inputField.frame.width, height: newTxtViewHeight)
-//        let newTxtViewSize = self.inputField.sizeThatFits(size)
-
-//        let limitedHeight = view.safeAreaLayoutGuide.layoutFrame.height/5
 
     }
     
@@ -158,8 +150,8 @@ class TTAResultTableVC: UIViewController {
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         navigationController?.navigationBar.prefersLargeTitles = false
         
-        let listOfTranslatorsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(moveToTranslatorsList))
-        navigationItem.rightBarButtonItem = listOfTranslatorsButton
+        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(moveToTranslatorsList))
+        navigationItem.rightBarButtonItem = settingsButton
     }
     
     func setUpTableView() {
@@ -180,28 +172,28 @@ class TTAResultTableVC: UIViewController {
         setUpInputFieldAppearance()
         setUpSendButton()
         
-        inputContainerView.translatesAutoresizingMaskIntoConstraints                                             = false
-        inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        inputContainerView.translatesAutoresizingMaskIntoConstraints                                            = false
+        inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive   = true
         inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
+        inputContainerView.topAnchor.constraint(equalTo: inputField.topAnchor, constant: -5).isActive           = true
         
-        inputContainerView.topAnchor.constraint(equalTo: inputField.topAnchor, constant: -5).isActive = true
+        inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
         
         view.addConstraint(inputViewBottomConstraint!)
         
         inputContainerView.backgroundColor = .purple
         
 //      Blur container view
-//        inputContainerView.backgroundColor = .clear
-//        let blurEffect = UIBlurEffect(style: .light)
-//        let blurView = UIVisualEffectView(effect: blurEffect)
-//        blurView.translatesAutoresizingMaskIntoConstraints = false
-//        inputContainerView.insertSubview(blurView, at: 0)
-//
-//        NSLayoutConstraint.activate([
-//            blurView.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor),
-//            blurView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor),
-//        ])
+        inputContainerView.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        inputContainerView.insertSubview(blurView, at: 0)
+
+        NSLayoutConstraint.activate([
+            blurView.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor),
+            blurView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor),
+        ])
         
     }
     
@@ -280,8 +272,7 @@ class TTAResultTableVC: UIViewController {
         
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
-       
-//      TODO: recheck with 1 cell before acvieving the if condition
+
         if tableView.contentSize.height > (view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height) {
             self.tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
         } else {
@@ -330,7 +321,7 @@ class TTAResultTableVC: UIViewController {
     @objc func moveToTranslatorsList() {
         if let translator = self.selectedTranslator {
             guard let language = self.selectedLanguage else { return }
-            
+
             self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, selectedLanguage: language, delegate: self), animated: true)
         }
     }
@@ -386,7 +377,7 @@ class TTAResultTableVC: UIViewController {
     }
     
     @objc func didTapRetryButton(_ sender: UIButton) {
-        print("BUTTON TAPPED")
+//        print("BUTTON IS TAPPED")
         if let superview = sender.superview, let cell = superview.superview?.superview as? TTATranslatorResultCell {
             if let cellIndexPath = self.tableView.indexPath(for: cell) {
                 let result = self.fetchedResultsController.object(at: cellIndexPath)

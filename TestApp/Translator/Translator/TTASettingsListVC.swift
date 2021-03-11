@@ -95,7 +95,8 @@ class TTASettingsListVC: UIViewController {
     var scrollView: UIScrollView = {
         var sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
-        sv.backgroundColor = .systemYellow
+//        sv.backgroundColor = .systemYellow
+        sv.backgroundColor = .systemBackground
         return sv
     }()
     
@@ -108,7 +109,7 @@ class TTASettingsListVC: UIViewController {
         cv.register(TTASettingsFooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isScrollEnabled = false
-        cv.backgroundColor = .white
+        cv.backgroundColor = .systemBackground
         return cv
     }()
     
