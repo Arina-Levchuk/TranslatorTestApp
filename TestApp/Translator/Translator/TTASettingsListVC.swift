@@ -156,7 +156,8 @@ class TTASettingsListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        navigationController?.navigationBar.barTintColor = .systemGray6
         navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
         
         setupViewLayout()

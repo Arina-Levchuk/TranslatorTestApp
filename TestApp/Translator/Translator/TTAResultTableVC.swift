@@ -44,10 +44,11 @@ class TTAResultTableVC: UIViewController {
             inputField.reloadInputViews()
             inputField.isScrollEnabled = inputFieldIsOversized
             inputField.setNeedsUpdateConstraints()
+                        
         }
         
     }
-    
+        
     let textViewPlaceholder: UILabel = {
         let tvPlaceholder = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         tvPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
@@ -74,6 +75,9 @@ class TTAResultTableVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        print("VIEW DID LOAD")
+        
+        view.backgroundColor = .systemBackground
+        
         do {
             try fetchedResultsController.performFetch()
             tableView.reloadData()
@@ -81,7 +85,7 @@ class TTAResultTableVC: UIViewController {
             print("Fetching error: \(error), \(error.userInfo)")
         }
         
-        setUpNavBarAppearance()
+        setupNavBarAppearance()
         setUpTableView()
         configureInputContainerView()
 
@@ -105,12 +109,14 @@ class TTAResultTableVC: UIViewController {
         
         self.selectedLanguage = TTASettingsListVC.allLanguages.first
         self.selectedTranslator = TTASettingsListVC.allTranslators.first
+        
     }
             
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
+
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -120,21 +126,23 @@ class TTAResultTableVC: UIViewController {
             
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        self.inputFieldTopConstraint?.constant = limitedInputFieldHeight
 
+        self.inputFieldTopConstraint?.constant = limitedInputFieldHeight
+        
     }
     
-        func textViewDidChange(_ textView: UITextView) {
-            
-            inputFieldIsOversized = inputField.contentSize.height > limitedInputFieldHeight
-
-        }
         
+    func textViewDidChange(_ textView: UITextView) {
+        
+        inputFieldIsOversized = inputField.contentSize.height > limitedInputFieldHeight
+        
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -145,8 +153,9 @@ class TTAResultTableVC: UIViewController {
     
 //  MARK:- Layout
     
-    func setUpNavBarAppearance() {
-        view.backgroundColor = .systemBackground
+    func setupNavBarAppearance() {
+        
+//        navigationController?.navigationBar.barTintColor = .systemGray6
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         navigationController?.navigationBar.prefersLargeTitles = false
         
@@ -181,7 +190,7 @@ class TTAResultTableVC: UIViewController {
         
         view.addConstraint(inputViewBottomConstraint!)
         
-        inputContainerView.backgroundColor = .purple
+//        inputContainerView.backgroundColor = .purple
         
 //      Blur container view
         inputContainerView.backgroundColor = .clear
@@ -198,6 +207,7 @@ class TTAResultTableVC: UIViewController {
     }
     
     func setUpInputFieldAppearance() {
+        
         inputField.backgroundColor = .systemBackground
         inputField.layer.cornerRadius = 15
         inputField.layer.borderWidth = 1
@@ -296,10 +306,22 @@ class TTAResultTableVC: UIViewController {
         self.tableView.contentInset = contentInsets
         tableView.scrollIndicatorInsets = contentInsets
         
+//        var inputFieldDidChanged: CGFloat = 17 {
+//
+//            didSet {
+//                guard oldValue.isLess(than: inputField.contentSize.height) else { return }
+//                    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+//                    tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+//
+//                }
+//        }
+//
+//        inputFieldDidChanged = inputField.contentSize.height
+        
         if tableView.contentSize.height > (keyboardSize.height + inputContainerView.frame.height) {
             tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
         }
-        
+    
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {

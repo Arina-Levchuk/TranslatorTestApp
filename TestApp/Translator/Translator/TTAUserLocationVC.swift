@@ -64,6 +64,8 @@ class TTAUserLocationVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.barTintColor = .systemGray6
+        
         setUpMapView()
         setupUserLocation()
         mapView.showsUserLocation = true
