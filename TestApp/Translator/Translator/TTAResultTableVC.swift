@@ -283,7 +283,8 @@ class TTAResultTableVC: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
 
-        if tableView.contentSize.height > (view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height) {
+//        if tableView.contentSize.height > (view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height) {
+        if tableView.contentSize.height > inputContainerView.frame.height {
             self.tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
         } else {
             self.tableView.contentOffset = CGPoint.zero
@@ -302,24 +303,18 @@ class TTAResultTableVC: UIViewController {
             self.view.layoutIfNeeded()
         }
         
+//        TODO: SCROLL FOR keyboardWillSHOW
+        
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: (keyboardSize.height + inputContainerView.frame.height), right: 0)
         self.tableView.contentInset = contentInsets
         tableView.scrollIndicatorInsets = contentInsets
         
-//        var inputFieldDidChanged: CGFloat = 17 {
-//
-//            didSet {
-//                guard oldValue.isLess(than: inputField.contentSize.height) else { return }
-//                    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
-//                    tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
-//
-//                }
-//        }
-//
-//        inputFieldDidChanged = inputField.contentSize.height
-        
-        if tableView.contentSize.height > (keyboardSize.height + inputContainerView.frame.height) {
+        let inputViewHeight = view.safeAreaLayoutGuide.layoutFrame.height - (keyboardSize.height + inputContainerView.frame.height)
+
+        if tableView.contentSize.height > inputViewHeight {
             tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+        } else {
+            tableView.contentOffset = CGPoint.zero
         }
     
     }
@@ -328,6 +323,7 @@ class TTAResultTableVC: UIViewController {
         
         guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
 
+//        TODO: SCROLL FOR keyboardWillHIDE
         setUpTableViewScroll()
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
