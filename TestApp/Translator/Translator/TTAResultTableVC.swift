@@ -280,14 +280,14 @@ class TTAResultTableVC: UIViewController {
     
     func setUpTableViewScroll() {
         
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
-        tableView.scrollIndicatorInsets = tableView.contentInset
+//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+//        tableView.scrollIndicatorInsets = tableView.contentInset
 
 //        if tableView.contentSize.height > (view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height) {
         if tableView.contentSize.height > inputContainerView.frame.height {
-            self.tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+            self.tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentSize.height), animated: false)
         } else {
-            self.tableView.contentOffset = CGPoint.zero
+            self.tableView.setContentOffset(CGPoint.zero, animated: false)
         }
     }
     
@@ -298,13 +298,7 @@ class TTAResultTableVC: UIViewController {
         guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
 //        print(keyboardAnimationDuration)
         
-        UIView.animate(withDuration: keyboardAnimationDuration) {
-            self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
-            self.view.layoutIfNeeded()
-        }
-        
 //        TODO: SCROLL FOR keyboardWillSHOW
-        
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: (keyboardSize.height + inputContainerView.frame.height), right: 0)
         self.tableView.contentInset = contentInsets
         tableView.scrollIndicatorInsets = contentInsets
@@ -316,7 +310,12 @@ class TTAResultTableVC: UIViewController {
         } else {
             tableView.contentOffset = CGPoint.zero
         }
-    
+        
+        UIView.animate(withDuration: keyboardAnimationDuration) {
+            self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
+            self.view.layoutIfNeeded()
+        }
+
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
@@ -324,7 +323,19 @@ class TTAResultTableVC: UIViewController {
         guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
 
 //        TODO: SCROLL FOR keyboardWillHIDE
-        setUpTableViewScroll()
+//        setUpTableViewScroll()
+        
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
+        self.tableView.contentInset = contentInsets
+        tableView.scrollIndicatorInsets = contentInsets
+        
+//        let inputViewHeight = view.safeAreaLayoutGuide.layoutFrame.height - (keyboardSize.height + inputContainerView.frame.height)
+
+//        if tableView.contentSize.height > inputContainerView.frame.height {
+//            tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+//        } else {
+//            tableView.contentOffset = CGPoint.zero
+//        }
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
@@ -365,7 +376,7 @@ class TTAResultTableVC: UIViewController {
             })
           dismissKeyboard()
           setUpTableViewScroll()
-
+            
         }
     }
     
