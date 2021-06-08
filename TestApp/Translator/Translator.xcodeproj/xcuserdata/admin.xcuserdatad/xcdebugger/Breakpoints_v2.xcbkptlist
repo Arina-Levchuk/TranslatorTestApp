@@ -62,10 +62,10 @@
             filePath = "Translator/TTAResultTableVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "496"
-            endingLineNumber = "496"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "519"
+            endingLineNumber = "519"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -110,9 +110,9 @@
             filePath = "Translator/TTAResultTableVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "578"
-            endingLineNumber = "578"
-            landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
+            startingLineNumber = "601"
+            endingLineNumber = "601"
+            landmarkName = "controllerDidChangeContent(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

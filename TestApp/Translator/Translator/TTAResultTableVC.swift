@@ -304,7 +304,7 @@ class TTAResultTableVC: UIViewController {
         tableView.scrollIndicatorInsets = contentInsets
         
         let inputViewHeight = view.safeAreaLayoutGuide.layoutFrame.height - (keyboardSize.height + inputContainerView.frame.height)
-
+        
         if tableView.contentSize.height > inputViewHeight {
             tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
         } else {
@@ -312,6 +312,13 @@ class TTAResultTableVC: UIViewController {
         }
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
+            
+            if self.tableView.contentSize.height > inputViewHeight {
+                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentSize.height)
+            } else {
+                self.tableView.contentOffset = CGPoint.zero
+            }
+            
             self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
             self.view.layoutIfNeeded()
         }
@@ -336,11 +343,20 @@ class TTAResultTableVC: UIViewController {
 //        } else {
 //            tableView.contentOffset = CGPoint.zero
 //        }
-        
+                
         UIView.animate(withDuration: keyboardAnimationDuration) {
             self.inputViewBottomConstraint?.constant = 0
             self.view.layoutIfNeeded()
         }
+        
+        let inputViewHeight = view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height
+
+        if tableView.contentSize.height > inputViewHeight {
+            tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+        } else {
+            tableView.contentOffset = CGPoint.zero
+        }
+
     }
     
     @objc func dismissKeyboard() {
@@ -375,7 +391,14 @@ class TTAResultTableVC: UIViewController {
                 }
             })
           dismissKeyboard()
-          setUpTableViewScroll()
+        let inputViewHeight = view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height
+
+        if tableView.contentSize.height > inputViewHeight {
+            tableView.contentOffset = CGPoint(x: 0, y: tableView.contentSize.height)
+        } else {
+            tableView.contentOffset = CGPoint.zero
+        }
+//          setUpTableViewScroll()
             
         }
     }

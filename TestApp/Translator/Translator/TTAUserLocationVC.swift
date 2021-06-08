@@ -70,7 +70,7 @@ class TTAUserLocationVC: UIViewController {
         setupUserLocation()
         mapView.showsUserLocation = true
         
-        setupTestLabel()
+//        setupTestLabel()
         retrieveLocation()
         
     }
