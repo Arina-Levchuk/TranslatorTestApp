@@ -37,16 +37,12 @@ class TTAResultTableVC: UIViewController {
     private let limitedInputFieldHeight: CGFloat = 100
     
     private var inputFieldIsOversized = false {
-        
         didSet {
-            
             guard oldValue != inputFieldIsOversized else { return }
             inputField.reloadInputViews()
             inputField.isScrollEnabled = inputFieldIsOversized
             inputField.setNeedsUpdateConstraints()
-                        
         }
-        
     }
         
     let textViewPlaceholder: UILabel = {
@@ -109,14 +105,12 @@ class TTAResultTableVC: UIViewController {
         
         self.selectedLanguage = TTASettingsListVC.allLanguages.first
         self.selectedTranslator = TTASettingsListVC.allTranslators.first
-        
     }
             
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
-
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -128,34 +122,27 @@ class TTAResultTableVC: UIViewController {
         super.viewDidLayoutSubviews()
 
         self.inputFieldTopConstraint?.constant = limitedInputFieldHeight
-        
     }
     
         
     func textViewDidChange(_ textView: UITextView) {
-        
         inputFieldIsOversized = inputField.contentSize.height > limitedInputFieldHeight
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)
         self.view.endEditing(true)
-//        NotificationCenter.default.removeObserver(self)
     }
     
 //  MARK:- Layout
     
     func setupNavBarAppearance() {
-        
-//        navigationController?.navigationBar.barTintColor = .systemGray6
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
         navigationController?.navigationBar.prefersLargeTitles = false
         
@@ -189,9 +176,7 @@ class TTAResultTableVC: UIViewController {
         inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
         
         view.addConstraint(inputViewBottomConstraint!)
-        
-//        inputContainerView.backgroundColor = .purple
-        
+
 //      Blur container view
         inputContainerView.backgroundColor = .clear
         let blurEffect = UIBlurEffect(style: .light)
@@ -203,11 +188,9 @@ class TTAResultTableVC: UIViewController {
             blurView.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor),
             blurView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor),
         ])
-        
     }
     
     func setUpInputFieldAppearance() {
-        
         inputField.backgroundColor = .systemBackground
         inputField.layer.cornerRadius = 15
         inputField.layer.borderWidth = 1
@@ -228,11 +211,9 @@ class TTAResultTableVC: UIViewController {
         setupTextViewPlaceholder()
         
         setupInputFieldConstraints()
-                
     }
     
     func setupTextViewPlaceholder() {
-        
         textViewPlaceholder.isHidden = false
         textViewPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         textViewPlaceholder.leadingAnchor.constraint(equalTo: inputField.leadingAnchor, constant: 10).isActive = true
@@ -241,11 +222,9 @@ class TTAResultTableVC: UIViewController {
         textViewPlaceholder.centerYAnchor.constraint(equalTo: inputField.centerYAnchor).isActive = true
         
         textViewPlaceholder.determineTextDirection()
-        
     }
     
     func setupInputFieldConstraints() {
-        
         inputField.translatesAutoresizingMaskIntoConstraints = false
         inputField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
         inputField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 20).isActive = true
@@ -254,7 +233,6 @@ class TTAResultTableVC: UIViewController {
         inputFieldTopConstraint = NSLayoutConstraint(item: inputField, attribute: .height, relatedBy: .equal, toItem: inputField, attribute: .height, multiplier: 1, constant: 35)
         
         view.addConstraint(inputFieldTopConstraint!)
-        
     }
     
     func setUpSendButton() {
@@ -275,15 +253,9 @@ class TTAResultTableVC: UIViewController {
 
 //      The View Controller receives notification when the keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
     }
     
     func setUpTableViewScroll() {
-        
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inputContainerView.frame.height, right: 0)
-//        tableView.scrollIndicatorInsets = tableView.contentInset
-
-//        if tableView.contentSize.height > (view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height) {
         if tableView.contentSize.height > inputContainerView.frame.height {
             self.tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentSize.height), animated: false)
         } else {
@@ -294,7 +266,6 @@ class TTAResultTableVC: UIViewController {
 // MARK: - Selectors
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
-        
         guard let userInfo = notification.userInfo, let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
 //        print(keyboardAnimationDuration)
         
@@ -312,7 +283,6 @@ class TTAResultTableVC: UIViewController {
         }
         
         UIView.animate(withDuration: keyboardAnimationDuration) {
-            
             if self.tableView.contentSize.height > inputViewHeight {
                 self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentSize.height)
             } else {
@@ -322,11 +292,9 @@ class TTAResultTableVC: UIViewController {
             self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
             self.view.layoutIfNeeded()
         }
-
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
-        
         guard let userInfo = notification.userInfo, let keyboardAnimationDuration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey]) as? Double) else { return }
 
 //        TODO: SCROLL FOR keyboardWillHIDE
@@ -356,7 +324,6 @@ class TTAResultTableVC: UIViewController {
         } else {
             tableView.contentOffset = CGPoint.zero
         }
-
     }
     
     @objc func dismissKeyboard() {
@@ -399,12 +366,10 @@ class TTAResultTableVC: UIViewController {
             tableView.contentOffset = CGPoint.zero
         }
 //          setUpTableViewScroll()
-            
         }
     }
     
     @objc func onAppLangDidChange(_ notification: NSNotification) {
-
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
 
         textViewPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
@@ -413,11 +378,9 @@ class TTAResultTableVC: UIViewController {
         self.tableView.reloadData()
         
         inputField.determineTextDirection()
-
     }
     
     @objc func didTapLocationButton(_ sender: UIButton) {
-
         if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
             if let cellIndexPath = self.tableView.indexPath(for: cell) {
                 let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
@@ -451,8 +414,7 @@ class TTAResultTableVC: UIViewController {
             }
         }
     }
-    
-    
+        
 // MARK: - Custom Methods
         
     func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
@@ -510,7 +472,6 @@ class TTAResultTableVC: UIViewController {
             }
             task.resume()
         }
-    
 }
 
 // MARK: - Extensions
@@ -520,12 +481,9 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
         
         let result = self.fetchedResultsController.object(at: indexPath)
-        
-//        cell.accessoryType = .disclosureIndicator
 
         cell.cellTitle.text = result.textToTranslate
-                
-//        cell.locationButton.addTarget(self, action: #selector(didTapLocationButton), for: .touchUpInside)
+
         cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
                 
         switch result.responseStatus {
@@ -542,7 +500,6 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
             cell.showSpinner(animate: true)
 //            cell.cellSubtitle.text = nil
         }
-
         return cell
     }
         
@@ -561,11 +518,8 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
         let result = self.fetchedResultsController.object(at: indexPath)
         
         self.navigationController?.pushViewController(TTAUserLocationVC(latitude: result.latitude, longitude: result.longitude), animated: true)
-        
     }
-
 }
-
 
 extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
     
@@ -601,20 +555,17 @@ extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
-
 }
 
 extension TTAResultTableVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        
         if inputField.text != "" || inputField.text != nil {
             textViewPlaceholder.isHidden = true
         }
     }
         
     func textViewDidEndEditing(_ textView: UITextView) {
-        
         if inputField.text == "" || inputField.text == nil {
             textViewPlaceholder.isHidden = false
         }
@@ -641,6 +592,5 @@ extension TTAResultTableVC: TTASettingsListDelegate {
     
     func newTranslatorIsSelected(translator: TTATranslator) {
         self.selectedTranslator = translator
-    }
-    
+    }    
 }
