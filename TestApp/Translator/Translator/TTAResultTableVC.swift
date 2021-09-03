@@ -570,8 +570,7 @@ extension TTAResultTableVC: UITextViewDelegate {
             textViewPlaceholder.isHidden = false
         }
     }
-        
-    
+
 //  [Return] button closes the keyboard
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
