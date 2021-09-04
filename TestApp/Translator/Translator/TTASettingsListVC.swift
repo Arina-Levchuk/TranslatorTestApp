@@ -75,14 +75,10 @@ class TTASettingsListVC: UIViewController {
     
     weak var delegate: TTASettingsListDelegate? = nil
     
-    init(selectedTranslator: TTATranslator, selectedLanguage: TTATranslatorLanguage, delegate: TTASettingsListDelegate?) {
-        
+    init(selectedTranslator: TTATranslator, selectedLanguage: TTATranslatorLanguage, delegate: TTASettingsListDelegate?) {        
         self.selectedTranslator = selectedTranslator
-//        self.allTranslators = allTranslators
-        
         self.selectedLanguage = selectedLanguage
-//        self.allLanguages = allLanguages
-        
+      
         self.delegate = delegate
         
         super.init(nibName: nil, bundle: nil)
@@ -192,7 +188,6 @@ class TTASettingsListVC: UIViewController {
         }()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeAppLanguage(_:)), name: .didChangeAppLang, object: nil)
-
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -208,7 +203,6 @@ class TTASettingsListVC: UIViewController {
 //      makes scrollView with multiple CVs scrollable
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: (translatorCV.frame.height) + (flagCV.frame.height) + (appearanceModeCV.frame.height) + (localeCV.frame.height))
     }
-    
     
 //  MARK: - Methods
     func setupViewLayout() {
@@ -247,19 +241,16 @@ class TTASettingsListVC: UIViewController {
         localeCV.trailingAnchor.constraint(equalTo: translatorCV.trailingAnchor).isActive = true
         localeCV.topAnchor.constraint(equalTo: appearanceModeCV.bottomAnchor).isActive = true
         localeCV.heightAnchor.constraint(equalToConstant: CGFloat((headerFooterHeight * 2) + (51 * 2))).isActive = true
-    
     }
     
     private func setAppearanceMode(for theme: AppearanceMode) {
         view.window?.overrideUserInterfaceStyle = theme.userInterfaceStyle
     }
-    
 }
 
 //  MARK: - Extensions
 
 extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
         case self.translatorCV:
@@ -276,7 +267,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
         switch collectionView {
         case translatorCV:
             
@@ -349,7 +339,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         default:
             return UICollectionViewCell()
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -395,7 +384,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                     return UICollectionReusableView()
                 }
             }
-            
         default:
             return UICollectionReusableView()
         }
@@ -403,7 +391,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
         switch collectionView {
         case translatorCV, localeCV:
             return CGSize.init(width: self.scrollView.contentSize.width, height: 51)
@@ -414,7 +401,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         default:
             return CGSize.zero
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -425,20 +411,16 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         return CGSize(width: collectionView.frame.width, height: 50)
     }
     
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
- 
         switch collectionView {
         case flagCV:
             return 8
         default:
             return 0
         }
-
     }
         
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-
         switch collectionView {
         case translatorCV, localeCV:
             return UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
@@ -449,11 +431,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         default:
             return UIEdgeInsets.zero
         }
-
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-
         switch collectionView {
         case flagCV:
             return CGFloat.init(10)
@@ -462,12 +442,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         default:
             return CGFloat.zero
         }
-
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("SELECTED CV CELL")
-            
         if collectionView == translatorCV {
             self.selectedTranslator = TTASettingsListVC.allTranslators[indexPath.row]
             self.translatorCV.reloadData()
@@ -485,11 +462,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             self.appLocale = selectedLocale.code
             NotificationCenter.default.post(name: .didChangeAppLang, object: nil)
         }
-        
     }
     
     func updateNavBar() {
-        
         navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
         navigationItem.hidesBackButton = true
         self.navigationController?.navigationBar.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
@@ -501,11 +476,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         self.navigationController?.navigationBar.setNeedsLayout()
         self.navigationController?.navigationBar.layoutIfNeeded()
         self.navigationController?.navigationBar.setNeedsDisplay()
-        
     }
     
     @objc func onDidChangeAppLanguage(_ notification: NSNotification) {
-               
         TTASettingsListVC.allTranslators = [
             TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .yoda), url: URL(string: "https://api.funtranslations.com/translate/yoda.json"), translatorIcon: UIImage(named: "Yoda")),
             TTATranslator(name: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName.localizedString(type: .klingon), url: URL(string: "https://api.funtranslations.com/translate/klingon.json"), translatorIcon: UIImage(named: "Klingon")),
@@ -550,12 +523,9 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
         self.localeCV.reloadData()
 
         updateNavBar()
-
     }
-        
 }
 
 extension Notification.Name {
     static let didChangeAppLang = Notification.Name("appLanguageWillBeChanged")
 }
-
