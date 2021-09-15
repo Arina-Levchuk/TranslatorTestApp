@@ -12,7 +12,6 @@ class TTASettingsGridCell: UICollectionViewCell {
     
     enum CellView: String {
         case roundCell, squareCell
-
     }
     
     enum ReuseID: String {
@@ -41,10 +40,8 @@ class TTASettingsGridCell: UICollectionViewCell {
         self.layer.borderColor = UIColor.systemGray4.cgColor
         
         contentView.isUserInteractionEnabled = false
-        
-        self.layer.cornerRadius = 10
-        self.clipsToBounds = true
 
+        self.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
@@ -79,7 +76,6 @@ class TTASettingsGridCell: UICollectionViewCell {
     }()
     
     func setupGridCellLayout(for cellType: CellView) {
-        
         switch cellType {
         case .roundCell:
             self.contentView.addSubview(cellIcon)
@@ -88,7 +84,6 @@ class TTASettingsGridCell: UICollectionViewCell {
             cellIcon.widthAnchor.constraint(equalToConstant: contentView.bounds.width - 10).isActive = true
             cellIcon.heightAnchor.constraint(equalToConstant: contentView.bounds.height - 10).isActive = true
             self.layer.cornerRadius = contentView.bounds.height/2
-            self.clipsToBounds = true
             
         case .squareCell:
             self.contentView.addSubview(cellIcon)
@@ -103,7 +98,6 @@ class TTASettingsGridCell: UICollectionViewCell {
             cellTitle.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
             cellTitle.heightAnchor.constraint(equalToConstant: contentView.frame.height * (1/3)).isActive = true
             self.layer.cornerRadius = 10
-            self.clipsToBounds = true
         }
         
     
