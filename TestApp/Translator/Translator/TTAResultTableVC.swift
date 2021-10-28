@@ -70,8 +70,7 @@ class TTAResultTableVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print("VIEW DID LOAD")
-        
+
         view.backgroundColor = .systemBackground
         
         do {
@@ -109,7 +108,6 @@ class TTAResultTableVC: UIViewController {
             
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(onAppLangDidChange(_:)), name: .didChangeAppLang, object: nil)
     }
     
@@ -120,11 +118,9 @@ class TTAResultTableVC: UIViewController {
             
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
         self.inputFieldTopConstraint?.constant = limitedInputFieldHeight
     }
     
-        
     func textViewDidChange(_ textView: UITextView) {
         inputFieldIsOversized = inputField.contentSize.height > limitedInputFieldHeight
     }
