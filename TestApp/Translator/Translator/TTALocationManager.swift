@@ -9,7 +9,6 @@
 import UIKit
 import CoreLocation
 
-
 final class TTALocationManager: NSObject {
 
 //    Singleton instance
@@ -36,7 +35,6 @@ final class TTALocationManager: NSObject {
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
 //        locationManager?.startMonitoringVisits()
         locationManager?.requestWhenInUseAuthorization()
-    
     }
     
 //    func destroyLocationManager() {
@@ -44,7 +42,6 @@ final class TTALocationManager: NSObject {
 //        locationManager = nil
 //        currentLocation = nil
 //    }
-
 }
 
 //   MARK:- Extensions
@@ -61,13 +58,10 @@ extension TTALocationManager: CLLocationManagerDelegate {
             
             locationManager?.stopUpdatingLocation()
             print("Current location is: \(newLocation)")
-        
         }
-
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
         switch status {
         case .authorizedAlways:
             print("user allow app to get location data when app is active or in background")
@@ -85,8 +79,5 @@ extension TTALocationManager: CLLocationManagerDelegate {
         @unknown default:
             fatalError()
         }
-
     }
-    
-    
 }

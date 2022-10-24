@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 struct TTAAppearanceMode {
     let mode: String
     var modeImg: UIImage? = nil
@@ -36,7 +35,6 @@ enum AppearanceMode: String {
         }
     }
 }
-
 
 extension UserDefaults {
     var appearanceMode: AppearanceMode {

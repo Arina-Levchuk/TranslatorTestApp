@@ -21,7 +21,6 @@ class TTATranslatorResultCell: UITableViewCell {
         cellView.addSubview(locationButton)
         cellView.addSubview(retryButton)
         retryButton.isHidden = true
-        
         cellView.addSubview(spinner)
         spinner.isHidden = true
         

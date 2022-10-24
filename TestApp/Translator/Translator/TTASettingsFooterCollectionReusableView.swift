@@ -25,9 +25,7 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.backgroundColor = .systemGray5
-        
         layer.borderColor = UIColor.systemGray5.cgColor
         layer.borderWidth = 0.5
         
@@ -47,7 +45,6 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
         layer.borderColor = UIColor.systemGray5.cgColor
     }
 
-    
     @objc func onAppLangDidChange(_ notification: NSNotification) {
         footerLabel.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
     }
@@ -62,7 +59,5 @@ final class TTASettingsFooterCollectionReusableView: UICollectionReusableView {
             footerLabel.lastBaselineAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: 0),
             footerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
-    
     }
-    
 }

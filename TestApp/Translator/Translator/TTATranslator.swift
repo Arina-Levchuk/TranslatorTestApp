@@ -10,10 +10,8 @@ import Foundation
 import UIKit
 
 struct TTATranslator {
-    
     let name: String
     var url: URL? = nil
     var translatorIcon: UIImage? = nil
     var queryDict: [String: String]?
-
 }

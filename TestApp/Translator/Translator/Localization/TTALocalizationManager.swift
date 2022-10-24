@@ -14,11 +14,9 @@ protocol StringsLocalizedProtocol where T.Type == Self.Type  {
     static func localizedString(type: T) -> String
 }
 
-
 class TTALocalizationManager: NSObject {
    
     static let shared = TTALocalizationManager()
-    
     var bundle: Bundle? = nil
     
     private override init() {
@@ -31,7 +29,6 @@ class TTALocalizationManager: NSObject {
     }
     
     func setLocale(language: String) {
-        
         let path: String? = Bundle.main.path(forResource: language, ofType: "lproj")
         
         if let path = path {
@@ -41,13 +38,10 @@ class TTALocalizationManager: NSObject {
         }
         
         changeAppearance()
-                
     }
     
     func changeAppearance() {
-
         UIView.appearance().semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
-
 //        if TTALocalizationManager.shared.getSelectedLocale().isRTL {
 //            UINavigationBar.appearance().backIndicatorImage = UIImage(systemName: "chevron.forward")
 //            UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.forward")
@@ -58,7 +52,6 @@ class TTALocalizationManager: NSObject {
 //        }
         
 //        UINavigationBar.appearance().semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
-
     }
     
     func resetLocalization() {
@@ -66,7 +59,6 @@ class TTALocalizationManager: NSObject {
     }
     
     func getSelectedLocale() -> TTAAppLocale {
-        
         var language: TTAAppLocale? = nil
         let selectedLocale = UserDefaults.standard.appLocale.description
         
@@ -75,16 +67,13 @@ class TTALocalizationManager: NSObject {
                 language = lang
             }
         }
-        
         return language!
     }
-
 }
 
 extension UILabel {
     func determineTextDirection() {
         guard self.text != nil else { return }
-        
 //        let tagger = NSLinguisticTagger(tagSchemes: [.language], options: 0)
 //        tagger.string = self.text
 //        
@@ -105,13 +94,9 @@ extension UITextView {
 //        let rtl = appLang == TTALocaleName.arabic.description
         
         let rtl = TTALocalizationManager.shared.getSelectedLocale().isRTL
-        
         self.textAlignment = rtl ? .right : .left
-        
     }
-    
 }
-
 
 extension UIApplication {
     @objc var tta_userInterfaceLayoutDirection : UIUserInterfaceLayoutDirection {

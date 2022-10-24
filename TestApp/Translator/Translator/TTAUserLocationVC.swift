@@ -10,7 +10,6 @@ import UIKit
 import MapKit
 //import CoreLocation
 
-
 protocol TTAUserLocationVCDelegate: class {
     func passUserCoordinates(latitude: Double, longitude: Double)
 }
@@ -57,13 +56,11 @@ class TTAUserLocationVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-
 //        getUserLocation()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationController?.navigationBar.barTintColor = .systemGray6
         
         setUpMapView()
@@ -72,30 +69,24 @@ class TTAUserLocationVC: UIViewController {
         
 //        setupTestLabel()
         retrieveLocation()
-        
     }
     
     func setupTestLabel() {
         mapView.addSubview(locationTestLabel)
-        
         locationTestLabel.topAnchor.constraint(equalTo: mapView.topAnchor).isActive = true
         locationTestLabel.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
         locationTestLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         locationTestLabel.widthAnchor.constraint(equalToConstant: view.bounds.width).isActive = true
-        
         locationTestLabel.text = "LTD: \(self.latitude ?? 0.000); LNGTD: \(self.longitude ?? 0.000)"
     }
     
     func setUpMapView() {
         view.addSubview(mapView)
-        
         mapView.translatesAutoresizingMaskIntoConstraints = false
-        
         mapView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         mapView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         mapView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
         mapView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
     }
  
     func setupUserLocation() {
@@ -112,7 +103,6 @@ class TTAUserLocationVC: UIViewController {
         
         objectAnnotation.coordinate = pinLocation
         self.mapView.addAnnotation(objectAnnotation)
-        
     }
     
     func retrieveLocation() {
@@ -124,11 +114,9 @@ class TTAUserLocationVC: UIViewController {
         } else if (CLLocationManager.locationServicesEnabled()) && (latitude == Double.zero && longitude == Double.zero) {
             showNoLocationDataAlert(presenter: self)
         }
-
     }
     
     func showNoLocationAccessAlert(presenter: UIViewController) {
-        
         let alert = UIAlertController(title: TTAMapVCKeys.localizedString(type: .noAccessAlertTitle), message: TTAMapVCKeys.localizedString(type: .noAccessAlertMessage), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: TTAMapVCKeys.localizedString(type: .alertSettingsButtonTitle), style: .default, handler: { (action) in
             guard let deviceSettingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
@@ -140,18 +128,12 @@ class TTAUserLocationVC: UIViewController {
         
         alert.addAction(UIAlertAction(title: TTAMapVCKeys.localizedString(type: .alertCancelButtonTitle), style: .cancel, handler: nil))
         presenter.present(alert, animated: true)
-        
     }
     
     func showNoLocationDataAlert(presenter: UIViewController) {
-
         let alert = UIAlertController(title: TTAMapVCKeys.localizedString(type: .noLocationDataAlertTitle), message: TTAMapVCKeys.localizedString(type: .noLocationDataAlertMessage), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: TTAMapVCKeys.localizedString(type: .noLocationDataAlertButton), style: .cancel, handler: nil))
    
         presenter.present(alert, animated: true)
-        
     }
-
 }
-
-//extension TTAUserLocationVC: CLLocationManagerDelegate {}

@@ -21,7 +21,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
     
 //  MARK: - Translators Section
     enum TTATranslatorsKeys: String, StringsLocalizedProtocol {
-                
         typealias T = Self
         
         case sectionHeader = "translatorViewHeader"
@@ -32,7 +31,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
         }
         
         enum TTATranslatorName: String, StringsLocalizedProtocol {
-
             typealias T = Self
             
             case yoda = "yodaTranslatorName"
@@ -44,15 +42,12 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
             static func localizedString(type: TTASettingsVCKeys.TTATranslatorsKeys.TTATranslatorName) -> String {
                 return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
             }
-        
         }
-    
     }
     
 //  MARK: - Languages (flags) Section
     
     enum TTALanguagesKeys: String, StringsLocalizedProtocol {
-        
         typealias T = Self
         
         case sectionHeader = "flagViewHeader"
@@ -63,7 +58,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
         }
         
         enum TTALanguageName: String, StringsLocalizedProtocol {
-            
             typealias T = Self
             
             case rus = "rusLang"
@@ -76,15 +70,12 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
             static func localizedString(type: TTASettingsVCKeys.TTALanguagesKeys.TTALanguageName) -> String {
                 return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
             }
-    
         }
-        
     }
    
 //  MARK: - Appearance Mode Settings Section
     
     enum TTAAppearanceModesKeys: String, StringsLocalizedProtocol {
-        
         typealias T = Self
         
         case sectionHeader = "appModeViewHeader"
@@ -98,7 +89,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
 //  MARK: - Localization Settings Section
     
     enum TTALocalizationSettingsKeys: String, StringsLocalizedProtocol {
-
         typealias T = Self
         
         case sectionHeader = "localizationViewHeader"
@@ -109,7 +99,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
         }
 
         enum TTALocaleName: String, StringsLocalizedProtocol {
-
             typealias T = Self
             
             case arabic = "arabicLocaleName"
@@ -118,9 +107,6 @@ enum TTASettingsVCKeys: String, StringsLocalizedProtocol {
             static func localizedString(type: TTASettingsVCKeys.TTALocalizationSettingsKeys.TTALocaleName) -> String {
                 return TTALocalizationManager.shared.localizeStringForKey(key: type.rawValue, comment: "")
             }
-
         }
-        
     }
-    
 }

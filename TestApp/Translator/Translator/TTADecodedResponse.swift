@@ -38,7 +38,5 @@ class TTADecodedResponse: Decodable {
                 self.translated = try funContentsContainer.decode(String.self, forKey: .translated)
             }
         }
-    
     }
-
 }

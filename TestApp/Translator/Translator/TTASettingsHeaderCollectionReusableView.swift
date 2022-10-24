@@ -14,9 +14,7 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         self.backgroundColor = .systemGray5
-        
         layer.borderColor = UIColor.systemGray5.cgColor
         layer.borderWidth = 0.5
         
@@ -43,7 +41,6 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
         return lbl
     }()
 
-    
     func setupHeaderView() {
         addSubview(headerLabel)
 
@@ -54,7 +51,5 @@ final class TTASettingsHeaderCollectionReusableView: UICollectionReusableView {
             headerLabel.lastBaselineAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: 0),
             headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
-                
     }
-        
 }

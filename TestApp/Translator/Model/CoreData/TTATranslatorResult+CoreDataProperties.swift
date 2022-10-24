@@ -10,7 +10,6 @@
 import Foundation
 import CoreData
 
-
 extension TTATranslatorResult {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<TTATranslatorResult> {

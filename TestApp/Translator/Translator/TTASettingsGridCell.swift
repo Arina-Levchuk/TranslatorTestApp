@@ -31,16 +31,13 @@ class TTASettingsGridCell: UICollectionViewCell {
             if let cellView = cellView {
                 self?.setupGridCellLayout(for: cellView)
             }
-            
         }
         
         self.backgroundColor = .systemGray6
-        
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.systemGray4.cgColor
         
         contentView.isUserInteractionEnabled = false
-
         self.clipsToBounds = true
     }
     
@@ -50,7 +47,6 @@ class TTASettingsGridCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         cellTitle.text = nil
         cellIcon.image = nil
     }
@@ -99,8 +95,5 @@ class TTASettingsGridCell: UICollectionViewCell {
             cellTitle.heightAnchor.constraint(equalToConstant: contentView.frame.height * (1/3)).isActive = true
             self.layer.cornerRadius = 10
         }
-        
-    
     }
-    
 }

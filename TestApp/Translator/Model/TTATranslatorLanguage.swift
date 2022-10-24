@@ -10,9 +10,7 @@ import Foundation
 import UIKit
 
 struct TTATranslatorLanguage {
-    
     let language: String
     var flagImg: UIImage? = nil
     let langCode: String
-    
 }

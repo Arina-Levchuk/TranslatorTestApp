@@ -8,8 +8,7 @@
 
 import UIKit
 
-protocol TTASettingsListDelegate: class {
-    
+protocol TTASettingsListDelegate: AnyObject {
     func newTranslatorIsSelected(translator: TTATranslator)
     func newLanguageSelected(language: TTATranslatorLanguage)
 }
@@ -78,9 +77,7 @@ class TTASettingsListVC: UIViewController {
     init(selectedTranslator: TTATranslator, selectedLanguage: TTATranslatorLanguage, delegate: TTASettingsListDelegate?) {        
         self.selectedTranslator = selectedTranslator
         self.selectedLanguage = selectedLanguage
-      
         self.delegate = delegate
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -152,12 +149,10 @@ class TTASettingsListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationController?.navigationBar.barTintColor = .systemGray6
         navigationItem.title = TTASettingsVCKeys.localizedString(type: .title)
         
         setupViewLayout()
-        
         updateNavBar()
         
         self.navigationController?.navigationBar.semanticContentAttribute = TTALocalizationManager.shared.getSelectedLocale().isRTL ? .forceRightToLeft : .forceLeftToRight
@@ -269,7 +264,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
         case translatorCV:
-            
             let translatorCell: TTASettingsListCell = collectionView.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.translatorsCVCell.description, for: indexPath) as! TTASettingsListCell
         
             let currentTranslator = TTASettingsListVC.allTranslators[indexPath.row]
@@ -303,7 +297,6 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             return flagCell
             
         case appearanceModeCV:
-            
             let appearanceModeCell = appearanceModeCV.dequeueReusableCell(withReuseIdentifier: TTASettingsGridCell.ReuseID.appearanceModeCVCell.description, for: indexPath) as! TTASettingsGridCell
 
             appearanceModeCell.setupGridCellLayout(for: .roundCell)
@@ -321,8 +314,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                     appearanceModeCell.selectedBackgroundView = selectedCell
                 }
             }
-            
             return appearanceModeCell
+            
         case localeCV:
             let localeCell = localeCV.dequeueReusableCell(withReuseIdentifier: TTASettingsListCell.ReuseID.textAppearanceCVCell.description, for: indexPath) as! TTASettingsListCell
             
@@ -334,8 +327,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
             if currentLocale.code == selectedLocale.code {
                 localeCell.checkmark.isHidden = false
             }
-            
             return localeCell
+            
         default:
             return UICollectionViewCell()
         }
@@ -362,8 +355,8 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 default:
                     return UICollectionReusableView()
                 }
-
             }
+            
         case UICollectionView.elementKindSectionFooter:
             if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TTASettingsFooterCollectionReusableView.reuseID, for: indexPath) as? TTASettingsFooterCollectionReusableView {
                 
@@ -384,6 +377,7 @@ extension TTASettingsListVC: UICollectionViewDelegate, UICollectionViewDataSourc
                     return UICollectionReusableView()
                 }
             }
+            
         default:
             return UICollectionReusableView()
         }

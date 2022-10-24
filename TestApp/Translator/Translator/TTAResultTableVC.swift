@@ -10,7 +10,6 @@ import UIKit
 import Foundation
 import CoreData
 
-
 class TTAResultTableVC: UIViewController {
 
 //  MARK: - Properties
@@ -22,11 +21,9 @@ class TTAResultTableVC: UIViewController {
         
         let sort = NSSortDescriptor(key: #keyPath(TTATranslatorResult.timeStamp), ascending: true)
         fetchRequest.sortDescriptors = [sort]
-
         fetchRequest.fetchBatchSize = 10
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
-        
         fetchedResultsController.delegate = self
 
         return fetchedResultsController
@@ -63,14 +60,12 @@ class TTAResultTableVC: UIViewController {
     let tableView = UITableView.init(frame: .zero)
     
     var selectedTranslator: TTATranslator? = nil
-    
     var selectedLanguage: TTATranslatorLanguage? = nil
 
 //  MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .systemBackground
         
         do {
@@ -148,7 +143,6 @@ class TTAResultTableVC: UIViewController {
     
     func setUpTableView() {
         view.addSubview(tableView)
-        
         tableView.translatesAutoresizingMaskIntoConstraints                                             = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
@@ -169,21 +163,19 @@ class TTAResultTableVC: UIViewController {
         inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         inputContainerView.topAnchor.constraint(equalTo: inputField.topAnchor, constant: -5).isActive           = true
         
-        inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
-        
-        view.addConstraint(inputViewBottomConstraint!)
-
 //      Blur container view
         inputContainerView.backgroundColor = .clear
         let blurEffect = UIBlurEffect(style: .light)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         inputContainerView.insertSubview(blurView, at: 0)
-
         NSLayoutConstraint.activate([
             blurView.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor),
             blurView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor),
         ])
+        
+        inputViewBottomConstraint = NSLayoutConstraint(item: inputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
+        view.addConstraint(inputViewBottomConstraint!)
     }
     
     func setUpInputFieldAppearance() {
@@ -193,7 +185,6 @@ class TTAResultTableVC: UIViewController {
         inputField.layer.borderColor = UIColor.systemGray5.cgColor
         inputField.keyboardAppearance = .default
         inputField.keyboardType = .default
-
         inputField.textColor = .label
         inputField.determineTextDirection()
 
@@ -216,7 +207,6 @@ class TTAResultTableVC: UIViewController {
         textViewPlaceholder.trailingAnchor.constraint(equalTo: inputField.trailingAnchor).isActive = true
         textViewPlaceholder.centerXAnchor.constraint(equalTo: inputField.centerXAnchor).isActive = true
         textViewPlaceholder.centerYAnchor.constraint(equalTo: inputField.centerYAnchor).isActive = true
-        
         textViewPlaceholder.determineTextDirection()
     }
     
@@ -227,7 +217,6 @@ class TTAResultTableVC: UIViewController {
         inputField.bottomAnchor.constraint(equalTo: sendButton.bottomAnchor).isActive = true
         
         inputFieldTopConstraint = NSLayoutConstraint(item: inputField, attribute: .height, relatedBy: .equal, toItem: inputField, attribute: .height, multiplier: 1, constant: 35)
-        
         view.addConstraint(inputFieldTopConstraint!)
     }
     
@@ -237,7 +226,6 @@ class TTAResultTableVC: UIViewController {
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: 35.0).isActive = true
-        
         sendButton.leadingAnchor.constraint(equalTo: inputField.trailingAnchor, constant: 10).isActive = true
         sendButton.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -20).isActive = true
         sendButton.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -5).isActive = true
@@ -284,7 +272,6 @@ class TTAResultTableVC: UIViewController {
             } else {
                 self.tableView.contentOffset = CGPoint.zero
             }
-            
             self.inputViewBottomConstraint?.constant = -keyboardSize.height + self.view.safeAreaInsets.bottom
             self.view.layoutIfNeeded()
         }
@@ -473,13 +460,13 @@ class TTAResultTableVC: UIViewController {
 // MARK: - Extensions
 
 extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
         
         let result = self.fetchedResultsController.object(at: indexPath)
 
         cell.cellTitle.text = result.textToTranslate
-
         cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
                 
         switch result.responseStatus {
@@ -500,19 +487,15 @@ extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
     }
         
     func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
-
         guard editingStyle == .delete else { return }
         let result = self.fetchedResultsController.object(at: indexPath)
-        coreDataStack.managedContext.delete(result)
         
+        coreDataStack.managedContext.delete(result)
         coreDataStack.saveContext()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("Row is selected!")
-        
         let result = self.fetchedResultsController.object(at: indexPath)
-        
         self.navigationController?.pushViewController(TTAUserLocationVC(latitude: result.latitude, longitude: result.longitude), animated: true)
     }
 }
@@ -533,7 +516,6 @@ extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-
         switch type {
         case .insert:
             tableView.insertRows(at: [newIndexPath!], with: .fade)
@@ -569,7 +551,6 @@ extension TTAResultTableVC: UITextViewDelegate {
 
 //  [Return] button closes the keyboard
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
         if (text as NSString).rangeOfCharacter(from: CharacterSet.newlines).location == NSNotFound {
             return true
         } else {

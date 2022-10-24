@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class TTASettingsListCell: UICollectionViewCell {
     
     enum CellView {
@@ -29,20 +28,16 @@ class TTASettingsListCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setupListCellView = { [weak self] cellView in
-            
             if let cellView = cellView {
                 self?.setupListCellLayout(for: cellView)
             }
-            
         }
         
         self.backgroundColor = .systemBackground
-        
         self.layer.borderWidth = 0.5
         self.layer.borderColor = UIColor.systemGray5.cgColor
         
         contentView.isUserInteractionEnabled = false
-    
     }
     
     required init?(coder: NSCoder) {
@@ -51,12 +46,10 @@ class TTASettingsListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         cellTitle.text = nil
         cellIcon.image = nil
         checkmark.isHidden = true
     }
-    
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -88,13 +81,11 @@ class TTASettingsListCell: UICollectionViewCell {
  
         contentView.addSubview(checkmark)
         checkmark.isHidden = true
-        
         checkmark.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         checkmark.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
         
         switch cell {
         case .withIcon:
-            
             contentView.addSubview(cellIcon)
             contentView.addSubview(cellTitle)
 
@@ -111,10 +102,6 @@ class TTASettingsListCell: UICollectionViewCell {
 
             cellTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
             cellTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-            
         }
-        
-
     }
-    
 }

@@ -10,7 +10,6 @@
 import Foundation
 import CoreData
 
-
 public class TTATranslatorResult: NSManagedObject {
 
     enum ResponseStatus: String {
@@ -19,7 +18,6 @@ public class TTATranslatorResult: NSManagedObject {
         var description: String {
             return self.rawValue
         }
-        
     }
 
     var setResponseStatus: ((_ status: ResponseStatus?) -> Void)?
@@ -36,7 +34,6 @@ public class TTATranslatorResult: NSManagedObject {
         self.init(entity: entity, insertInto: context)
         
         self.textToTranslate = textToTranslate
-        
         self.timeStamp = setTimeStamp()
         
         setResponseStatus = { [weak self] status in
@@ -51,9 +48,5 @@ public class TTATranslatorResult: NSManagedObject {
             self.latitude = userLocation.coordinate.latitude
             self.longitude = userLocation.coordinate.longitude
         }
-        
-        
-        
     }
-    
 }

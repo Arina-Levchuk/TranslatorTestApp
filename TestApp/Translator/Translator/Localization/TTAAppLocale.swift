@@ -21,20 +21,16 @@ enum TTALocaleName: String {
     var description: String {
         return self.rawValue
     }
-
 }
 
 extension UserDefaults {
     
     var appLocale: TTALocaleName {
-        
         get {
             register(defaults: [#function: TTALocaleName.english.description])
             return TTALocaleName(rawValue: string(forKey: #function)!) ?? .english
         } set {
             set(newValue.rawValue, forKey: #function)
         }
-        
     }
-    
 }

@@ -12,9 +12,8 @@ extension URL {
     
     @discardableResult
     func append(_ queryItem: String, value: String?) -> URL {
-        
         guard var urlComponents = URLComponents(string:  absoluteString) else { return absoluteURL }
-        
+
         // create array of existing query items
         var queryItems: [URLQueryItem] = urlComponents.queryItems ??  []
         
