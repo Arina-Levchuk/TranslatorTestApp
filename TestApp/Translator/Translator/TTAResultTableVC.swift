@@ -25,7 +25,6 @@ class TTAResultTableVC: UIViewController {
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
-
         return fetchedResultsController
     }()
     
@@ -80,7 +79,6 @@ class TTAResultTableVC: UIViewController {
         configureInputContainerView()
 
         self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
-        
         self.tableView.dataSource = self
         self.tableView.delegate = self
         

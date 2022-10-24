@@ -7,25 +7,18 @@
 //
 
 import UIKit
+import SnapKit
 
 class TTATranslatorResultCell: UITableViewCell {
     static let reuseIdentifier = "TTATranslatorResultCell"
   
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.setupUI()
+//        contentView.addSubview(cellView)
         
-        contentView.addSubview(cellView)
-        
-        cellView.addSubview(cellTitle)
-        cellView.addSubview(cellSubtitle)
-        cellView.addSubview(locationButton)
-        cellView.addSubview(retryButton)
-        retryButton.isHidden = true
-        cellView.addSubview(spinner)
-        spinner.isHidden = true
-        
-        setUpHorizontalView()
-        setUpVerticalView()
+//        setUpHorizontalView()
+//        setUpVerticalView()
         
         setCellDirection()
         
@@ -49,8 +42,8 @@ class TTATranslatorResultCell: UITableViewCell {
         setCellDirection()
     }
 
-// MARK:- Properties
-    let cellTitle: UILabel = {
+// MARK: - Properties
+    lazy var cellTitle: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .label
@@ -67,7 +60,7 @@ class TTATranslatorResultCell: UITableViewCell {
         lbl.textColor = .label
         lbl.font = UIFont.systemFont(ofSize: 17)
 //        lbl.textAlignment = .natural
-        lbl.numberOfLines = 0   // to remove any maximum limit, and use as many lines as needed, set the value of this property to 0
+        lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         return lbl
     }()
@@ -102,7 +95,7 @@ class TTATranslatorResultCell: UITableViewCell {
         return view
     }()
     
-// MARK:- Methods
+// MARK: - Methods
     func showSpinner(animate: Bool) {
         if animate == true {
             spinner.isHidden = false
@@ -110,6 +103,43 @@ class TTATranslatorResultCell: UITableViewCell {
         }  else  {
             spinner.stopAnimating()
             spinner.hidesWhenStopped = true
+        }
+    }
+    
+    func setupUI() {
+        self.addSubview(cellTitle)
+        self.addSubview(cellSubtitle)
+        self.addSubview(spinner)
+        self.addSubview(locationButton)
+        self.addSubview(retryButton)
+        self.spinner.isHidden = true
+        self.retryButton.isHidden = true
+        
+        cellTitle.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(10)
+            make.trailing.equalTo(retryButton.snp.leading).offset(10)
+        }
+        
+        cellSubtitle.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(cellTitle.snp.bottom).offset(5)
+            make.trailing.equalTo(retryButton.snp.leading).offset(10)
+        }
+        
+        spinner.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        
+        locationButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalToSuperview()
+        }
+        
+        retryButton.snp.makeConstraints { make in
+            make.trailing.equalTo(locationButton.snp.leading).offset(10)
+            make.centerY.equalToSuperview()
         }
     }
     
@@ -141,8 +171,7 @@ class TTATranslatorResultCell: UITableViewCell {
         cellSubtitle.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: cellTitle.lastBaselineAnchor, multiplier: 1).isActive = true
         
         cellView.layoutMarginsGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: cellSubtitle.lastBaselineAnchor, multiplier: 1).isActive = true
-                
-//        locationButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+
         locationButton.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
         
         spinner.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
