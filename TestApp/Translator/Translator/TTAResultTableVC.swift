@@ -9,10 +9,15 @@
 import UIKit
 import Foundation
 import CoreData
+import SnapKit
+import Closures
 
 class TTAResultTableVC: UIViewController {
 
 //  MARK: - Properties
+    
+//    let viewModel
+    var viewData: TTATranslationViewData?
 
     lazy var coreDataStack = TTACoreDataStack(modelName: "Translator")
     
@@ -28,10 +33,14 @@ class TTAResultTableVC: UIViewController {
         return fetchedResultsController
     }()
     
+    let tableView = UITableView.init(frame: .zero)
+    
+    let inputContainerView = UIView()
+    var inputViewBottomConstraint: NSLayoutConstraint?
+
     let inputField = UITextView()
     var inputFieldTopConstraint: NSLayoutConstraint?
     private let limitedInputFieldHeight: CGFloat = 100
-    
     private var inputFieldIsOversized = false {
         didSet {
             guard oldValue != inputFieldIsOversized else { return }
@@ -40,32 +49,25 @@ class TTAResultTableVC: UIViewController {
             inputField.setNeedsUpdateConstraints()
         }
     }
-        
     let textViewPlaceholder: UILabel = {
         let tvPlaceholder = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         tvPlaceholder.text = TTAResultTableVCKeys.localizedString(type: .inputFielLabel)
-//        tvPlaceholder.text = "Enter a word..."
         tvPlaceholder.textColor = .systemGray4
         tvPlaceholder.font = UIFont.systemFont(ofSize: 17.0)
-//        tvPlaceholder.textAlignment = .natural
         return tvPlaceholder
     }()
     
     let sendButton = UIButton.init(type: .custom)
     
-    let inputContainerView = UIView()
-    var inputViewBottomConstraint: NSLayoutConstraint?
-    
-    let tableView = UITableView.init(frame: .zero)
-    
     var selectedTranslator: TTATranslator? = nil
     var selectedLanguage: TTATranslatorLanguage? = nil
 
 //  MARK: - View lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        self.viewData = TTATranslationViewData(view: self)
         
         do {
             try fetchedResultsController.performFetch()
@@ -77,12 +79,7 @@ class TTAResultTableVC: UIViewController {
         setupNavBarAppearance()
         setUpTableView()
         configureInputContainerView()
-
-        self.tableView.register(TTATranslatorResultCell.self, forCellReuseIdentifier: TTATranslatorResultCell.reuseIdentifier)
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
         
-        tableView.tableFooterView = UIView()
 //        tableView.keyboardDismissMode = .onDrag
 
         self.inputField.delegate = self
@@ -129,23 +126,34 @@ class TTAResultTableVC: UIViewController {
         self.view.endEditing(true)
     }
     
-//  MARK:- Layout
+//  MARK: - Layout
     
     func setupNavBarAppearance() {
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
-        navigationController?.navigationBar.prefersLargeTitles = false
-        
-        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(moveToTranslatorsList))
-        navigationItem.rightBarButtonItem = settingsButton
+
+        let settingsButton = UIButton()
+        settingsButton.setImage(UIImage(systemName: "gear"), for: .normal)
+        settingsButton.onTap {
+            if let translator = self.selectedTranslator {
+                guard let language = self.selectedLanguage else { return }
+
+                self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, selectedLanguage: language, delegate: self), animated: true)
+            }
+        }
+        let rightBarButton = UIBarButtonItem(customView: settingsButton)
+        navigationItem.rightBarButtonItem = rightBarButton
     }
     
     func setUpTableView() {
         view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive            = true
-        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive    = true
-        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive  = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive      = true
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+        }
+        tableView.tableFooterView = UIView()
     }
         
     func configureInputContainerView() {
@@ -311,14 +319,6 @@ class TTAResultTableVC: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func moveToTranslatorsList() {
-        if let translator = self.selectedTranslator {
-            guard let language = self.selectedLanguage else { return }
-
-            self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, selectedLanguage: language, delegate: self), animated: true)
-        }
-    }
-    
     @objc func didTapSendButton() {
         if let translator = self.selectedTranslator {
             guard let translatorURL = translator.url else { return }
@@ -362,7 +362,7 @@ class TTAResultTableVC: UIViewController {
     }
     
     @objc func didTapLocationButton(_ sender: UIButton) {
-        if let superview = sender.superview, let cell = superview.superview as? TTATranslatorResultCell {
+        if let superview = sender.superview, let cell = superview.superview as? TTATranslationCell {
             if let cellIndexPath = self.tableView.indexPath(for: cell) {
                 let resultObject = self.fetchedResultsController.object(at: cellIndexPath)
 
@@ -374,7 +374,7 @@ class TTAResultTableVC: UIViewController {
     
     @objc func didTapRetryButton(_ sender: UIButton) {
 //        print("BUTTON IS TAPPED")
-        if let superview = sender.superview, let cell = superview.superview?.superview as? TTATranslatorResultCell {
+        if let superview = sender.superview, let cell = superview.superview?.superview as? TTATranslationCell {
             if let cellIndexPath = self.tableView.indexPath(for: cell) {
                 let result = self.fetchedResultsController.object(at: cellIndexPath)
 
@@ -457,58 +457,49 @@ class TTAResultTableVC: UIViewController {
 
 // MARK: - Extensions
 
-extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslatorResultCell.reuseIdentifier, for: indexPath) as! TTATranslatorResultCell
-        
-        let result = self.fetchedResultsController.object(at: indexPath)
-
-        cell.cellTitle.text = result.textToTranslate
-        cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
-                
-        switch result.responseStatus {
-        case TTATranslatorResult.ResponseStatus.success.description:
-            cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = result.translation
-            cell.cellSubtitle.textColor = .label
-        case TTATranslatorResult.ResponseStatus.failure.description:
-            cell.showSpinner(animate: false)
-            cell.cellSubtitle.text = TTAResultTableVCKeys.localizedString(type: .cellErrorMessage)
-            cell.cellSubtitle.textColor = .systemRed
-            cell.retryButton.isHidden = false
-        default:
-            cell.showSpinner(animate: true)
-//            cell.cellSubtitle.text = nil
-        }
-        return cell
-    }
-        
-    func tableView(_ tableView: UITableView, commit editingStyle: TTATranslatorResultCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else { return }
-        let result = self.fetchedResultsController.object(at: indexPath)
-        
-        coreDataStack.managedContext.delete(result)
-        coreDataStack.saveContext()
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let result = self.fetchedResultsController.object(at: indexPath)
-        self.navigationController?.pushViewController(TTAUserLocationVC(latitude: result.latitude, longitude: result.longitude), animated: true)
-    }
-}
+//extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslationCell.reuseIdentifier, for: indexPath) as! TTATranslationCell
+//        
+//        let result = self.fetchedResultsController.object(at: indexPath)
+//
+//        cell.cellTitle.text = result.textToTranslate
+//        cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
+//                
+//        switch result.responseStatus {
+//        case TTATranslatorResult.ResponseStatus.success.description:
+//            cell.showSpinner(animate: false)
+//            cell.cellSubtitle.text = result.translation
+//            cell.cellSubtitle.textColor = .label
+//        case TTATranslatorResult.ResponseStatus.failure.description:
+//            cell.showSpinner(animate: false)
+//            cell.cellSubtitle.text = TTAResultTableVCKeys.localizedString(type: .cellErrorMessage)
+//            cell.cellSubtitle.textColor = .systemRed
+//            cell.retryButton.isHidden = false
+//        default:
+//            cell.showSpinner(animate: true)
+////            cell.cellSubtitle.text = nil
+//        }
+//        return cell
+//    }
+//        
+//    func tableView(_ tableView: UITableView, commit editingStyle: TTATranslationCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        guard editingStyle == .delete else { return }
+//        let result = self.fetchedResultsController.object(at: indexPath)
+//        
+//        coreDataStack.managedContext.delete(result)
+//        coreDataStack.saveContext()
+//    }
+//    
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let result = self.fetchedResultsController.object(at: indexPath)
+//        self.navigationController?.pushViewController(TTAUserLocationVC(latitude: result.latitude, longitude: result.longitude), animated: true)
+//    }
+//}
 
 extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsController.sections?.count ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sectionInfo = fetchedResultsController.sections?[section] else { return 0 }
-        return sectionInfo.numberOfObjects
-    }
-        
+            
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
