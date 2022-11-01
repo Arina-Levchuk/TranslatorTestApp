@@ -10,10 +10,10 @@ import UIKit
 
 class TTATranslationViewData: NSObject {
     
-    let view: TTAResultTableVC
+    let view: TTATranslationTableVC
     let table: UITableView
     
-    init(view: TTAResultTableVC) {
+    init(view: TTATranslationTableVC) {
         self.view = view
         self.table = self.view.tableView
         super.init()

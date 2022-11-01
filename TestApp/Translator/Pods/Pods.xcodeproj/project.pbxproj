@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -101,7 +101,7 @@
 		28FFF4211522C148B877E65E2A6FDFAC /* UITableView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UITableView.swift; path = Xcode/Closures/Source/UITableView.swift; sourceTree = "<group>"; };
 		29B7A5D7E5E9F2F6F6F1CDDF27301195 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIGestureRecognizer.swift; path = Xcode/Closures/Source/UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		2D346BFA6E5E59AC0D25E88B1944EB7C /* UIControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIControl.swift; path = Xcode/Closures/Source/UIControl.swift; sourceTree = "<group>"; };
-		2DC60E3ADCD7053010538047744E52F3 /* Pods-Translator */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Translator"; path = Pods_Translator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DC60E3ADCD7053010538047744E52F3 /* Pods_Translator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Translator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3099CD754B06E1906C9C4227F4F5BB70 /* Constraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Constraint.swift; path = Source/Constraint.swift; sourceTree = "<group>"; };
 		3112FA1467FA6EFE5C827BF4268E713D /* ConstraintView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintView.swift; path = Source/ConstraintView.swift; sourceTree = "<group>"; };
 		328DACF11397E25D1074983586CBF2C5 /* ConstraintMakerPriortizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerPriortizable.swift; path = Source/ConstraintMakerPriortizable.swift; sourceTree = "<group>"; };
@@ -129,7 +129,7 @@
 		979486118B3E90C08386079D57962701 /* SnapKit */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SnapKit; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A38A6578BD72EB85719EE281B9B1406 /* ConstraintLayoutGuide+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ConstraintLayoutGuide+Extensions.swift"; path = "Source/ConstraintLayoutGuide+Extensions.swift"; sourceTree = "<group>"; };
 		9D29E453AD51DFBBFACFD735B34190C6 /* SnapKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "SnapKit-Info.plist"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A0C7E614EE73D4E7C7565899F34B0BD0 /* ConstraintLayoutSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutSupport.swift; path = Source/ConstraintLayoutSupport.swift; sourceTree = "<group>"; };
 		A2ED8995BD57B69571C0035C13FA27A3 /* SnapKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-prefix.pch"; sourceTree = "<group>"; };
 		A7037B3099F0CF7F1254CBEB40E79EC8 /* Pods-Translator-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Translator-dummy.m"; sourceTree = "<group>"; };
@@ -218,7 +218,6 @@
 				28FFF4211522C148B877E65E2A6FDFAC /* UITableView.swift */,
 				C411784417075C3A057A4A87E3E70A96 /* Support Files */,
 			);
-			name = Closures;
 			path = Closures;
 			sourceTree = "<group>";
 		};
@@ -303,7 +302,6 @@
 				110E1D62DF21583985C5FF516B886F12 /* UILayoutSupport+Extensions.swift */,
 				A1A7EA6A6CDC87AD526174F32F300B00 /* Support Files */,
 			);
-			name = SnapKit;
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
@@ -345,7 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				E814EC5FBF43E996D6F596124B3450F0 /* Closures */,
-				2DC60E3ADCD7053010538047744E52F3 /* Pods-Translator */,
+				2DC60E3ADCD7053010538047744E52F3 /* Pods_Translator.framework */,
 				979486118B3E90C08386079D57962701 /* SnapKit */,
 			);
 			name = Products;
@@ -398,7 +396,7 @@
 			);
 			name = "Pods-Translator";
 			productName = Pods_Translator;
-			productReference = 2DC60E3ADCD7053010538047744E52F3 /* Pods-Translator */;
+			productReference = 2DC60E3ADCD7053010538047744E52F3 /* Pods_Translator.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		19622742EBA51E823D6DAE3F8CDBFAD4 /* SnapKit */ = {
@@ -447,7 +445,7 @@
 				LastUpgradeCheck = 1240;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (

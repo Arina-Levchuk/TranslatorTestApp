@@ -25,7 +25,6 @@ public class TTATranslatorResult: NSManagedObject {
     func setTimeStamp() -> Double {
         let currentDate = Date()
         self.timeStamp = currentDate.timeIntervalSince1970
-//        print("\(Date(timeIntervalSince1970: timeStamp))")
         return timeStamp
     }
         

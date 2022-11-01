@@ -1,5 +1,5 @@
 //
-//  TTAResultTableVC.swift
+//  TTATranslationTableVC.swift
 //  Translator
 //
 //  Created by admin on 2/23/20.
@@ -12,11 +12,11 @@ import CoreData
 import SnapKit
 import Closures
 
-class TTAResultTableVC: UIViewController {
+class TTATranslationTableVC: UIViewController {
 
 //  MARK: - Properties
     
-//    let viewModel
+    var viewModel: TTATranslationHandler = TTATranslationHandler()
     var viewData: TTATranslationViewData?
 
     lazy var coreDataStack = TTACoreDataStack(modelName: "Translator")
@@ -59,8 +59,8 @@ class TTAResultTableVC: UIViewController {
     
     let sendButton = UIButton.init(type: .custom)
     
-    var selectedTranslator: TTATranslator? = nil
-    var selectedLanguage: TTATranslatorLanguage? = nil
+//    var selectedTranslator: TTATranslator? = nil
+//    var selectedLanguage: TTATranslatorLanguage? = nil
 
 //  MARK: - View lifecycle
 
@@ -79,8 +79,6 @@ class TTAResultTableVC: UIViewController {
         setupNavBarAppearance()
         setUpTableView()
         configureInputContainerView()
-        
-//        tableView.keyboardDismissMode = .onDrag
 
         self.inputField.delegate = self
 
@@ -91,9 +89,6 @@ class TTAResultTableVC: UIViewController {
 //        view.addGestureRecognizer(tapRecognizer)
         
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
-        
-        self.selectedLanguage = TTASettingsListVC.allLanguages.first
-        self.selectedTranslator = TTASettingsListVC.allTranslators.first
     }
             
     override func viewWillAppear(_ animated: Bool) {
@@ -131,8 +126,10 @@ class TTAResultTableVC: UIViewController {
     func setupNavBarAppearance() {
         navigationItem.title = TTAResultTableVCKeys.localizedString(type: .title)
 
-        let settingsButton = UIButton()
-        settingsButton.setImage(UIImage(systemName: "gear"), for: .normal)
+        let settingsButton = UIButton.init(type: .custom)
+        settingsButton.setBackgroundImage(UIImage(systemName: "gear"), for: .normal)
+        let rightBarButton = UIBarButtonItem(customView: settingsButton)
+        navigationItem.rightBarButtonItem = rightBarButton
         settingsButton.onTap {
             if let translator = self.selectedTranslator {
                 guard let language = self.selectedLanguage else { return }
@@ -140,8 +137,6 @@ class TTAResultTableVC: UIViewController {
                 self.navigationController?.pushViewController(TTASettingsListVC(selectedTranslator: translator, selectedLanguage: language, delegate: self), animated: true)
             }
         }
-        let rightBarButton = UIBarButtonItem(customView: settingsButton)
-        navigationItem.rightBarButtonItem = rightBarButton
     }
     
     func setUpTableView() {
@@ -164,10 +159,10 @@ class TTAResultTableVC: UIViewController {
         setUpInputFieldAppearance()
         setUpSendButton()
         
-        inputContainerView.translatesAutoresizingMaskIntoConstraints                                            = false
-        inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive   = true
+        inputContainerView.translatesAutoresizingMaskIntoConstraints = false
+        inputContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         inputContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        inputContainerView.topAnchor.constraint(equalTo: inputField.topAnchor, constant: -5).isActive           = true
+        inputContainerView.topAnchor.constraint(equalTo: inputField.topAnchor, constant: -5).isActive = true
         
 //      Blur container view
         inputContainerView.backgroundColor = .clear
@@ -238,10 +233,8 @@ class TTAResultTableVC: UIViewController {
     }
         
     func setUpKeyboardShowing() {
-//      The View Controller receives notification when the keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 
-//      The View Controller receives notification when the keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
@@ -320,13 +313,13 @@ class TTAResultTableVC: UIViewController {
     }
     
     @objc func didTapSendButton() {
-        if let translator = self.selectedTranslator {
+        if let translator = self.viewModel.selectedTranslator {
             guard let translatorURL = translator.url else { return }
             guard self.inputField.text != nil && self.inputField.text != "" else { return }
 
             let translationRequest = TTATranslatorResult(textToTranslate: inputField.text!, insertInto: coreDataStack.managedContext)
             
-            getTranslation(to: translatorURL, with: translationRequest, completionHandler: { [weak self] (result, error) in
+            self.viewModel.getTranslation(to: translatorURL, with: translationRequest, completionHandler: { [weak self] (result, error) in
                 if result != nil {
                     translationRequest.setResponseStatus?(.success)
                 } else {
@@ -338,7 +331,7 @@ class TTAResultTableVC: UIViewController {
                     self?.textViewPlaceholder.isHidden = false
                 }
             })
-          dismissKeyboard()
+        dismissKeyboard()
         let inputViewHeight = view.safeAreaLayoutGuide.layoutFrame.height - inputContainerView.frame.height
 
         if tableView.contentSize.height > inputViewHeight {
@@ -378,11 +371,11 @@ class TTAResultTableVC: UIViewController {
             if let cellIndexPath = self.tableView.indexPath(for: cell) {
                 let result = self.fetchedResultsController.object(at: cellIndexPath)
 
-                if let translator = self.selectedTranslator {
+                if let translator = self.viewModel.selectedTranslator {
                     if result.responseStatus == TTATranslatorResult.ResponseStatus.failure.description {
                         guard let translatorURL = translator.url else { return }
 
-                        getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
+                        self.viewModel.getTranslation(to: translatorURL, with: result, completionHandler: { [weak self] (newResult, error) in
                             if newResult != nil {
                                 result.setValue(TTATranslatorResult.ResponseStatus.success.description, forKey: #keyPath(TTATranslatorResult.responseStatus))
                             } else {
@@ -395,110 +388,11 @@ class TTAResultTableVC: UIViewController {
             }
         }
     }
-        
-// MARK: - Custom Methods
-        
-    func getTranslation(to address: URL, with request: TTATranslatorResult, completionHandler: @escaping (TTATranslatorResult?, Error?) -> Void) {
-            var url = address
-        
-            if let queryArray = selectedTranslator?.queryDict {
-                for (key, value) in queryArray {
-                    url = url.append(key, value: value)
-                    url = url.append("lang", value: "en-\(selectedLanguage!.langCode)")
-                }
-            }
-
-            url = url.append("text", value: request.textToTranslate)
-            print(url)
-            
-            let getRequest = URLRequest(url: url)
-                    
-            let session = URLSession.shared
-            let task = session.dataTask(with: getRequest) { (data, response, error) in
-                if error != nil || data == nil {
-                    completionHandler(nil, error)
-                    print("Client error!")
-                    return
-                }
-                
-                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                    completionHandler(nil, error)
-                    print("Server error!")
-                    return
-                }
-                
-                guard let mime = response.mimeType, mime == "application/json" else {
-                    completionHandler(nil, error)
-                    print("Wrong MIME type!")
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    guard let responseData = data else {  return  }
-                    let decoder = JSONDecoder()
-                    do {
-                        let decodedData = try! decoder.decode(TTADecodedResponse.self, from: responseData)
-                        
-                        if decodedData.text != nil {
-                            request.translation = decodedData.text?.joined(separator: "")
-                        } else {
-                            request.translation = decodedData.translated
-                        }
-                        completionHandler(request, nil)
-                    } catch {
-                        completionHandler(nil, error)
-                        print("JSON parsing error")
-                    }
-                }
-            }
-            task.resume()
-        }
 }
 
 // MARK: - Extensions
 
-//extension TTAResultTableVC: UITableViewDataSource, UITableViewDelegate {
-//    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: TTATranslationCell.reuseIdentifier, for: indexPath) as! TTATranslationCell
-//        
-//        let result = self.fetchedResultsController.object(at: indexPath)
-//
-//        cell.cellTitle.text = result.textToTranslate
-//        cell.retryButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
-//                
-//        switch result.responseStatus {
-//        case TTATranslatorResult.ResponseStatus.success.description:
-//            cell.showSpinner(animate: false)
-//            cell.cellSubtitle.text = result.translation
-//            cell.cellSubtitle.textColor = .label
-//        case TTATranslatorResult.ResponseStatus.failure.description:
-//            cell.showSpinner(animate: false)
-//            cell.cellSubtitle.text = TTAResultTableVCKeys.localizedString(type: .cellErrorMessage)
-//            cell.cellSubtitle.textColor = .systemRed
-//            cell.retryButton.isHidden = false
-//        default:
-//            cell.showSpinner(animate: true)
-////            cell.cellSubtitle.text = nil
-//        }
-//        return cell
-//    }
-//        
-//    func tableView(_ tableView: UITableView, commit editingStyle: TTATranslationCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        guard editingStyle == .delete else { return }
-//        let result = self.fetchedResultsController.object(at: indexPath)
-//        
-//        coreDataStack.managedContext.delete(result)
-//        coreDataStack.saveContext()
-//    }
-//    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let result = self.fetchedResultsController.object(at: indexPath)
-//        self.navigationController?.pushViewController(TTAUserLocationVC(latitude: result.latitude, longitude: result.longitude), animated: true)
-//    }
-//}
-
-extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
+extension TTATranslationTableVC: NSFetchedResultsControllerDelegate {
             
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -524,7 +418,7 @@ extension TTAResultTableVC: NSFetchedResultsControllerDelegate {
     }
 }
 
-extension TTAResultTableVC: UITextViewDelegate {
+extension TTATranslationTableVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if inputField.text != "" || inputField.text != nil {
@@ -547,15 +441,4 @@ extension TTAResultTableVC: UITextViewDelegate {
             return false
         }
     }
-}
-
-extension TTAResultTableVC: TTASettingsListDelegate {
-    
-    func newLanguageSelected(language: TTATranslatorLanguage) {
-        self.selectedLanguage = language
-    }
-    
-    func newTranslatorIsSelected(translator: TTATranslator) {
-        self.selectedTranslator = translator
-    }    
 }
